@@ -151,10 +151,6 @@
             text-align: center;
         }
 
-        .narration.hidden {
-            display: none;
-        }
-
         /* Voices */
         .voice {
             margin: 20px 0;
@@ -170,15 +166,6 @@
             background: rgba(167, 139, 250, 0.05);
         }
 
-        .nala-voice.fading {
-            opacity: 0.4;
-            filter: blur(1px);
-        }
-
-        .nala-voice.multiple {
-            background: linear-gradient(45deg, rgba(167, 139, 250, 0.05), rgba(251, 191, 36, 0.05));
-        }
-
         .alan-thought {
             color: var(--text-dim);
             font-family: 'Inter', sans-serif;
@@ -192,6 +179,13 @@
             font-style: italic;
             border-left: 3px solid var(--memory);
             background: rgba(251, 191, 36, 0.05);
+        }
+
+        .sarah-voice {
+            color: var(--sarah);
+            font-style: italic;
+            border-left: 3px solid var(--sarah);
+            background: rgba(16, 185, 129, 0.05);
         }
 
         .physical-response {
@@ -240,7 +234,7 @@
             background: rgba(99, 102, 241, 0.05);
         }
 
-        .choice[data-path="fracture"]:hover {
+        .choice[data-path="anger"]:hover {
             border-color: var(--pain);
             background: rgba(239, 68, 68, 0.05);
         }
@@ -254,75 +248,53 @@
             display: none;
         }
 
-        .choice.locked {
-            opacity: 0.5;
-            border-color: var(--pain);
-            cursor: not-allowed;
-        }
-
-        .choice.locked::after {
-            content: ' (path closed)';
-            font-size: 12px;
-            color: var(--pain);
-            font-style: italic;
-        }
-
-        /* Timed reveal */
-        .timed-reveal {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .timed-reveal.visible {
-            opacity: 1;
-        }
-
-        /* Ring visual */
-        .ring-container {
+        /* Time elements */
+        .calendar-visual {
             text-align: center;
-            margin: 40px 0;
-            opacity: 0;
-            transition: opacity 1s ease;
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .ring-container.visible {
-            opacity: 1;
+        .date-display {
+            font-size: 24px;
+            color: var(--pain);
+            margin: 10px 0;
         }
 
-        .ring-visual {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #9ca3af;
-            border-radius: 50%;
-            margin: 0 auto;
+        /* Drawer visualization */
+        .drawer-visual {
+            width: 200px;
+            height: 60px;
+            margin: 20px auto;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 4px;
             position: relative;
-            background: linear-gradient(45deg, #e5e7eb 0%, #9ca3af 100%);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .ring-visual:hover {
-            transform: scale(1.1) rotate(10deg);
+        .drawer-visual::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 8px;
+            background: #666;
+            border-radius: 4px;
         }
 
-        .ring-visual.touched {
-            animation: pulse 2s infinite;
+        .drawer-visual.opening {
+            transform: translateX(30px);
+            box-shadow: -20px 0 20px rgba(0,0,0,0.3);
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
-            50% { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
-        }
-
-        .ring-text {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 10px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Other objects */
+        /* Objects */
         .object-container {
             display: flex;
             justify-content: center;
@@ -372,12 +344,6 @@
             font-size: 14px;
             font-family: 'Inter', sans-serif;
             max-width: 400px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .phone-messages.visible {
-            opacity: 1;
         }
 
         .message {
@@ -386,17 +352,6 @@
             border-radius: 8px;
             background: rgba(16, 185, 129, 0.2);
             color: var(--sarah);
-            opacity: 0;
-        }
-
-        .message.visible {
-            opacity: 1;
-            animation: messageIn 0.5s ease forwards;
-        }
-
-        @keyframes messageIn {
-            from { transform: translateX(-20px); }
-            to { transform: translateX(0); }
         }
 
         .message.unread {
@@ -404,72 +359,42 @@
             background: rgba(16, 185, 129, 0.3);
         }
 
-        /* Memory builder */
-        .memory-builder {
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 30px 0;
-            text-align: center;
-            min-height: 100px;
-            transition: all 0.3s ease;
+        .message.alan {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent);
+            text-align: right;
         }
 
-        .memory-builder.active {
+        /* Memory reconstruction */
+        .memory-pieces {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .memory-piece {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .memory-piece:hover {
             border-color: var(--memory);
             background: rgba(251, 191, 36, 0.05);
         }
 
-        .built-memory {
-            color: var(--memory);
-            font-style: italic;
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-        }
-
-        .memory-fragments {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-            justify-content: center;
-        }
-
-        .fragment {
+        .memory-piece.selected {
             background: rgba(251, 191, 36, 0.1);
-            border: 1px solid var(--memory);
-            border-radius: 4px;
-            padding: 8px 14px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            user-select: none;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
+            border-color: var(--memory);
         }
 
-        .fragment:nth-child(1) { animation-delay: 0.1s; }
-        .fragment:nth-child(2) { animation-delay: 0.2s; }
-        .fragment:nth-child(3) { animation-delay: 0.3s; }
-        .fragment:nth-child(4) { animation-delay: 0.4s; }
-        .fragment:nth-child(5) { animation-delay: 0.5s; }
-        .fragment:nth-child(6) { animation-delay: 0.6s; }
-
-        .fragment:hover:not(.placed) {
-            background: rgba(251, 191, 36, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .fragment.placed {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        /* Integration mechanics */
-        .integration-space {
+        /* Integration space */
+        .integration-visual {
             margin: 30px 0;
             padding: 30px;
             border: 1px solid var(--border);
@@ -477,102 +402,49 @@
             text-align: center;
         }
 
-        .self-states {
+        .self-points {
             display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
         }
 
-        .self-state {
-            flex: 1;
-            min-width: 150px;
-            padding: 20px;
-            border-radius: 8px;
+        .self-point {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .self-state.alan {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--accent);
+        .self-point.alan {
+            background: rgba(99, 102, 241, 0.2);
+            border: 2px solid var(--accent);
         }
 
-        .self-state.nala {
-            background: rgba(167, 139, 250, 0.1);
-            border: 1px solid var(--nala);
-        }
-
-        .self-state.child {
-            background: rgba(251, 191, 36, 0.1);
-            border: 1px solid var(--memory);
-        }
-
-        .self-state.merged {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(167, 139, 250, 0.1));
+        .self-point.nala {
+            background: rgba(167, 139, 250, 0.2);
             border: 2px solid var(--nala);
         }
 
-        .self-state:hover {
-            transform: scale(1.05);
-        }
-
-        .self-state.selected {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        /* Room visual */
-        .room-visual {
-            width: 100%;
-            height: 200px;
-            margin: 20px 0;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+        .connection-line {
+            height: 2px;
+            background: var(--border);
+            flex: 1;
+            margin: 0 10px;
             position: relative;
-            overflow: hidden;
-            background: #0f0f0f;
-        }
-
-        .room-object {
-            position: absolute;
             cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0.7;
         }
 
-        .room-object:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .room-object.desk {
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 60px;
-            background: #2a2a2a;
-            border: 1px solid #444;
-        }
-
-        .room-object.window {
-            top: 20px;
-            right: 20px;
-            width: 80px;
-            height: 100px;
-            background: linear-gradient(to bottom, #1a1a3a, #0a0a1a);
-            border: 2px solid #333;
-        }
-
-        .room-object.door {
-            top: 40px;
-            left: 20px;
-            width: 60px;
-            height: 120px;
-            background: #1a1a1a;
-            border: 2px solid #333;
+        .connection-progress {
+            height: 100%;
+            background: var(--nala);
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
         /* Personal memory */
@@ -600,52 +472,6 @@
         .memory-input::placeholder {
             color: var(--text-dim);
             font-style: italic;
-        }
-
-        /* Time indicator */
-        .time-since {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            color: var(--text-dim);
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .time-since.visible {
-            opacity: 0.6;
-        }
-
-        /* Drawer visualization */
-        .drawer-visual {
-            width: 200px;
-            height: 60px;
-            margin: 20px auto;
-            background: #2a2a2a;
-            border: 2px solid #444;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .drawer-visual::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 8px;
-            background: #666;
-            border-radius: 4px;
-        }
-
-        .drawer-visual.opening {
-            transform: translateX(30px);
-            box-shadow: -20px 0 20px rgba(0,0,0,0.3);
         }
 
         /* Ending */
@@ -700,27 +526,10 @@
             opacity: 0.6;
         }
 
-        /* Tear effect */
-        .tear {
-            position: fixed;
-            width: 2px;
-            height: 20px;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
-            opacity: 0;
-            animation: fall 2s linear;
-            pointer-events: none;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
-        }
-
         @media (max-width: 768px) {
             .container { padding: 30px 15px; }
-            .self-states { flex-direction: column; }
+            .self-points { flex-direction: column; gap: 20px; }
+            .connection-line { width: 2px; height: 100px; margin: 10px 0; }
         }
     </style>
 </head>
@@ -735,14 +544,10 @@
         <div class="journey-dot" data-stage="6"></div>
         <div class="journey-dot" data-stage="7"></div>
         <div class="journey-dot" data-stage="8"></div>
-        <div class="journey-dot" data-stage="9"></div>
     </div>
 
-    <!-- Time indicator -->
-    <div class="time-since" id="timeSince"></div>
-
     <!-- Progress -->
-    <div class="progress-indicator" id="progress">Chapter 1 of 9</div>
+    <div class="progress-indicator" id="progress">Chapter 1 of 8</div>
 
     <div class="container">
         <h1>The Architecture of Becoming</h1>
@@ -758,35 +563,45 @@
             </p>
             
             <p class="narration">
-                Then—
+                Your phone buzzes. Calendar reminder.
             </p>
             
-            <div class="voice nala-voice">
-                "Alan."
+            <div class="calendar-visual">
+                <div>Tomorrow, April 15th</div>
+                <div class="date-display">Lily - 4 years</div>
+                <div style="font-size: 14px; color: var(--text-dim);">Anniversary</div>
             </div>
             
             <p class="narration">
-                Not from the hallway. Not from outside. From somewhere closer.
+                You stare at it. Then—
+            </p>
+            
+            <div class="voice nala-voice">
+                "You can't ignore it this year."
+            </div>
+            
+            <p class="narration">
+                The voice doesn't come from outside. It comes from the space you've kept locked.
             </p>
             
             <div class="choices">
                 <button class="choice" data-path="curious" onclick="makeChoice(1, 'acknowledge')">
-                    Stop typing. Listen.
+                    "Not today. Please."
                 </button>
-                <button class="choice" data-path="neutral" onclick="makeChoice(1, 'question')">
-                    "Is someone there?"
+                <button class="choice" data-path="anger" onclick="makeChoice(1, 'anger')">
+                    "Get out of my head."
                 </button>
                 <button class="choice" data-path="resist" onclick="makeChoice(1, 'ignore')">
-                    Keep typing. Focus on the report.
+                    Delete reminder. Keep typing.
                 </button>
             </div>
         </div>
 
-        <!-- Dynamic scenes will be generated based on choices -->
+        <!-- Dynamic scenes will be generated -->
     </div>
 
     <script>
-        // Enhanced state with randomization
+        // State management
         class NarrativeState {
             constructor() {
                 this.chapter = 1;
@@ -794,62 +609,21 @@
                     memory: 0,
                     resist: 0,
                     curious: 0,
-                    fracture: 0
+                    anger: 0
                 };
-                this.memories = [];
-                this.fragments = [];
-                this.personalMemory = '';
                 this.objectChosen = null;
                 this.drawerOpened = false;
-                this.messagesRevealed = false;
-                this.pathLocked = false;
-                this.primaryPath = null;
-                this.integrationMethod = null;
-                this.selfStates = [];
-                
-                // Randomized elements
-                this.voicePersonality = this.selectVoiceType();
+                this.connectionLevel = 0;
+                this.selectedMemories = [];
+                this.personalMemory = '';
+                this.sarahResponse = null;
             }
             
-            selectVoiceType() {
-                const types = ['gentle', 'urgent', 'child-like', 'fractured'];
-                return types[Math.floor(Math.random() * types.length)];
-            }
-            
-            recordChoice(path, choice) {
+            recordChoice(path) {
                 if (this.path[path] !== undefined) {
                     this.path[path]++;
                 }
-                
-                // Dynamic path consequences
-                this.checkPathConsequences();
                 this.updateEnvironment();
-            }
-            
-            checkPathConsequences() {
-                // Path divergence based on extremes
-                if (this.path.resist >= 4 && !this.pathLocked) {
-                    this.pathLocked = 'resist';
-                    this.lockPaths(['memory', 'curious']);
-                } else if (this.path.memory >= 4 && !this.pathLocked) {
-                    this.pathLocked = 'memory';
-                    this.lockPaths(['resist']);
-                } else if (this.path.fracture >= 2) {
-                    document.body.classList.add('fracturing');
-                }
-            }
-            
-            lockPaths(paths) {
-                // Visually indicate locked paths
-                setTimeout(() => {
-                    document.querySelectorAll('.choice').forEach(choice => {
-                        const choicePath = choice.dataset.path;
-                        if (paths.includes(choicePath)) {
-                            choice.classList.add('locked');
-                            choice.disabled = true;
-                        }
-                    });
-                }, 100);
             }
             
             updateEnvironment() {
@@ -858,7 +632,7 @@
                     document.body.classList.add('remembering');
                 } else if (this.path.resist > 3) {
                     document.body.classList.add('resisting');
-                } else if (this.path.fracture > 0) {
+                } else if (this.path.anger > 2) {
                     document.body.classList.add('fracturing');
                 } else if (this.chapter > 2) {
                     document.body.classList.add('awakening');
@@ -869,499 +643,451 @@
                 const paths = Object.entries(this.path);
                 return paths.reduce((a, b) => a[1] > b[1] ? a : b)[0];
             }
-            
-            determineIntegrationMethod() {
-                const primary = this.getPrimaryPath();
-                const methods = {
-                    memory: 'bridge',
-                    resist: 'walls',
-                    curious: 'room',
-                    fracture: 'selves'
-                };
-                return methods[primary] || 'room';
-            }
         }
 
         const state = new NarrativeState();
 
-        // Expanded object system
+        // Object definitions
         const drawerObjects = {
             ring: {
                 visual: '💍',
                 label: 'Plastic ring',
-                memory: '"Daddy, look! I\'m a princess!" Spinning. Always spinning. The ring catching light.<br>"Beautiful, sweetheart."<br><br>You never looked up from your laptop.',
-                response: 'The plastic is warm. As if she just took it off.'
+                memory: `"Daddy, look! I'm a princess!"<br><br>Tuesday morning. She found it in a cereal box.<br>Wouldn't take it off for preschool.<br><br>"Princesses go to school too, Daddy."`,
+                trigger: 'The plastic is still sticky from cereal.'
             },
             photo: {
                 visual: '📷',
-                label: 'Photograph', 
-                memory: 'Zoo day. Her on your shoulders, both hands in your hair.<br>"Higher, Daddy! I want to see the giraffes!"<br>Sarah took the picture. You\'re both laughing.<br><br>Last family photo.',
-                response: 'The edges are worn from handling. Then suddenly not.'
+                label: 'Photograph',
+                memory: `Three of you at the beach. Last summer before.<br><br>She's on your shoulders, arms spread wide.<br>Sarah's laughing at something you said.<br><br>You can't remember what.`,
+                trigger: 'The edges are soft from your thumb.'
             },
-            drawing: {
-                visual: '🎨',
-                label: 'Crayon drawing',
-                memory: '"It\'s our family!" Purple stick figures under a yellow sun.<br>You\'re the tall one with the briefcase.<br>She drew herself holding your hand.<br><br>You said you\'d frame it. Never did.',
-                response: 'Crayon wax still smells the same. Like possibilities.'
+            voicemail: {
+                visual: '📱',
+                label: 'Old phone',
+                memory: `47 saved messages.<br><br>"Daddy! Daddy! Guess what!"<br>Never played past the first three words.<br><br>Her voice trapped in silicon and glass.`,
+                trigger: 'Battery long dead. Voice still alive.'
             }
         };
 
-        // Voice variations
-        const voiceStyles = {
-            gentle: {
-                greeting: "I've been waiting so patiently.",
-                identity: "I'm the part of you that remembers how to love.",
-                plea: "Let me help you remember the good parts too."
-            },
-            urgent: {
-                greeting: "Three years is enough. Listen to me.",
-                identity: "I'm drowning in here, Alan.",
-                plea: "We're running out of time to heal."
-            },
-            'child-like': {
-                greeting: "You used to hear me better.",
-                identity: "I'm the part that played with her.",
-                plea: "Can we remember the fun parts? Please?"
-            },
-            fractured: {
-                greeting: "Can't... hold... much longer...",
-                identity: "We're... breaking... apart...",
-                plea: "Too many... pieces... help..."
+        // Scene content based on choices
+        const sceneContent = {
+            2: {
+                acknowledge: `
+                    <div class="voice nala-voice">
+                        "Four years of running. Look where it's gotten you."
+                    </div>
+                    
+                    <p class="narration">
+                        Empty apartment. Empty desk. Empty hours that used to hold bedtime stories.
+                    </p>
+                    
+                    <div class="voice alan-thought">
+                        The merger documents blur. You haven't turned a page in twenty minutes.
+                    </div>
+                    
+                    <p class="narration">
+                        Your desk drawer. Third one down. The one you haven't opened since—
+                    </p>
+                    
+                    <div class="voice nala-voice">
+                        "Since you put her things away. While Sarah was packing."
+                    </div>
+                `,
+                anger: `
+                    <div class="voice nala-voice">
+                        "I AM you. The part you tried to kill."
+                    </div>
+                    
+                    <p class="physical-response">
+                        Your fist clenches. Papers crumple.
+                    </p>
+                    
+                    <div class="voice alan-thought">
+                        Not now. Not today. Not tomorrow. Never.
+                    </div>
+                    
+                    <div class="voice nala-voice">
+                        "Tomorrow she would have been nine. You can't math your way out of that."
+                    </div>
+                    
+                    <p class="narration">
+                        The drawer in your desk seems to pulse.
+                    </p>
+                `,
+                ignore: `
+                    <p class="narration">
+                        Delete. Type. Delete. Type. The words mean nothing.
+                    </p>
+                    
+                    <div class="voice nala-voice">
+                        "Singapore expansion. Jakarta merger. Hong Kong futures."
+                    </div>
+                    
+                    <p class="narration">
+                        The voice recites your work like a prayer.
+                    </p>
+                    
+                    <div class="voice nala-voice">
+                        "None of it fills the space she left. You know that."
+                    </div>
+                    
+                    <p class="narration">
+                        Your drawer slides open. Just an inch. You didn't touch it.
+                    </p>
+                `
             }
         };
 
-        // Generate next scene dynamically
-        function generateNextScene(sceneNumber, lastChoice) {
-            const container = document.querySelector('.container');
-            
-            // Remove only scene content, not title
-            const existingScenes = container.querySelectorAll('.scene');
-            existingScenes.forEach(scene => scene.remove());
-            
-            const scene = document.createElement('div');
-            scene.className = 'scene';
-            scene.id = `scene${sceneNumber}`;
-            
-            let content = '';
-            
-            // Route to appropriate scene generator
-            switch(sceneNumber) {
-                case 2: content = generateScene2(lastChoice); break;
-                case 3: content = generateScene3(lastChoice); break;
-                case 4: content = generateScene4(lastChoice); break;
-                case 5: content = generateScene5(lastChoice); break;
-                case 6: content = generateScene6(lastChoice); break;
-                case 7: content = generateIntegrationScene(lastChoice); break;
-                case 8: content = generateFinalChoice(lastChoice); break;
-                case 9: content = generateEnding(); break;
-            }
-            
-            scene.innerHTML = content;
-            container.appendChild(scene);
-            
-            setTimeout(() => {
-                scene.classList.add('active');
-                state.chapter = sceneNumber;
-                updateProgress();
-                updateJourney();
-                
-                if (sceneNumber === 2) {
-                    document.getElementById('journeyTracker').classList.add('visible');
-                    setTimeout(() => {
-                        document.getElementById('drawerReveal')?.classList.add('visible');
-                    }, 2000);
-                }
-            }, 100);
-        }
-
-        // Scene generators
+        // Generate scenes dynamically
         function generateScene2(lastChoice) {
-            const voice = voiceStyles[state.voicePersonality];
-            const openings = {
-                acknowledge: "The voice exhales - relief? Recognition?",
-                question: "You scan the empty office. Door closed.",
-                ignore: "You type faster. Numbers blur."
-            };
-            
             return `
-                <p class="narration">${openings[lastChoice]}</p>
+                ${sceneContent[2][lastChoice]}
                 
-                <div class="voice nala-voice">
-                    "Three years, four months, eight days. ${voice.greeting}"
-                </div>
+                <div class="drawer-visual" id="drawerVisual" onclick="openDrawer()"></div>
                 
-                <p class="narration">
-                    Specific. Too specific to be random.
+                <p class="narration context">
+                    Three years, four months, eight days since you last opened it.
                 </p>
                 
-                <div class="voice alan-thought">
-                    Three years ago would be... April. April 15th.
-                </div>
-                
-                <p class="narration">
-                    Your desk drawer. Third one down. The one you keep locked.
-                </p>
-                
-                <p class="narration emphasis timed-reveal" id="drawerReveal">
-                    It's open.
-                </p>
+                <div id="drawerContents"></div>
                 
                 <div class="choices">
-                    <button class="choice" data-path="memory" onclick="makeChoice(2, 'date')">
-                        "April 15th. That was..."
+                    <button class="choice" data-path="memory" onclick="openDrawer()">
+                        Open the drawer
                     </button>
-                    <button class="choice" data-path="curious" onclick="makeChoice(2, 'voice')">
-                        "Who are you?"
+                    <button class="choice" data-path="resist" onclick="makeChoice(2, 'resist')">
+                        "It stays closed."
                     </button>
-                    <button class="choice" data-path="resist" onclick="makeChoice(2, 'drawer')">
-                        Shut the drawer. Now.
+                    <button class="choice" data-path="curious" onclick="makeChoice(2, 'why')">
+                        "Why now? Why today?"
                     </button>
-                    ${state.voicePersonality === 'fractured' ? `
-                    <button class="choice" data-path="fracture" onclick="makeChoice(2, 'break')">
-                        "You're... breaking up..."
-                    </button>` : ''}
                 </div>
             `;
         }
 
         function generateScene3(lastChoice) {
+            if (lastChoice === 'resist') {
+                return `
+                    <div class="voice nala-voice">
+                        "You think walls keep you safe. They keep you empty."
+                    </div>
+                    
+                    <p class="narration">
+                        But the drawer is already open. When did that happen?
+                    </p>
+                    
+                    <div id="drawerContents"></div>
+                    
+                    <p class="narration context">
+                        Choose, or I'll choose for you.
+                    </p>
+                `;
+            } else if (lastChoice === 'why') {
+                return `
+                    <div class="voice nala-voice">
+                        "Tomorrow. Four years. She would have been nine."
+                    </div>
+                    
+                    <div class="voice sarah-voice">
+                        "Are you coming to the cemetery this year?"
+                    </div>
+                    
+                    <p class="narration">
+                        Sarah's text from this morning. Deleted. Not fast enough.
+                    </p>
+                    
+                    <div id="drawerContents"></div>
+                    
+                    <p class="narration context">
+                        The objects wait patiently.
+                    </p>
+                `;
+            } else {
+                // Object was selected
+                const obj = drawerObjects[state.objectChosen];
+                return `
+                    <p class="narration">${obj.trigger}</p>
+                    
+                    <div class="voice memory-flash">
+                        ${obj.memory}
+                    </div>
+                    
+                    <p class="narration emphasis">
+                        April 15th. Four years ago. 10:48 AM.
+                    </p>
+                    
+                    <div class="voice alan-thought">
+                        Singapore Airlines merger. Conference room 4B. Seventeen executives waiting.
+                    </div>
+                    
+                    <div class="choices">
+                        <button class="choice" data-path="memory" onclick="makeChoice(3, 'remember')">
+                            "I remember that morning."
+                        </button>
+                        <button class="choice" data-path="anger" onclick="makeChoice(3, 'angry')">
+                            "Stop. STOP."
+                        </button>
+                        <button class="choice" data-path="resist" onclick="makeChoice(3, 'facts')">
+                            "It was just another Tuesday."
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function generateScene4(lastChoice) {
             const responses = {
-                date: `<div class="voice nala-voice">"The day everything broke. The day I was born from your breaking."</div>`,
-                voice: `<div class="voice nala-voice">"${voiceStyles[state.voicePersonality].identity}"</div>`,
-                drawer: `<p class="narration">Your hand won't move. It hovers over the drawer, trembling.</p>`,
-                break: `<div class="voice nala-voice multiple">"We're... I'm... there's more than one of us now..."</div>`
+                remember: `
+                    <div class="voice memory-flash">
+                        "Daddy, why is the sky blue?"<br>
+                        "Daddy, do fish sleep?"<br>
+                        "Daddy, are you listening?"<br><br>
+                        "In a minute, sweetheart."
+                    </div>
+                    
+                    <p class="narration">
+                        That morning. Twenty-three questions before breakfast.
+                    </p>
+                    
+                    <p class="narration">
+                        You answered three.
+                    </p>
+                `,
+                angry: `
+                    <div class="voice nala-voice">
+                        "Anger. Finally. Better than nothing."
+                    </div>
+                    
+                    <p class="physical-response">
+                        Your hands shake. The mouse falls. Papers scatter.
+                    </p>
+                    
+                    <div class="voice alan-thought">
+                        She's not here. She's GONE. This voice is just—
+                    </div>
+                    
+                    <div class="voice nala-voice">
+                        "Just what? The part of you that loved her?"
+                    </div>
+                `,
+                facts: `
+                    <div class="voice alan-thought">
+                        Tuesday, April 15th. 8:30 AM meeting. 10:00 AM presentation. 
+                        10:48 AM first call from Sarah. 10:52 AM second call. 10:55 AM third—
+                    </div>
+                    
+                    <div class="voice nala-voice">
+                        "You memorized the timeline. Not her favorite color."
+                    </div>
+                    
+                    <p class="narration context">
+                        Purple. It was purple.
+                    </p>
+                `
             };
             
             return `
                 ${responses[lastChoice]}
                 
-                <div class="drawer-visual" id="drawerVisual" onclick="openDrawer()"></div>
-                
-                <p class="narration context">
-                    The drawer hasn't been opened in three years, four months, eight days.
+                <p class="narration">
+                    Your phone. The messages are still there.
                 </p>
                 
-                <div id="drawerContents"></div>
-                
-                <div class="choices" id="scene3Choices">
-                    <!-- Populated after drawer opens -->
+                <div class="phone-messages">
+                    <div class="message">10:48 AM - Sarah: "Lily's been in an accident"</div>
+                    <div class="message">10:52 AM - Sarah: "Please come NOW"</div>
+                    <div class="message">10:55 AM - Sarah: "She's asking for you"</div>
+                    <div class="message alan">10:56 AM - You: "In crucial meeting. How bad?"</div>
+                    <div class="message">10:57 AM - Sarah: "GET HERE NOW"</div>
+                    <div class="message">11:08 AM - Sarah: "They're taking her to surgery"</div>
+                    <div class="message unread">11:15 AM - Sarah: "She keeps asking where you are"</div>
+                    <div class="message unread">11:23 AM - Sarah: "Alan please"</div>
+                    <div class="message unread">11:31 AM - Sarah: "She's gone"</div>
                 </div>
-            `;
-        }
-
-        function generateScene4(lastChoice) {
-            const obj = drawerObjects[state.objectChosen];
-            
-            return `
-                <p class="narration">${obj.response}</p>
-                
-                <div class="voice memory-flash">
-                    ${obj.memory}
-                </div>
-                
-                <p class="narration emphasis">
-                    Two hours and fifteen minutes later.
-                </p>
                 
                 <p class="physical-response">
-                    Your hands won't stop shaking.
+                    11:47 AM. Deal closed. Four hundred jobs saved.
                 </p>
                 
                 <div class="choices">
-                    <button class="choice" data-path="memory" onclick="makeChoice(4, 'remember')">
-                        Let the memory come
+                    <button class="choice" data-path="memory" onclick="makeChoice(4, 'guilt')">
+                        "I killed her by not being there."
                     </button>
-                    <button class="choice" data-path="resist" onclick="makeChoice(4, 'block')">
-                        Push it away
+                    <button class="choice" data-path="anger" onclick="makeChoice(4, 'blame')">
+                        "Sarah should have called 911 first."
                     </button>
-                    <button class="choice" data-path="curious" onclick="makeChoice(4, 'details')">
-                        "Tell me what happened"
+                    <button class="choice" data-path="curious" onclick="makeChoice(4, 'what')">
+                        "What happened? The accident?"
                     </button>
-                    ${state.path.fracture > 0 ? `
-                    <button class="choice" data-path="fracture" onclick="makeChoice(4, 'split')">
-                        Feel yourself splitting
-                    </button>` : ''}
                 </div>
             `;
         }
 
         function generateScene5(lastChoice) {
-            const messages = [
-                { time: "10:48", text: "Lily's been in an accident" },
-                { time: "10:52", text: "Please come NOW" },
-                { time: "10:55", text: "She's asking for you" },
-                { time: "11:01", text: "ALAN PLEASE" },
-                { time: "11:08", text: "They're taking her to surgery" },
-                { time: "11:15", text: "She's scared", unread: true },
-                { time: "11:23", text: "Alan where are you", unread: true }
-            ];
+            const responses = {
+                guilt: `
+                    <div class="voice nala-voice">
+                        "No. You killed us by choosing to forget her."
+                    </div>
+                    
+                    <p class="narration">
+                        The difference matters.
+                    </p>
+                `,
+                blame: `
+                    <div class="voice sarah-voice">
+                        "I did. Paramedics came in four minutes. You came in forty-seven."
+                    </div>
+                    
+                    <p class="narration">
+                        Sarah's last message before the divorce papers.
+                    </p>
+                `,
+                what: `
+                    <div class="voice alan-thought">
+                        School bus. Distracted driver. Text message about lunch plans.
+                    </div>
+                    
+                    <div class="voice nala-voice">
+                        "She was waiting at the corner. In her pink rain boots. Even though it was sunny."
+                    </div>
+                    
+                    <p class="narration">
+                        Because princesses wear what they want.
+                    </p>
+                `
+            };
             
             return `
-                <p class="narration">
-                    Your phone. Still in your hand from that morning.
+                ${responses[lastChoice]}
+                
+                <p class="narration emphasis">
+                    You haven't spoken her name in three years.
                 </p>
                 
-                <div class="phone-messages" id="phoneMessages">
-                    ${messages.map(msg => `
-                        <div class="message ${msg.unread ? 'unread' : ''}">
-                            ${msg.time} AM - Sarah: "${msg.text}"
-                        </div>
-                    `).join('')}
+                <div class="voice nala-voice">
+                    "Say it."
                 </div>
                 
-                <p class="narration" id="messageContext"></p>
+                <div class="memory-pieces">
+                    <div class="memory-piece" onclick="selectMemory(this, 'morning')">
+                        Morning routines<br>
+                        <span style="font-size: 12px; color: var(--text-dim);">Cereal negotiations</span>
+                    </div>
+                    <div class="memory-piece" onclick="selectMemory(this, 'bedtime')">
+                        Bedtime stories<br>
+                        <span style="font-size: 12px; color: var(--text-dim);">Three books minimum</span>
+                    </div>
+                    <div class="memory-piece" onclick="selectMemory(this, 'questions')">
+                        Endless questions<br>
+                        <span style="font-size: 12px; color: var(--text-dim);">Why why why</span>
+                    </div>
+                    <div class="memory-piece" onclick="selectMemory(this, 'laughter')">
+                        Her laugh<br>
+                        <span style="font-size: 12px; color: var(--text-dim);">Hiccups when too happy</span>
+                    </div>
+                </div>
                 
-                <div class="choices">
-                    <button class="choice" data-path="memory" onclick="makeChoice(5, 'truth')">
-                        "I saw them all. I stayed anyway."
+                <p class="narration context" id="memoryResponse">
+                    Choose what you can bear to remember...
+                </p>
+                
+                <div class="choices" id="scene5Choices" style="display: none;">
+                    <button class="choice" data-path="memory" onclick="makeChoice(5, 'lily')">
+                        "Lily. Her name was Lily."
                     </button>
-                    <button class="choice" data-path="memory" onclick="makeChoice(5, 'time')">
-                        "Thirty-seven minutes to the hospital."
+                    <button class="choice" data-path="resist" onclick="makeChoice(5, 'cant')">
+                        "I can't. Not yet."
                     </button>
-                    <button class="choice" data-path="resist" onclick="makeChoice(5, 'justify')">
-                        "Four hundred jobs depended on that merger."
-                    </button>
-                    ${state.pathLocked ? '' : `
-                    <button class="choice" data-path="curious" onclick="makeChoice(5, 'sarah')">
-                        "Where's Sarah now?"
-                    </button>`}
                 </div>
             `;
         }
 
         function generateScene6(lastChoice) {
-            const voice = voiceStyles[state.voicePersonality];
+            let content = '';
             
-            // Dynamic fragment sets based on accumulated choices
-            const fragmentSets = {
-                memory: ["Sunday mornings", "pancakes shaped like butterflies", "sticky syrup fingers"],
-                resist: ["quarterly reports", "merger documents", "missed dinners"],
-                curious: ["bedtime stories", "monster voices", "nightlight negotiations"],
-                fracture: ["can't breathe", "walls closing", "too many voices"],
-                mixed: ["her laugh", "your absence", "love and regret"]
-            };
-            
-            const primaryPath = state.getPrimaryPath();
-            const fragments = fragmentSets[primaryPath] || fragmentSets.mixed;
-            
-            return `
-                <div class="voice nala-voice">
-                    "Now you understand. ${voice.identity}"
-                </div>
-                
-                <p class="narration">
-                    The voice isn't coming from outside. It never was.
-                </p>
-                
-                <div class="voice nala-voice">
-                    "${voice.plea}"
-                </div>
-                
-                <p class="narration">
-                    Fragments of memory float just out of reach:
-                </p>
-                
-                <div class="memory-builder" id="memoryBuilder">
-                    <div class="built-memory" id="builtMemory"></div>
-                </div>
-                
-                <div class="memory-fragments">
-                    ${fragments.map(f => `
-                        <div class="fragment" onclick="addFragment(this)">${f}</div>
-                    `).join('')}
-                    ${fragments.map(f => `
-                        <div class="fragment" onclick="addFragment(this)">${f} (echoing)</div>
-                    `).join('')}
-                </div>
-                
-                <div class="choices" id="scene6Choices" style="display: none;">
-                    <button class="choice" data-path="${primaryPath}" onclick="makeChoice(6, 'continue')">
-                        Continue
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateIntegrationScene(lastChoice) {
-            const method = state.determineIntegrationMethod();
-            
-            const integrationScenes = {
-                bridge: generateBridgeScene(),
-                walls: generateWallScene(),
-                room: generateRoomScene(),
-                selves: generateSelvesScene()
-            };
-            
-            return integrationScenes[method];
-        }
-
-        function generateBridgeScene() {
-            return `
-                <div class="voice nala-voice">
-                    "Three years is long enough. You can't live as half a person forever."
-                </div>
-                
-                <p class="narration">
-                    You see it now - the split. When one pain was too much, you became two.
-                </p>
-                
-                <div class="integration-space">
-                    <div class="self-states">
-                        <div class="self-state alan">
-                            <strong>You Now</strong><br>
-                            Functional. Numb. Surviving.
-                        </div>
-                        <div class="self-state nala">
-                            <strong>You Then</strong><br>
-                            Feeling. Present. Living.
-                        </div>
+            if (lastChoice === 'lily') {
+                content = `
+                    <div class="voice nala-voice">
+                        "Yes. Lily. Five years old. Loved purple. Hated peas. Perfect."
                     </div>
                     
                     <p class="narration">
-                        Click to build connection...
+                        The office walls shimmer. Or maybe those are tears.
+                    </p>
+                `;
+            } else {
+                content = `
+                    <div class="voice nala-voice">
+                        "Can't? Or won't? There's a difference."
+                    </div>
+                    
+                    <p class="narration">
+                        The walls you built are so high now.
+                    </p>
+                `;
+            }
+            
+            content += `
+                <p class="narration emphasis">
+                    Time to choose who you'll be.
+                </p>
+                
+                <div class="integration-visual">
+                    <p>You are fractured. Two pieces of one whole.</p>
+                    
+                    <div class="self-points">
+                        <div class="self-point alan">
+                            Alan<br>
+                            <span style="font-size: 10px;">Survivor</span>
+                        </div>
+                        
+                        <div class="connection-line" onclick="buildConnection()">
+                            <div class="connection-progress" id="connectionProgress"></div>
+                        </div>
+                        
+                        <div class="self-point nala">
+                            Nala<br>
+                            <span style="font-size: 10px;">Memory</span>
+                        </div>
+                    </div>
+                    
+                    <p class="narration context" id="connectionText">
+                        Click the space between to build connection...
                     </p>
                 </div>
                 
                 <div class="choices" id="integrationChoices" style="display: none;">
-                    <button class="choice" onclick="makeChoice(7, 'integrate')">
+                    <button class="choice" onclick="makeChoice(6, 'integrate')">
                         Become whole
                     </button>
-                    <button class="choice" onclick="makeChoice(7, 'separate')">
+                    <button class="choice" onclick="makeChoice(6, 'separate')">
                         Stay separate
                     </button>
                 </div>
             `;
+            
+            return content;
         }
 
-        function generateWallScene() {
-            return `
-                <div class="voice nala-voice fading">
-                    "The walls are so high now. I can barely see you."
-                </div>
-                
-                <p class="narration">
-                    Every choice to resist built them higher.
-                </p>
-                
-                <div class="integration-space">
-                    <p>Your defenses:</p>
-                    <div style="text-align: center; font-size: 48px; line-height: 1.2;">
-                        ${'🧱'.repeat(state.path.resist)}
-                    </div>
-                    
-                    <p class="narration emphasis">
-                        Each brick a day you chose not to feel.
-                    </p>
-                </div>
-                
-                <div class="choices">
-                    <button class="choice" onclick="makeChoice(7, 'maintain')">
-                        "The walls keep me safe."
-                    </button>
-                    <button class="choice" onclick="makeChoice(7, 'crack')">
-                        "Show me what's behind them."
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateRoomScene() {
+        function generateScene7(lastChoice) {
+            const prompts = {
+                integrate: "Tell me your favorite memory of her. The one you've kept locked away.",
+                separate: "If you won't remember her, at least remember why."
+            };
+            
             return `
                 <div class="voice nala-voice">
-                    "Look around. This is where we've been living."
+                    "${prompts[lastChoice]}"
                 </div>
-                
-                <p class="narration">
-                    The office transforms. Or maybe you're seeing it clearly for the first time.
-                </p>
-                
-                <div class="room-visual">
-                    <div class="room-object desk" onclick="examineObject('desk')">
-                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">📊</span>
-                    </div>
-                    <div class="room-object window" onclick="examineObject('window')">
-                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">🪟</span>
-                    </div>
-                    <div class="room-object door" onclick="examineObject('door')">
-                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">🚪</span>
-                    </div>
-                </div>
-                
-                <p class="narration context" id="roomDescription">
-                    Click objects to understand...
-                </p>
-                
-                <div class="choices" id="roomChoices" style="display: none;">
-                    <button class="choice" onclick="makeChoice(7, 'stay')">
-                        Stay in the office
-                    </button>
-                    <button class="choice" onclick="makeChoice(7, 'leave')">
-                        Walk through the door
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateSelvesScene() {
-            return `
-                <div class="voice nala-voice multiple">
-                    "We're... there's... how many of us are there?"
-                </div>
-                
-                <p class="narration">
-                    The fractures have multiplied. You're not two people. You're many.
-                </p>
-                
-                <div class="integration-space">
-                    <div class="self-states">
-                        <div class="self-state alan" onclick="selectSelf('alan')">
-                            <strong>The Worker</strong><br>
-                            Handles daily life
-                        </div>
-                        <div class="self-state nala" onclick="selectSelf('nala')">
-                            <strong>The Feeler</strong><br>
-                            Holds the emotions
-                        </div>
-                        <div class="self-state child" onclick="selectSelf('child')">
-                            <strong>The Father</strong><br>
-                            Remembers how to play
-                        </div>
-                        <div class="self-state merged" onclick="selectSelf('merged')">
-                            <strong>???</strong><br>
-                            All of you
-                        </div>
-                    </div>
-                    
-                    <p class="narration" id="selfDescription">
-                        Choose who you want to be...
-                    </p>
-                </div>
-                
-                <div class="choices" id="selvesChoices" style="display: none;">
-                    <button class="choice" onclick="makeChoice(7, 'choose')">
-                        Make your choice
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateFinalChoice(lastChoice) {
-            return `
-                <div class="voice nala-voice">
-                    "Before you decide, remember her. Not the loss. Her."
-                </div>
-                
-                <p class="narration">
-                    Write what only you know.
-                </p>
                 
                 <textarea class="memory-input" 
                           id="personalMemory" 
-                          placeholder="A memory of Lily that's just yours..."
+                          placeholder="Write what you've never told anyone..."
                           oninput="checkMemoryLength()"></textarea>
                 
                 <p class="narration context" id="memoryHint" style="display: none;">
-                    This memory will shape everything.
+                    This is just for you. No one else will see.
                 </p>
                 
                 <div class="choices" id="finalChoices" style="display: none;">
@@ -1369,55 +1095,66 @@
                         Share this memory
                     </button>
                     <button class="choice" onclick="cannotShare()">
-                        Keep it private
+                        Keep it locked away
                     </button>
                 </div>
             `;
         }
 
         function generateEnding() {
-            const primaryPath = state.getPrimaryPath();
+            const primary = state.getPrimaryPath();
+            const connected = state.connectionLevel >= 50;
+            
             const endings = {
-                memory: {
-                    title: "Becoming Whole",
-                    text: `<p>The walls dissolve. Not destroyed - transformed.</p>
-                          <p>You are not two people. You never were.</p>
+                memory_connected: {
+                    title: "Becoming",
+                    text: `<p>The walls dissolve like morning frost.</p>
+                          <p>You are not two people. Never were. Just one person who loved so deeply that loss split you in half.</p>
                           <p style="color: var(--memory); font-style: italic;">"${state.personalMemory}"</p>
-                          <p>The ${state.objectChosen} sits in your palm. Warm. Real. Hers.</p>
-                          <p>Tomorrow, you'll visit her grave.</p>
-                          <p>Today, you remember her laugh.</p>`
+                          <p>Tomorrow, you'll meet Sarah at the cemetery. First time in four years.</p>
+                          <p>Tonight, you remember Lily's laugh.</p>
+                          <p>It hurts. God, it hurts. But it's real.</p>`
+                },
+                memory_disconnected: {
+                    title: "Remembering",
+                    text: `<p>You remember, but from a distance. Like watching through frosted glass.</p>
+                          <p>The memories are there. Lily laughing. Purple everything. Endless questions.</p>
+                          <p>But you can't quite touch them. Can't quite feel them.</p>
+                          <p>Maybe that's enough. Maybe that's all you can bear.</p>
+                          <p>The drawer stays open now. That's something.</p>`
                 },
                 resist: {
-                    title: "The Architecture Holds",
-                    text: `<p>The walls stand firm. They have to.</p>
-                          <p>Monday will come. The report will be filed.</p>
-                          <p>The voice grows quieter each day.</p>
-                          <p>Sometimes, in dreams, a child laughs.</p>
-                          <p>The ${state.objectChosen} waits in the drawer.</p>
-                          <p>Patient as grief.</p>`
+                    title: "Surviving",
+                    text: `<p>Monday will come. The report will be filed. The numbers will balance.</p>
+                          <p>The voice grows quieter each day. Soon, just whispers.</p>
+                          <p>The drawer closes. Click. Safe.</p>
+                          <p>Sometimes, in the space between sleep and waking, a child laughs.</p>
+                          <p>But morning always comes, bringing blessed silence.</p>`
+                },
+                anger: {
+                    title: "Fracturing",
+                    text: `<p>The anger keeps you warm. Blame is easier than grief.</p>
+                          <p>Sarah should have called faster. The driver should have looked. You should have left the meeting.</p>
+                          <p>Should have. Should have. Should have.</p>
+                          <p>The voice is quiet now. Angry voices always are, eventually.</p>
+                          <p>Tomorrow is just another day.</p>`
                 },
                 curious: {
-                    title: "Still Searching",
-                    text: `<p>Questions without answers. Fragments without wholes.</p>
-                          <p>You carry both selves now - the questioner and the questioned.</p>
-                          <p>The drawer stays open. The ${state.objectChosen} on your desk.</p>
-                          <p>Some days you remember. Some days you investigate.</p>
-                          <p>The mystery of who you were. Who you are.</p>
-                          <p>Who you might become.</p>`
-                },
-                fracture: {
-                    title: "Beautiful Fragments",
-                    text: `<p>You are many. Worker. Father. Griever. Child.</p>
-                          <p>The voices have names now. They take turns.</p>
-                          <p>Monday: The Worker files reports.</p>
-                          <p>Tuesday: The Father visits her grave.</p>
-                          <p>Wednesday: The Griever cries.</p>
-                          <p>Thursday: The Child remembers playing.</p>
-                          <p>All of you. None of you. Something new.</p>`
+                    title: "Searching",
+                    text: `<p>Questions without answers. Always questions.</p>
+                          <p>Why that day? Why that moment? Why her?</p>
+                          <p>You've built a cathedral of whys, each one a prayer to nowhere.</p>
+                          <p style="color: var(--memory); font-style: italic;">"${state.personalMemory || 'Some questions don\'t have answers.'}"</p>
+                          <p>The search continues. Maybe that's enough.</p>`
                 }
             };
             
-            const ending = endings[primaryPath] || endings.curious;
+            let endingKey = primary;
+            if (primary === 'memory') {
+                endingKey = connected ? 'memory_connected' : 'memory_disconnected';
+            }
+            
+            const ending = endings[endingKey];
             
             return `
                 <div class="ending">
@@ -1428,35 +1165,69 @@
             `;
         }
 
-        // Core choice handler
+        // Core mechanics
         function makeChoice(scene, choice) {
             const path = event.target.dataset.path;
-            state.recordChoice(path, choice);
+            state.recordChoice(path);
             
-            // Disable only current scene's choices
+            // Disable current choices
             const currentScene = document.getElementById(`scene${scene}`);
             currentScene.querySelectorAll('.choice').forEach(btn => btn.disabled = true);
             
-            // Progress story
+            // Generate next scene
             setTimeout(() => {
-                generateNextScene(scene + 1, choice);
-                
-                // Special case for messages
-                if (scene === 4) {
-                    setTimeout(() => {
-                        showMessages();
-                    }, 1000);
-                }
+                nextScene(scene + 1, choice);
             }, 1000);
+        }
+
+        function nextScene(sceneNum, lastChoice) {
+            const container = document.querySelector('.container');
+            const existingScenes = container.querySelectorAll('.scene');
+            existingScenes.forEach(scene => scene.remove());
+            
+            const scene = document.createElement('div');
+            scene.className = 'scene';
+            scene.id = `scene${sceneNum}`;
+            
+            // Generate appropriate content
+            let content = '';
+            switch(sceneNum) {
+                case 2: content = generateScene2(lastChoice); break;
+                case 3: content = generateScene3(lastChoice); break;
+                case 4: content = generateScene4(lastChoice); break;
+                case 5: content = generateScene5(lastChoice); break;
+                case 6: content = generateScene6(lastChoice); break;
+                case 7: content = generateScene7(lastChoice); break;
+                case 8: content = generateEnding(); break;
+            }
+            
+            scene.innerHTML = content;
+            container.appendChild(scene);
+            
+            setTimeout(() => {
+                scene.classList.add('active');
+                state.chapter = sceneNum;
+                updateProgress();
+                updateJourney();
+                
+                if (sceneNum === 2) {
+                    document.getElementById('journeyTracker').classList.add('visible');
+                }
+                
+                // Auto-open drawer if resisted
+                if (sceneNum === 3 && lastChoice === 'resist') {
+                    setTimeout(() => openDrawer(), 1000);
+                }
+            }, 100);
         }
 
         // Interactive elements
         function openDrawer() {
             if (!state.drawerOpened) {
                 state.drawerOpened = true;
-                document.getElementById('drawerVisual').classList.add('opening');
+                const drawer = document.getElementById('drawerVisual');
+                if (drawer) drawer.classList.add('opening');
                 
-                // Always show the same 3 objects in consistent order
                 setTimeout(() => {
                     const objectsHTML = `
                         <div class="object-container">
@@ -1468,100 +1239,73 @@
                                 <div class="object-visual">📷</div>
                                 <div class="object-label">Photograph</div>
                             </div>
-                            <div class="object-item" onclick="selectObject('drawing')">
-                                <div class="object-visual">🎨</div>
-                                <div class="object-label">Crayon drawing</div>
+                            <div class="object-item" onclick="selectObject('voicemail')">
+                                <div class="object-visual">📱</div>
+                                <div class="object-label">Old phone</div>
                             </div>
                         </div>
                     `;
                     
-                    document.getElementById('drawerContents').innerHTML = objectsHTML;
-                    
-                    // Simple instruction
-                    const choicesHTML = `
-                        <p class="narration context" style="text-align: center; margin-top: 20px;">
-                            Choose what calls to you...
-                        </p>
-                    `;
-                    
-                    document.getElementById('scene3Choices').innerHTML = choicesHTML;
+                    const containers = document.querySelectorAll('#drawerContents');
+                    containers.forEach(container => {
+                        container.innerHTML = objectsHTML;
+                    });
                 }, 500);
             }
         }
 
         function selectObject(type) {
-            if (state.objectChosen) return; // Prevent multiple selections
+            if (state.objectChosen) return;
             
             state.objectChosen = type;
-            state.recordChoice('memory', 'object');
+            state.recordChoice('memory');
             
-            // Visual feedback
             document.querySelectorAll('.object-item').forEach(item => {
                 item.style.opacity = '0.3';
                 item.style.cursor = 'not-allowed';
             });
             
-            // Progress after a moment
             setTimeout(() => {
-                generateNextScene(4, 'object');
+                nextScene(3, 'object');
             }, 1000);
         }
 
-        function addFragment(element) {
-            if (element.classList.contains('placed')) return;
+        function selectMemory(element, type) {
+            element.classList.add('selected');
+            state.selectedMemories.push(type);
             
-            element.classList.add('placed');
-            state.fragments.push(element.textContent);
+            const responses = {
+                morning: "Cheerios in rainbow order. Every morning.",
+                bedtime: "Just one more story. Always one more.",
+                questions: "Why is water wet? You never knew.",
+                laughter: "Hiccup-giggles when tickled. Pure joy."
+            };
             
-            const memory = state.fragments.join(' ');
-            document.getElementById('builtMemory').textContent = memory;
-            document.getElementById('memoryBuilder').classList.add('active');
+            document.getElementById('memoryResponse').textContent = responses[type];
             
-            if (state.fragments.length >= 3) {
-                document.getElementById('scene6Choices').style.display = 'block';
+            if (state.selectedMemories.length >= 2) {
+                document.getElementById('scene5Choices').style.display = 'block';
             }
         }
 
-        function showMessages() {
-            document.getElementById('phoneMessages').classList.add('visible');
-            const messages = document.querySelectorAll('.message');
-            messages.forEach((msg, i) => {
-                setTimeout(() => msg.classList.add('visible'), i * 700);
-            });
-        }
-
-        function examineObject(object) {
-            const descriptions = {
-                desk: "Where you've lived for three years. Reports. Numbers. Safety.",
-                window: "Forty-seven floors up. You used to show her the tiny cars below.",
-                door: "You haven't left early in three years, four months, eight days."
-            };
+        function buildConnection() {
+            state.connectionLevel += 20;
+            const progress = document.getElementById('connectionProgress');
+            progress.style.width = state.connectionLevel + '%';
             
-            document.getElementById('roomDescription').textContent = descriptions[object];
+            const texts = [
+                "Building...",
+                "The space between shrinks...",
+                "Almost touching...",
+                "One breath away...",
+                "Choose now."
+            ];
             
-            if (state.fragments.length >= 2) {
-                document.getElementById('roomChoices').style.display = 'block';
-            }
+            const textIndex = Math.floor(state.connectionLevel / 20) - 1;
+            document.getElementById('connectionText').textContent = texts[textIndex] || texts[0];
             
-            state.fragments.push(object);
-        }
-
-        function selectSelf(self) {
-            document.querySelectorAll('.self-state').forEach(s => s.classList.remove('selected'));
-            event.target.classList.add('selected');
-            
-            const descriptions = {
-                alan: "The part that goes to meetings. Pays bills. Survives.",
-                nala: "The part that feels everything. Joy and pain, inseparable.",
-                child: "The part that remembers how to play. How to laugh.",
-                merged: "All of you. The full weight. The full light."
-            };
-            
-            document.getElementById('selfDescription').textContent = descriptions[self];
-            state.selfStates.push(self);
-            
-            if (state.selfStates.length >= 1) {
-                document.getElementById('selvesChoices').style.display = 'block';
+            if (state.connectionLevel >= 100) {
+                document.getElementById('integrationChoices').style.display = 'block';
             }
         }
 
@@ -1575,17 +1319,17 @@
 
         function processMemory() {
             state.personalMemory = document.getElementById('personalMemory').value;
-            generateNextScene(9, 'ending');
+            nextScene(8, 'shared');
         }
 
         function cannotShare() {
-            state.recordChoice('resist', 'private');
-            generateNextScene(9, 'ending');
+            state.recordChoice('resist');
+            nextScene(8, 'private');
         }
 
-        // UI helpers
+        // UI updates
         function updateProgress() {
-            document.getElementById('progress').textContent = `Chapter ${state.chapter} of 9`;
+            document.getElementById('progress').textContent = `Chapter ${state.chapter} of 8`;
         }
 
         function updateJourney() {
@@ -1598,27 +1342,7 @@
                         dot.classList.remove('active');
                     }
                 }
-                
-                // Show locked paths
-                if (state.pathLocked && i > state.chapter) {
-                    const lockedPaths = ['resist', 'memory'];
-                    if (lockedPaths.includes(state.pathLocked)) {
-                        dot.classList.add('locked');
-                    }
-                }
             });
-        }
-
-        function createTears() {
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const tear = document.createElement('div');
-                    tear.className = 'tear';
-                    tear.style.left = (20 + Math.random() * 60) + '%';
-                    document.body.appendChild(tear);
-                    setTimeout(() => tear.remove(), 2000);
-                }, i * 300);
-            }
         }
 
         // Initialize
