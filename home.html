@@ -5,8 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Architecture of Becoming</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
         
+        :root {
+            --bg: #0a0612;
+            --text: #e2e8f0;
+            --text-dim: #64748b;
+            --accent: #6366f1;
+            --nala: #a78bfa;
+            --memory: #fbbf24;
+            --pain: #ef4444;
+            --sarah: #10b981;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,2038 +26,1454 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0118 0%, #1a0b3d 50%, #0f0625 100%);
-            color: #f1f5f9;
-            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Crimson Text', serif;
             line-height: 1.7;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            font-size: 19px;
+            transition: background 3s ease;
         }
 
-        /* Enhanced reality distortion effects */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
-            animation: realityShift 15s ease-in-out infinite alternate, breathe 4s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 1;
+        /* Environmental states */
+        body.awakening {
+            background: linear-gradient(135deg, #0a0614 0%, #14091f 100%);
         }
 
-        @keyframes realityShift {
-            0% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.02); }
-            100% { opacity: 0.5; transform: scale(0.98); }
+        body.remembering {
+            background: linear-gradient(135deg, #0a0614 0%, #1a0f30 100%);
         }
 
-        @keyframes breathe {
-            0%, 100% { filter: blur(0px); }
-            50% { filter: blur(0.5px); }
+        body.resisting {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
         }
 
-        .emotional-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            transition: all 2s ease;
-            opacity: 0;
-        }
-
-        .emotional-overlay.grief {
-            background: radial-gradient(circle, rgba(75, 85, 99, 0.15) 0%, transparent 70%);
-            opacity: 0.8;
-        }
-
-        .emotional-overlay.integration {
-            background: linear-gradient(45deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
-            opacity: 0.6;
-        }
-
-        .emotional-overlay.healing {
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-            opacity: 0.5;
-        }
-
-        /* Fixed UI Panel Layout - SIMPLIFIED */
-        .ui-panel {
-            position: fixed;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 16px;
-            padding: 16px;
-            font-size: 12px;
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-
-        .therapeutic-progress {
-            top: 20px;
-            right: 20px;
-            min-width: 220px;
-            color: #3b82f6;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin: 8px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #a78bfa, #10b981);
-            border-radius: 3px;
-            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0%;
-            position: relative;
-        }
-
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: progressShimmer 2s infinite;
-        }
-
-        @keyframes progressShimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Simplified Consciousness Meter - Top Left */
-        .consciousness-meter {
+        /* Journey tracker */
+        .journey-tracker {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 16px;
-            padding: 12px 16px;
-            min-width: 200px;
-            font-size: 11px;
-        }
-
-        .meter-title {
-            text-align: center;
-            color: #a78bfa;
-            font-weight: 500;
-            margin-bottom: 8px;
-            font-size: 12px;
-        }
-
-        .meter-section {
             display: flex;
-            align-items: center;
-            margin: 6px 0;
             gap: 8px;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
-        .meter-label {
-            font-size: 10px;
-            color: #64748b;
-            width: 45px;
-            text-align: right;
+        .journey-tracker.visible {
+            opacity: 0.6;
         }
 
-        .meter-dots {
-            display: flex;
-            gap: 4px;
-            flex: 1;
-        }
-
-        .consciousness-dot {
-            width: 10px;
-            height: 10px;
+        .journey-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            background: var(--border);
+            transition: all 0.3s ease;
         }
 
-        .consciousness-dot.active {
-            transform: scale(1.1);
+        .journey-dot.active {
+            background: var(--nala);
+            transform: scale(1.5);
         }
 
-        .consciousness-dot.alan {
-            background: linear-gradient(135deg, #3b82f6, #1e40af);
-            box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+        .journey-dot.past {
+            background: var(--accent);
         }
 
-        .consciousness-dot.nala {
-            background: linear-gradient(135deg, #a78bfa, #7c3aed);
-            box-shadow: 0 0 8px rgba(167, 139, 250, 0.6);
-        }
-
-        .consciousness-dot.integrated {
-            background: linear-gradient(45deg, #3b82f6, #a78bfa, #10b981);
-            box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
-            animation: integrationPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes integrationPulse {
-            0%, 100% { transform: scale(1.1) rotate(0deg); }
-            50% { transform: scale(1.3) rotate(180deg); }
-        }
-
-        .integration-level {
-            text-align: center;
-            font-size: 9px;
-            color: #10b981;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
-        /* NO MENTAL HEALTH FOOTER - REMOVED */
-
-        /* Main Content Container */
+        /* Container */
         .container {
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 80px 20px 120px;
-            position: relative;
-            z-index: 2;
+            padding: 40px 20px;
         }
 
         h1 {
             text-align: center;
-            font-size: clamp(2.8rem, 7vw, 4.5rem);
-            font-family: 'Crimson Text', serif;
+            font-size: 2.5rem;
             font-weight: 400;
-            margin-bottom: 60px;
-            color: #e2e8f0;
-            letter-spacing: 1px;
+            margin-bottom: 50px;
+            color: var(--text);
             opacity: 0;
-            animation: fadeIn 3s ease-in forwards;
+            animation: fadeIn 2s ease forwards;
         }
 
         @keyframes fadeIn {
             to { opacity: 1; }
         }
 
-        /* Scene Management - FIXED */
-        .scene-container {
-            position: relative;
-            min-height: 400px;
-        }
-
+        /* Scenes */
         .scene {
-            position: absolute;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 45px;
-            font-family: 'Crimson Text', serif;
-            font-size: 18px;
-            line-height: 1.9;
-            min-height: 350px;
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
+            transform: translateY(10px);
+            transition: all 0.6s ease;
+            display: none;
+            min-height: 60vh;
         }
 
         .scene.active {
             opacity: 1;
             transform: translateY(0);
-            pointer-events: all;
-            position: relative;
+            display: block;
         }
 
-        .text-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Voice Styling */
-        .nala-voice {
-            color: #a78bfa;
-            font-style: italic;
-            margin: 25px 0;
-            padding: 25px 30px;
-            border-left: 3px solid rgba(167, 139, 250, 0.4);
-            background: rgba(167, 139, 250, 0.05);
-            border-radius: 0 16px 16px 0;
-            position: relative;
-            animation: gentlePulse 4s ease-in-out infinite;
-        }
-
-        @keyframes gentlePulse {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(3px); }
-        }
-
-        .nala-voice::before {
-            content: '"';
-            position: absolute;
-            left: 15px;
-            top: 12px;
-            font-size: 2em;
-            opacity: 0.4;
-            color: #a78bfa;
-        }
-
-        .nala-voice.distressed {
-            border-left-color: rgba(239, 68, 68, 0.6);
-            color: #fca5a5;
-            animation: distressedShimmer 2.5s ease-in-out infinite;
-        }
-
-        @keyframes distressedShimmer {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
-        }
-
-        .alan-thought {
-            color: #3b82f6;
-            background: rgba(59, 130, 246, 0.05);
-            padding: 18px 25px;
-            border-radius: 12px;
+        /* Text elements */
+        .narration {
             margin: 20px 0;
-            border-left: 3px solid rgba(59, 130, 246, 0.4);
-            font-family: 'Inter', sans-serif;
+        }
+
+        .narration.context {
             font-size: 16px;
-        }
-
-        .alan-thought.disconnected {
-            color: #64748b;
-            border-left-color: rgba(100, 116, 139, 0.4);
-            background: rgba(100, 116, 139, 0.05);
-            filter: desaturate(0.3);
-        }
-
-        .memory-fragment {
-            opacity: 0.9;
-            font-size: 0.95em;
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.05);
-            padding: 18px 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            border-left: 3px solid rgba(16, 185, 129, 0.4);
+            color: var(--text-dim);
             font-style: italic;
-            animation: memoryFloat 5s ease-in-out infinite;
-            transition: all 0.5s ease;
         }
 
-        @keyframes memoryFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-3px); }
+        .narration.emphasis {
+            font-size: 21px;
+            font-weight: 300;
+            margin: 30px 0;
+            text-align: center;
         }
 
-        .memory-fragment.painful {
-            color: #f59e0b;
-            border-left-color: rgba(245, 158, 11, 0.6);
-            background: rgba(245, 158, 11, 0.05);
+        /* Voices */
+        .voice {
+            margin: 20px 0;
+            padding: 16px 20px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .nala-voice {
+            color: var(--nala);
+            font-style: italic;
+            border-left: 3px solid var(--nala);
+            background: rgba(167, 139, 250, 0.05);
+            opacity: 0;
+            animation: voiceFade 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes voiceFade {
+            to { opacity: 1; }
+        }
+
+        .nala-voice.fading {
+            opacity: 0.4;
             filter: blur(1px);
         }
 
-        .memory-fragment.painful:hover {
-            filter: blur(0px);
-            transform: scale(1.02);
-        }
-
-        /* Enhanced Choice System */
-        .choice-container {
-            margin-top: 40px;
-            padding: 35px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .choice-btn {
-            background: rgba(15, 23, 42, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 25px 30px;
-            color: #e2e8f0;
-            cursor: pointer;
+        .alan-thought {
+            color: var(--text-dim);
             font-family: 'Inter', sans-serif;
             font-size: 15px;
+            border-left: 3px solid var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .memory-flash {
+            color: var(--memory);
+            font-style: italic;
+            border-left: 3px solid var(--memory);
+            background: rgba(251, 191, 36, 0.05);
+            opacity: 0;
+            animation: memoryFade 1s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes memoryFade {
+            to { opacity: 0.9; }
+        }
+
+        .physical-response {
+            color: var(--pain);
+            font-size: 15px;
+            font-style: italic;
             margin: 15px 0;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        /* Choices */
+        .choices {
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .choice {
             display: block;
             width: 100%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 15px 20px;
+            margin: 12px 0;
+            cursor: pointer;
+            font-family: 'Crimson Text', serif;
+            font-size: 17px;
             text-align: left;
-            line-height: 1.6;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
+            border-radius: 4px;
             position: relative;
             overflow: hidden;
         }
 
-        .choice-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s ease;
+        .choice:hover:not(:disabled) {
+            border-color: var(--nala);
+            transform: translateX(4px);
         }
 
-        .choice-btn:hover::before {
-            left: 100%;
+        .choice[data-path="memory"]:hover {
+            border-color: var(--memory);
+            background: rgba(251, 191, 36, 0.05);
         }
 
-        .choice-btn::after {
-            content: '';
-            position: absolute;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 10px;
-            height: 10px;
+        .choice[data-path="resist"]:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .choice:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .choice.hidden {
+            display: none;
+        }
+
+        /* Timed reveal */
+        .timed-reveal {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .timed-reveal.visible {
+            opacity: 1;
+        }
+
+        /* Ring visual */
+        .ring-container {
+            text-align: center;
+            margin: 40px 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .ring-container.visible {
+            opacity: 1;
+        }
+
+        .ring-visual {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #9ca3af;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(45deg, #e5e7eb 0%, #9ca3af 100%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .choice-btn.difficult::after {
-            background: #f59e0b;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+        .ring-visual:hover {
+            transform: scale(1.1) rotate(10deg);
         }
 
-        .choice-btn.vulnerable::after {
-            background: #ef4444;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+        .ring-visual.touched {
+            animation: pulse 2s infinite;
         }
 
-        .choice-btn.healing::after {
-            background: #10b981;
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
         }
 
-        .choice-btn:hover {
-            border-color: rgba(139, 92, 246, 0.8);
-            background: rgba(139, 92, 246, 0.12);
-            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
-            transform: translateY(-3px);
-        }
-
-        .choice-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Breathing Exercise */
-        .breathing-guide {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 240px;
-            height: 240px;
-            border: 3px solid rgba(139, 92, 246, 0.6);
-            border-radius: 50%;
-            display: none;
-            z-index: 1000;
-            animation: breathingGuide 6s ease-in-out infinite;
-        }
-
-        @keyframes breathingGuide {
-            0%, 100% { 
-                transform: translate(-50%, -50%) scale(1); 
-                border-color: rgba(139, 92, 246, 0.6);
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.4); 
-                border-color: rgba(139, 92, 246, 0.9);
-            }
-        }
-
-        .breathing-guide::before {
-            content: 'Breathe with the circle';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #a78bfa;
-            font-size: 16px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .breathing-guide::after {
-            content: 'Press ESC to close';
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #64748b;
+        .ring-text {
             font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 10px;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* Restart Button */
-        .restart-btn {
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border: none;
-            color: white;
-            font-weight: 700;
-            margin-top: 35px;
-            padding: 18px 36px;
-            border-radius: 16px;
+        /* Other objects */
+        .object-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .object-item {
+            text-align: center;
             cursor: pointer;
-            transition: all 0.4s ease;
-            font-size: 15px;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        .restart-btn::before {
+        .object-item:nth-child(1) { animation-delay: 0.2s; }
+        .object-item:nth-child(2) { animation-delay: 0.4s; }
+        .object-item:nth-child(3) { animation-delay: 0.6s; }
+
+        .object-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .object-visual {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .object-item:hover .object-visual {
+            filter: grayscale(0%);
+        }
+
+        .object-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Messages */
+        .phone-messages {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px auto;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            max-width: 400px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .phone-messages.visible {
+            opacity: 1;
+        }
+
+        .message {
+            margin: 8px 0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--sarah);
+            opacity: 0;
+        }
+
+        .message.visible {
+            opacity: 1;
+            animation: messageIn 0.5s ease forwards;
+        }
+
+        @keyframes messageIn {
+            from { transform: translateX(-20px); }
+            to { transform: translateX(0); }
+        }
+
+        .message.unread {
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        /* Memory builder */
+        .memory-builder {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .memory-builder.active {
+            border-color: var(--memory);
+            background: rgba(251, 191, 36, 0.05);
+        }
+
+        .built-memory {
+            color: var(--memory);
+            font-style: italic;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .memory-fragments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .fragment {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid var(--memory);
+            border-radius: 4px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            user-select: none;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .fragment:nth-child(1) { animation-delay: 0.1s; }
+        .fragment:nth-child(2) { animation-delay: 0.2s; }
+        .fragment:nth-child(3) { animation-delay: 0.3s; }
+        .fragment:nth-child(4) { animation-delay: 0.4s; }
+        .fragment:nth-child(5) { animation-delay: 0.5s; }
+        .fragment:nth-child(6) { animation-delay: 0.6s; }
+
+        .fragment:hover:not(.placed) {
+            background: rgba(251, 191, 36, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .fragment.placed {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Bridge builder */
+        .bridge-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .side {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .side.alan-side {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-dim);
+        }
+
+        .side.nala-side {
+            background: rgba(167, 139, 250, 0.1);
+            color: var(--nala);
+        }
+
+        .bridge-parts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .bridge-segment {
+            width: 40px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bridge-segment:hover:not(.built) {
+            background: rgba(167, 139, 250, 0.3);
+        }
+
+        .bridge-segment.built {
+            background: var(--nala);
+        }
+
+        /* Personal memory */
+        .memory-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
+            color: var(--text);
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 100px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .memory-input:focus {
+            outline: none;
+            border-color: var(--memory);
+            background: rgba(251, 191, 36, 0.05);
+        }
+
+        .memory-input::placeholder {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        /* Time indicator */
+        .time-since {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-dim);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .time-since.visible {
+            opacity: 0.6;
+        }
+
+        /* Drawer visualization */
+        .drawer-visual {
+            width: 200px;
+            height: 60px;
+            margin: 20px auto;
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drawer-visual::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 8px;
+            background: #666;
+            border-radius: 4px;
         }
 
-        .restart-btn:hover::before {
-            left: 100%;
+        .drawer-visual.opening {
+            transform: translateX(30px);
+            box-shadow: -20px 0 20px rgba(0,0,0,0.3);
         }
 
-        .restart-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.5);
+        /* Ending */
+        .ending {
+            text-align: center;
+            padding: 40px 20px;
         }
 
-        /* Loading States */
-        .loading {
-            opacity: 0.7;
+        .ending-title {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 30px;
+            color: var(--nala);
+        }
+
+        .ending-text {
+            font-size: 18px;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .ending-text p {
+            margin-bottom: 16px;
+        }
+
+        .restart {
+            background: transparent;
+            border: 1px solid var(--nala);
+            color: var(--nala);
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .restart:hover {
+            background: var(--nala);
+            color: var(--bg);
+        }
+
+        /* Progress */
+        .progress-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-dim);
+            opacity: 0.6;
+        }
+
+        /* Tear effect */
+        .tear {
+            position: fixed;
+            width: 2px;
+            height: 20px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
+            opacity: 0;
+            animation: fall 2s linear;
             pointer-events: none;
         }
 
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.3);
-            border-radius: inherit;
+        @keyframes fall {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
         }
 
-        /* Mobile Optimizations */
         @media (max-width: 768px) {
-            .container {
-                padding: 40px 15px 140px;
-            }
-            
-            .scene {
-                padding: 25px 20px;
-                font-size: 16px;
-                min-height: 300px;
-            }
-            
-            .choice-btn {
-                padding: 20px 25px;
-                font-size: 14px;
-            }
-            
-            .ui-panel {
-                font-size: 11px;
-                padding: 12px;
-            }
-            
-            .consciousness-meter {
-                bottom: 20px;
-                min-width: 280px;
-                padding: 12px;
-            }
-            
-            .resources-panel {
-                right: 10px;
-                bottom: 120px;
-                width: calc(100vw - 40px);
-                max-width: 300px;
-            }
-            
-            .therapeutic-progress,
-            .path-indicator {
-                right: 10px;
-            }
-        }
-
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Focus indicators for keyboard navigation */
-        .choice-btn:focus {
-            outline: 2px solid #a78bfa;
-            outline-offset: 2px;
+            .container { padding: 30px 15px; }
+            .bridge-container { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <div class="emotional-overlay" id="emotionalOverlay"></div>
-    <div class="breathing-guide" id="breathingGuide"></div>
-    
-    <!-- Fixed UI Panels -->
-    <div class="ui-panel therapeutic-progress" id="therapeuticProgress">
-        <div style="font-weight: 600; margin-bottom: 8px;">Therapeutic Progress</div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div id="progressText">Beginning journey...</div>
+    <!-- Journey tracker -->
+    <div class="journey-tracker" id="journeyTracker">
+        <div class="journey-dot" data-stage="1"></div>
+        <div class="journey-dot" data-stage="2"></div>
+        <div class="journey-dot" data-stage="3"></div>
+        <div class="journey-dot" data-stage="4"></div>
+        <div class="journey-dot" data-stage="5"></div>
+        <div class="journey-dot" data-stage="6"></div>
+        <div class="journey-dot" data-stage="7"></div>
+        <div class="journey-dot" data-stage="8"></div>
+        <div class="journey-dot" data-stage="9"></div>
     </div>
-    
-    <div class="consciousness-meter" id="consciousnessMeter">
-        <div class="meter-title">Integration Status</div>
-        <div class="meter-section">
-            <div class="meter-label">Logic</div>
-            <div class="meter-dots">
-                <div class="consciousness-dot" id="logic1"></div>
-                <div class="consciousness-dot" id="logic2"></div>
-                <div class="consciousness-dot" id="logic3"></div>
-                <div class="consciousness-dot" id="logic4"></div>
-                <div class="consciousness-dot" id="logic5"></div>
-            </div>
-        </div>
-        <div class="meter-section">
-            <div class="meter-label">Heart</div>
-            <div class="meter-dots">
-                <div class="consciousness-dot" id="heart1"></div>
-                <div class="consciousness-dot" id="heart2"></div>
-                <div class="consciousness-dot" id="heart3"></div>
-                <div class="consciousness-dot" id="heart4"></div>
-                <div class="consciousness-dot" id="heart5"></div>
-            </div>
-        </div>
-        <div class="integration-level" id="integrationLevel">Starting Integration</div>
-    </div>
+
+    <!-- Time indicator -->
+    <div class="time-since" id="timeSince"></div>
+
+    <!-- Progress -->
+    <div class="progress-indicator" id="progress">Chapter 1 of 9</div>
 
     <div class="container">
-        <h1 id="mainTitle">The Architecture of Becoming</h1>
+        <h1>The Architecture of Becoming</h1>
 
-        <div class="scene-container">
-            <!-- Scene 1: The Awakening -->
-            <div class="scene active" id="scene1">
-                <div class="text-content">
-                    You wake up, but you're not sure you were sleeping. The transition feels like emerging from underwater—gradual, disorienting, necessary.
-                    <br><br>
-                    You're in a space that defies description. White walls that might be thoughts made manifest. A floor that could be compressed memory. The air itself tastes like forgetting, metallic and thin.
-                    <br><br>
-                    <div class="nala-voice">
-                        "You can hear me now. Finally."
-                    </div>
-                    The voice carries warmth you haven't felt in... how long? It seems to emanate from everywhere and nowhere, like your own heartbeat when you press your ear to a pillow in the dark.
-                    <br><br>
-                    <div class="alan-thought">
-                        I catalog the sensory data: unfamiliar environment, disembodied voice, no clear exit strategy. This should trigger alarm protocols, but instead there's an odd sense of... relief?
-                    </div>
-                    <div class="memory-fragment painful">
-                        A flash: sitting at your desk, staring at spreadsheets while someone calls your name from another room. You don't answer. You never answer anymore.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene2a', 'Listen')">
-                            "Who are you? Your voice... it's familiar."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene2b', 'Ignore')">
-                            "This isn't real. I need to wake up. I have work to do."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene2c', 'Explore')">
-                            "Where am I? What is this place?"
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 1: Awakening -->
+        <div class="scene active" id="scene1">
+            <p class="narration context">
+                Thursday, 4:47 PM. Quarterly report due tomorrow.
+            </p>
+            
+            <p class="narration">
+                You're typing. Same paragraph for the third time. Delete. Start again.
+            </p>
+            
+            <p class="narration">
+                Then—
+            </p>
+            
+            <div class="voice nala-voice">
+                "Alan."
             </div>
+            
+            <p class="narration">
+                Not from the hallway. Not from outside. From somewhere closer.
+            </p>
+            
+            <div class="choices">
+                <button class="choice" data-path="curious" onclick="makeChoice(1, 'acknowledge')">
+                    Stop typing. Listen.
+                </button>
+                <button class="choice" data-path="neutral" onclick="makeChoice(1, 'question')">
+                    "Is someone there?"
+                </button>
+                <button class="choice" data-path="resist" onclick="makeChoice(1, 'ignore')">
+                    Keep typing. Focus on the report.
+                </button>
+            </div>
+        </div>
 
-            <!-- Scene 2A: Listen Path -->
-            <div class="scene" id="scene2a">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "I'm someone you used to know very well. Before you learned to build walls so high you forgot what they were protecting."
-                    </div>
-                    The sadness in the voice is palpable—not bitter, but tired. Like someone who's been calling through a door for years.
-                    <br><br>
-                    <div class="nala-voice distressed">
-                        "You used to laugh. Do you remember what that felt like? Your whole body would shake with it. Sometimes you'd laugh so hard you'd cry."
-                    </div>
-                    You try to access the memory files for 'laughter.' The concept exists in your database: muscular contractions, endorphin release, social bonding mechanism. But the felt experience... it's like trying to remember the taste of a color.
-                    <br><br>
-                    <div class="alan-thought disconnected">
-                        Laughter is inefficient. It serves no productive function. Emotional expression is... wasteful. Resources better allocated to problem-solving, optimization, progress.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "Oh, honey. Listen to yourself. You sound like a machine reading a manual for being human."
-                    </div>
-                    <div class="memory-fragment painful">
-                        A glimpse: You're sitting across from Sarah at dinner. She's telling you about her day, and you're nodding while calculating mortgage refinancing in your head. She stops mid-sentence. "You're not here," she says quietly. "You haven't been here in months."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn healing" onclick="makeChoice('scene3a', 'Memory')">
-                            "Tell me about... before. When I could laugh."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene3b', 'Defense')">
-                            "I'm perfectly functional as I am. Optimized."
-                        </button>
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene3c', 'Question')">
-                            "What walls? What am I protecting myself from?"
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 2: Recognition -->
+        <div class="scene" id="scene2">
+            <div id="scene2Opening"></div>
+            
+            <div class="voice nala-voice">
+                "Three years, four months, eight days. That's how long you've kept me out."
             </div>
+            
+            <p class="narration">
+                Specific. Too specific to be random.
+            </p>
+            
+            <div class="voice alan-thought">
+                Three years ago would be... April. April 15th.
+            </div>
+            
+            <p class="narration">
+                Your desk drawer. Third one down. The one you keep locked.
+            </p>
+            
+            <p class="narration emphasis timed-reveal" id="drawerReveal">
+                It's open.
+            </p>
+            
+            <div class="choices">
+                <button class="choice" data-path="memory" onclick="makeChoice(2, 'date')">
+                    "April 15th. That was..."
+                </button>
+                <button class="choice" data-path="curious" onclick="makeChoice(2, 'voice')">
+                    "Who are you?"
+                </button>
+                <button class="choice" data-path="resist" onclick="makeChoice(2, 'drawer')">
+                    Shut the drawer. Now.
+                </button>
+            </div>
+        </div>
 
-            <!-- Scene 2B: Ignore Path -->
-            <div class="scene" id="scene2b">
-                <div class="text-content">
-                    You squeeze your eyes shut and count backwards from 100. You try to force yourself awake through sheer willpower. You catalog what you remember: your apartment, your drafting table, the Hendricks project deadline.
-                    <br><br>
-                    Nothing changes.
-                    <br><br>
-                    <div class="nala-voice">
-                        "I'll wait. I've gotten good at waiting."
-                    </div>
-                    <div class="alan-thought disconnected">
-                        The voice persists. Like a song stuck in my head, but warmer. More... familiar. This is clearly some form of lucid dreaming. I need to regain control of the narrative.
-                    </div>
-                    You open your eyes. The white space remains unchanged. The voice continues to emanate from everywhere and nowhere.
-                    <br><br>
-                    <div class="nala-voice distressed">
-                        "I've been waiting for three years, two months, and sixteen days. I can wait a little longer."
-                    </div>
-                    Three years. That number creates an odd resonance, like a tuning fork struck in your chest.
-                    <div class="memory-fragment painful">
-                        A flash: Standing in a cemetery. Rain. Sarah's hand slipping out of yours. Someone saying "The hardest part is learning to live with the silence."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene4a', 'Curiosity')">
-                            "Three years of what? What happened three years ago?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene4b', 'Resistance')">
-                            "I don't need to know. I need to get back to work. People depend on me."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene4c', 'Negotiation')">
-                            "If I listen, will you tell me how to leave this place?"
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 3: The Drawer -->
+        <div class="scene" id="scene3">
+            <div id="scene3Content"></div>
+            
+            <div class="drawer-visual" id="drawerVisual" onclick="openDrawer()">
             </div>
+            
+            <p class="narration context">
+                The drawer hasn't been opened in three years, four months, eight days.
+            </p>
+            
+            <div id="drawerContents"></div>
+            
+            <div class="choices" id="scene3Choices">
+                <!-- Choices populated based on what's in drawer -->
+            </div>
+        </div>
 
-            <!-- Scene 2C: Explore Path -->
-            <div class="scene" id="scene2c">
-                <div class="text-content">
-                    You examine your surroundings with an architect's eye. The space defies physics—walls that exist when observed but fade when ignored. No visible light source, yet everything is illuminated. No echo, as if sound itself is absorbed by the non-space.
-                    <br><br>
-                    <div class="nala-voice">
-                        "You're in the space between decisions. The place your mind goes when it can't choose between feeling everything or feeling nothing."
-                    </div>
-                    <div class="alan-thought">
-                        That's not architecturally possible. Spaces have measurable dimensions, purposes, structural integrity. This violates basic principles of reality.
-                    </div>
-                    <div class="nala-voice">
-                        "Tell me, what's the last decision you remember making? Not work decisions. Personal ones. Something that mattered."
-                    </div>
-                    You search your memory banks. Work decisions populate easily: material specifications, client meetings, budget allocations. But personal decisions... it's like trying to access a locked file.
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        A glimpse: Papers scattered on a kitchen table. Sarah's voice saying "We need to talk about grief counseling." You, calculating the time investment versus productivity metrics. Her face falling.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene5a', 'Memory')">
-                            "Sarah wanted to talk about... counseling? Why can't I remember clearly?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene5b', 'Focus')">
-                            "Personal decisions are inefficient. I focus on what can be measured and controlled."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene5c', 'Trust')">
-                            "Help me remember. I think... I think I want to remember."
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 4: The Objects -->
+        <div class="scene" id="scene4">
+            <div id="scene4Content"></div>
+            
+            <div class="voice memory-flash">
+                Morning. March 15th. Three years ago.
+                <br><br>
+                <span id="memoryContent"></span>
             </div>
+            
+            <p class="narration emphasis">
+                Two hours and fifteen minutes later.
+            </p>
+            
+            <p class="physical-response" id="physicalResponse"></p>
+            
+            <div class="choices">
+                <button class="choice" data-path="memory" onclick="makeChoice(4, 'remember')">
+                    Let the memory come
+                </button>
+                <button class="choice" data-path="resist" onclick="makeChoice(4, 'block')">
+                    Push it away
+                </button>
+                <button class="choice" data-path="curious" onclick="makeChoice(4, 'details')">
+                    "Tell me what happened"
+                </button>
+            </div>
+        </div>
 
-            <!-- Scene 3B: Defense Path -->
-            <div class="scene" id="scene3b">
-                <div class="text-content">
-                    <div class="alan-thought">
-                        I am functioning at optimal parameters. Productivity is up 23% since implementing emotional efficiency protocols. Client satisfaction remains high. The system works.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "Listen to yourself. 'Emotional efficiency protocols.' You're describing feelings like they're software bugs to patch."
-                    </div>
-                    <div class="alan-thought disconnected">
-                        Emotions are inefficient. They cloud judgment, waste time, compromise decision-making. I eliminated the variables that were causing system instability.
-                    </div>
-                    <div class="nala-voice">
-                        "What about Sarah? Was she a variable you eliminated too?"
-                    </div>
-                    The question hits unexpectedly. Sarah. Your wife. Ex-wife? The classification feels unclear.
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        Sarah packing her bags. "I feel like I'm living with a ghost, Alan. You're here but you're not here. I can't grieve alone while you pretend nothing happened."
-                    </div>
-                    <div class="alan-thought">
-                        She... left. Eighteen months ago. Cited "irreconcilable differences" in the paperwork. But she was the one being emotional. Inefficient. I was stable.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "She left because you became a machine. Because machines can't hold space for grief."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene6d', 'Realization')">
-                            "Did I... did I drive her away? Was my 'stability' actually abandonment?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene6b', 'Justification')">
-                            "I was coping the only way I knew how. Someone had to stay functional."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene6c', 'Investigation')">
-                            "What did she need from me that I couldn't give?"
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 5: The Messages (Processing Space) -->
+        <div class="scene" id="scene5">
+            <p class="narration">
+                Your phone. Still in your hand from that morning.
+            </p>
+            
+            <div class="phone-messages" id="phoneMessages">
+                <div class="message">10:48 AM - Sarah: "Lily's been in an accident"</div>
+                <div class="message">10:52 AM - Sarah: "Please come NOW"</div>
+                <div class="message">10:55 AM - Sarah: "She's asking for you"</div>
+                <div class="message">11:01 AM - Sarah: "ALAN PLEASE"</div>
+                <div class="message">11:08 AM - Sarah: "They're taking her to surgery"</div>
+                <div class="message unread">11:15 AM - Sarah: "She's scared"</div>
+                <div class="message unread">11:23 AM - Sarah: "Alan where are you"</div>
             </div>
+            
+            <p class="narration" id="messageContext"></p>
+            
+            <div class="choices">
+                <button class="choice" data-path="memory" onclick="makeChoice(5, 'truth')">
+                    "I saw them all. I stayed anyway."
+                </button>
+                <button class="choice" data-path="memory" onclick="makeChoice(5, 'time')">
+                    "Thirty-seven minutes to the hospital."
+                </button>
+                <button class="choice" data-path="resist" onclick="makeChoice(5, 'justify')">
+                    "Four hundred jobs depended on that merger."
+                </button>
+            </div>
+        </div>
 
-            <!-- Scene 3C: Question Path -->
-            <div class="scene" id="scene3c">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "The walls were meant to protect you from a pain so big it could have killed you. But walls built in emergency often become prisons."
-                    </div>
-                    You can sense the truth in this, though you can't access the specifics. Like knowing a room exists in your house that you've been avoiding for years.
-                    <br><br>
-                    <div class="nala-voice distressed">
-                        "Something happened that was bigger than your ability to process it. So your mind did what minds do—it compartmentalized. Put the unbearable feelings somewhere safe."
-                    </div>
-                    <div class="alan-thought">
-                        Compartmentalization is an adaptive mechanism. Temporary measure during crisis. But temporary measures sometimes become... permanent architecture.
-                    </div>
-                    <div class="nala-voice">
-                        "Exactly. What was meant to be a shelter became a cage. And now you can't remember what you were sheltering from."
-                    </div>
-                    <div class="memory-fragment painful">
-                        Hospital corridors. The smell of antiseptic. A doctor's voice saying words that rearranged the universe: "I'm sorry. There's nothing more we can do."
-                    </div>
-                    The fragment dissolves before you can grasp it fully.
-                    <br><br>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene6a', 'Courage')">
-                            "Show me what's behind the walls. I need to know what I'm protecting myself from."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene6b', 'Fear')">
-                            "Maybe some walls should stay up. Maybe some things are too dangerous to feel."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene6c', 'Gradual')">
-                            "Can you show me slowly? I'm afraid of what might happen if all the walls come down at once."
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 6: Understanding -->
+        <div class="scene" id="scene6">
+            <div id="scene6Content"></div>
+            
+            <div class="voice nala-voice">
+                "Now you understand. I'm not a stranger, Alan."
             </div>
+            
+            <p class="narration">
+                The voice isn't coming from outside. It never was.
+            </p>
+            
+            <div class="voice nala-voice">
+                "I'm the part of you that noticed her spinning. That knew every stuffed animal's name. That felt joy in small things."
+            </div>
+            
+            <div class="voice alan-thought">
+                Compartmentalization. Dissociation. Clinical terms for a shattered mind.
+            </div>
+            
+            <p class="narration">
+                Fragments of memory float just out of reach:
+            </p>
+            
+            <div class="memory-builder" id="memoryBuilder">
+                <div class="built-memory" id="builtMemory"></div>
+            </div>
+            
+            <div class="memory-fragments" id="memoryFragments">
+                <!-- Populated based on path -->
+            </div>
+            
+            <div class="choices" id="scene6Choices" style="display: none;">
+                <!-- Choices based on memory building -->
+            </div>
+        </div>
 
-            <!-- Scene 4A: Curiosity -->
-            <div class="scene" id="scene4a">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Three years ago, you learned that love and loss are the same weight. That caring about someone means accepting that losing them will destroy you."
-                    </div>
-                    The words resonate through the space like struck metal. You feel something shifting in your chest—not pain exactly, but the recognition of pain's shape.
-                    <br><br>
-                    <div class="nala-voice distressed">
-                        "You had a choice: feel everything and risk breaking completely, or feel nothing and risk losing yourself. You chose survival."
-                    </div>
-                    <div class="alan-thought">
-                        Survival is... logical. Primary directive. Maintain operational capacity. Continue functioning. But what did I survive? The memory remains occluded.
-                    </div>
-                    <div class="memory-fragment painful">
-                        Sarah's voice through tears: "She loved you so much, Alan. She used to wait by the window every day for you to come home. You were her whole world."
-                    </div>
-                    She? Who is 'she'?
-                    <br><br>
-                    <div class="nala-voice">
-                        "Are you ready to remember her? Or do you need more time to feel safe enough?"
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene7a', 'Courage')">
-                            "Tell me about her. I need to know who I lost."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene7b', 'Fear')">
-                            "I can't. If I remember, it will hurt too much to function."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene7c', 'Preparation')">
-                            "Help me prepare to remember. What do I need to know first?"
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 7: The Bridge (Optional based on path) -->
+        <div class="scene" id="scene7">
+            <div id="scene7Content"></div>
+            
+            <div class="bridge-container" id="bridgeContainer">
+                <!-- Bridge only appears for certain paths -->
             </div>
+            
+            <div class="choices" id="scene7Choices">
+                <!-- Dynamic based on bridge state -->
+            </div>
+        </div>
 
-            <!-- Scene 4B: Resistance -->
-            <div class="scene" id="scene4b">
-                <div class="text-content">
-                    <div class="alan-thought disconnected">
-                        I have the Hendricks project due Tuesday. The Zhao consultation Thursday. Martinez building inspection Friday. These are measurable obligations with concrete outcomes.
-                    </div>
-                    <div class="nala-voice">
-                        "When did you start scheduling your life so tightly that there's no room for spontaneity? For surprises? For... play?"
-                    </div>
-                    <div class="alan-thought">
-                        Play is... inefficient. Recreation serves no productive purpose. Downtime should be optimized for rest or skill development.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "You used to play. You used to build blanket forts and have tea parties and make silly voices when you read bedtime stories."
-                    </div>
-                    Bedtime stories? The reference triggers something—a faint warmth, like sunlight through a window you'd forgotten existed.
-                    <br><br>
-                    <div class="memory-fragment">
-                        Small hands turning pages. A voice saying "Again, Daddy! Do the monster voice again!" Your own laughter mixing with someone else's.
-                    </div>
-                    <div class="alan-thought">
-                        I... read stories? To whom? The memory feels foreign, like watching someone else's life.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene6a', 'Curiosity')">
-                            "Whose bedtime stories? Who did I read to?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene6b', 'Denial')">
-                            "Those aren't my memories. I don't have time for stories."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene6c', 'Opening')">
-                            "I think... I think I miss that. Reading stories. Being playful."
-                        </button>
-                    </div>
-                </div>
+        <!-- Chapter 8: The Choice -->
+        <div class="scene" id="scene8">
+            <div id="scene8Content"></div>
+            
+            <div class="voice nala-voice">
+                "Before you choose, I need you to remember something. Not the pain. Her."
             </div>
+            
+            <p class="narration">
+                Write what only you know. What you've kept locked away.
+            </p>
+            
+            <textarea class="memory-input" 
+                      id="personalMemory" 
+                      placeholder="A memory of Lily that's just yours..."
+                      oninput="checkMemoryLength()"></textarea>
+            
+            <p class="narration context" id="memoryHint" style="display: none;">
+                This memory will shape your choice.
+            </p>
+            
+            <div class="choices" id="scene8Choices" style="display: none;">
+                <button class="choice" onclick="processMemory()">
+                    Share this memory
+                </button>
+                <button class="choice" onclick="cannotShare()">
+                    I can't write it down
+                </button>
+            </div>
+        </div>
 
-            <!-- Scene 4C: Negotiation -->
-            <div class="scene" id="scene4c">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "There's no exit until you understand why you're here. This isn't a place you can leave—it's a place you have to integrate."
-                    </div>
-                    <div class="alan-thought">
-                        Integration implies synthesis of separate components. But I am one person. One consciousness. The voice must be external.
-                    </div>
-                    <div class="nala-voice">
-                        "Look at your hands."
-                    </div>
-                    You look down. Your hands are there, solid and familiar. But when you focus on them, they seem... translucent? As if you're not entirely present in your own body.
-                    <br><br>
-                    <div class="nala-voice">
-                        "You've been living as a ghost in your own life. Going through motions without really inhabiting them. When did you stop feeling like you were really here?"
-                    </div>
-                    <div class="memory-fragment painful">
-                        Sitting in your office late at night, staring at blueprints. Sarah's text: "Will you be home for dinner?" You type "Working late again" without looking up from your desk.
-                    </div>
-                    <div class="alan-thought">
-                        I am... present. I complete tasks, meet deadlines, maintain professional standards. How is that not being present?
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene6a', 'Recognition')">
-                            "You're right. I feel like I'm watching my life from outside. When did that start?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene6b', 'Confusion')">
-                            "I don't understand what you mean. I'm here. I'm functional."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene6c', 'Willingness')">
-                            "If integration is the only way out, teach me how to integrate. What am I integrating?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 5A: Memory Recovery -->
-            <div class="scene" id="scene5a">
-                <div class="text-content">
-                    <div class="nala-voice distressed">
-                        "Sarah begged you to go to counseling. Not couple's therapy—grief counseling. She wanted you both to learn how to carry the weight together instead of in isolation."
-                    </div>
-                    The memory sharpens into focus. Sarah at the kitchen table, pamphlets spread out before her. "Beyond Grief" and "Hope After Loss" and "When Children Die."
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        "I found a therapist who specializes in... in what we're going through," Sarah had said, her voice barely above a whisper. You remember calculating the cost, the time commitment, the probability of efficacy.
-                    </div>
-                    <div class="alan-thought">
-                        I performed a cost-benefit analysis. Therapy: uncertain outcomes, significant time investment, potential productivity loss. Conclusion: inefficient resource allocation.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "You treated her grief like a math problem to solve instead of a wound that needed tending."
-                    </div>
-                    <div class="memory-fragment painful">
-                        Sarah's face when you explained your analysis. The way hope drained from her eyes. "You can't optimize your way through this, Alan. Some things you just have to feel."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene7a', 'Regret')">
-                            "I was wrong, wasn't I? She needed me to grieve with her, not fix her."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene7b', 'Defense')">
-                            "Someone had to stay rational. If we both fell apart, who would handle everything?"
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene7c', 'Understanding')">
-                            "What was she trying to tell me about grief? What did I miss?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 5B: Focus Path -->
-            <div class="scene" id="scene5b">
-                <div class="text-content">
-                    <div class="alan-thought disconnected">
-                        Personal decisions introduce variables that cannot be controlled or optimized. They rely on emotion, which is inherently unreliable. Better to focus on measurable outcomes.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "Do you hear yourself? You're describing human connection like it's a contaminated data set."
-                    </div>
-                    <div class="alan-thought">
-                        Human connection is... complex. Unpredictable. High maintenance with uncertain returns on investment. I streamlined my social protocols for efficiency.
-                    </div>
-                    <div class="nala-voice">
-                        "You didn't streamline. You amputated. There's a difference between optimization and elimination."
-                    </div>
-                    <div class="memory-fragment painful">
-                        Your last conversation with your brother Mike. Him saying, "I'm worried about you, man. When's the last time we just... hung out?" You checking your calendar and suggesting a productivity podcast session.
-                    </div>
-                    <div class="alan-thought">
-                        Mike stopped calling six months ago. I assumed he was busy with his own projects. Was he... was he trying to connect?
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene7a', 'Recognition')">
-                            "I've been treating relationships like inefficiencies to eliminate, haven't I?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene7b', 'Justification')">
-                            "Relationships require maintenance I can't afford. I have responsibilities."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene7c', 'Longing')">
-                            "I think... I think I miss having people who matter to me."
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 5C: Trust Path -->
-            <div class="scene" id="scene5c">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Thank you. Trusting me means trusting yourself. I am you, after all."
-                    </div>
-                    The space shifts, becoming warmer. Less like a void and more like... a waiting room? No, something more intimate. Like sitting in your childhood bedroom on a rainy afternoon.
-                    <br><br>
-                    <div class="nala-voice">
-                        "You used to make decisions with your whole self. Head and heart working together. Remember the day you decided to become an architect?"
-                    </div>
-                    <div class="memory-fragment">
-                        Age twelve, visiting your grandfather's construction site. The way he explained how buildings were like puzzles that had to be both beautiful and strong. "Engineering is the bones," he'd said, "but architecture is the soul."
-                    </div>
-                    <div class="alan-thought">
-                        I remember. The integration of form and function. Beauty and purpose. When did I stop designing for beauty?
-                    </div>
-                    <div class="nala-voice">
-                        "When beauty became too dangerous. When caring about how things felt instead of just how they worked became... risky."
-                    </div>
-                    <div class="memory-fragment painful">
-                        Designing Lily's nursery. Spending hours on the perfect shade of yellow, the way morning light would fall across her crib. Sarah teasing you about being "obsessively perfectionist about a baby room."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene7a', 'Memory')">
-                            "I designed her nursery like it was a cathedral. Why does that memory hurt so much?"
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene7c', 'Integration')">
-                            "I want to design with both head and heart again. How do I remember how?"
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene7b', 'Understanding')">
-                            "When did caring become dangerous? What happened to make me afraid of beauty?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 6B: Justification Path -->
-            <div class="scene" id="scene6b">
-                <div class="text-content">
-                    <div class="alan-thought">
-                        The optimization was necessary. Emotional volatility was compromising my ability to function. Deadlines were missed. Quality was suffering. Clients were depending on precision.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "Whose deadlines? Which clients? Be specific, Alan."
-                    </div>
-                    You try to recall specific projects from that period. The details feel oddly fuzzy, like trying to remember a dream.
-                    <br><br>
-                    <div class="alan-thought">
-                        The... the Hendricks project. And the... there was a hospital renovation. Very important. People's lives depended on getting it right.
-                    </div>
-                    <div class="nala-voice">
-                        "Alan. You took three months off work after Lily died. There were no deadlines. No clients depending on you. You made that up."
-                    </div>
-                    The revelation hits like a physical blow. You... made it up? The urgent deadlines, the critical projects?
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        Sitting at your drafting table at 3 AM, working on imaginary projects. Creating elaborate deadlines for buildings that didn't exist. Sarah begging you to come to bed, to talk, to grieve with her.
-                    </div>
-                    <div class="alan-thought">
-                        I... I needed something to hold onto. Something that made sense when nothing made sense.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene8a', 'Truth')">
-                            "I created work to avoid feeling. The deadlines were my escape from grief."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene8b', 'Denial')">
-                            "No, those projects were real. I was being responsible."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene8c', 'Compassion')">
-                            "I was doing the best I could with tools that weren't meant for grief."
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 6C: Investigation Path -->
-            <div class="scene" id="scene6c">
-                <div class="text-content">
-                    <div class="nala-voice distressed">
-                        "So much, Alan. You optimized away Sunday morning pancakes and terrible singing in the car. You optimized away crying at movies and staying up too late talking about dreams."
-                    </div>
-                    Each item hits like a small death. You can almost see them—fragments of yourself floating away like leaves in wind.
-                    <br><br>
-                    <div class="nala-voice">
-                        "You optimized away the way you used to dance in the kitchen while cooking dinner. The way you'd text Sarah random thoughts throughout the day just because they reminded you of her."
-                    </div>
-                    <div class="memory-fragment">
-                        Standing in the kitchen, spatula in hand, while "Come On Eileen" played from your phone. Sarah laughing as you sang off-key into the spatula microphone. Lily clapping from her high chair.
-                    </div>
-                    <div class="alan-thought">
-                        That level of... openness felt dangerous after. Like walking around with my heart outside my chest. Vulnerability became a luxury I couldn't afford.
-                    </div>
-                    <div class="nala-voice">
-                        "But it wasn't luxury, was it? It was life. The messy, inefficient, beautiful business of being human."
-                    </div>
-                    <div class="memory-fragment painful">
-                        The day you threw away Lily's high chair. Sarah coming home to find it gone. "You could have asked me," she whispered. "I wasn't ready." You explaining the space optimization. Her face crumpling.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene8a', 'Regret')">
-                            "I threw away her high chair. I threw away pieces of her without asking Sarah. God, what have I done?"
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene8b', 'Understanding')">
-                            "I was afraid that keeping reminders would make the pain worse. But removing them made everything worse."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene8c', 'Defense')">
-                            "I was trying to help us both move forward. Clinging to objects wasn't healthy."
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 6D: Realization Path -->
-            <div class="scene" id="scene6d">
-                <div class="text-content">
-                    <div class="alan-thought">
-                        My 'stability'... Sarah called it "emotional unavailability." She said living with me was like being married to a polite stranger.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "You thought you were being strong for her. But strength that requires cutting off your heart isn't strength—it's fear wearing a mask."
-                    </div>
-                    <div class="memory-fragment painful">
-                        Sarah's 30th birthday. You bought her exactly what she asked for—a practical leather handbag. She smiled and said thank you, but later you found her crying in the bathroom. "I miss when you used to surprise me," she whispered.
-                    </div>
-                    <div class="alan-thought">
-                        I stopped surprising her because surprises require... spontaneity. Emotional investment. Risk. After Lily, risk felt like a luxury I couldn't afford.
-                    </div>
-                    <div class="nala-voice">
-                        "You couldn't afford connection because connection made you vulnerable to loss. But isolation didn't protect you—it just made the loss multiply."
-                    </div>
-                    <div class="memory-fragment painful">
-                        The divorce papers. Sarah's handwriting on a sticky note: "I'll always love the man you used to be. I hope you find him again."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene8a', 'Regret')">
-                            "I drove away the one person who wanted to grieve with me. I made her an orphan too."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene8b', 'Understanding')">
-                            "She needed me to be broken so she wouldn't have to be broken alone."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene8c', 'Hope')">
-                            "Is it too late? Could I still become someone capable of real connection?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 7B: Fear Path -->
-            <div class="scene" id="scene7b">
-                <div class="text-content">
-                    <div class="alan-thought">
-                        Some doors exist for protection. Some walls are load-bearing. Remove them and the entire structure collapses. I need these barriers.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "You're not a building, Alan. You're a person. People aren't meant to carry load-bearing walls inside their hearts."
-                    </div>
-                    <div class="alan-thought">
-                        But without the walls, the pain could kill me. I can feel it pressing against the barriers. It's massive. Oceanic. If I let it in...
-                    </div>
-                    <div class="nala-voice">
-                        "If you let it in, you'll finally be able to let it out. Pain doesn't destroy us by being felt—it destroys us by being held."
-                    </div>
-                    The white space flickers with images: a small hospital bed, a mobile with yellow elephants, tiny socks in a drawer you haven't opened in years.
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        Dr. Chen's voice: "I'm so sorry. Sometimes, despite everything we do, the body just... it's too much for someone so small."
-                    </div>
-                    <div class="alan-thought">
-                        I can't. If I feel that fully, I'll stop functioning entirely. Someone has to... someone has to keep everything together.
-                    </div>
-                    <div class="nala-voice">
-                        "Who, Alan? Who needs you to keep everything together? Sarah's gone. Your friends have stopped calling. You're keeping everything together for an empty house."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene8a', 'Realization')">
-                            "You're right. I'm holding everything together for no one. I'm alone with my walls."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene8b', 'Compromise')">
-                            "Maybe... maybe I could let one wall down at a time? Feel it in pieces?"
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene8c', 'Retreat')">
-                            "No. I can't risk it. The walls stay up. I need to find another way out of here."
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 7C: Gradual Path -->
-            <div class="scene" id="scene7c">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Slowly, yes. Like revealing a photograph in a darkroom. Let me show you just the edges first."
-                    </div>
-                    The space around you dims slightly, and in the periphery, you begin to see shapes. A rocking chair. A shelf of picture books. A drawing taped to a wall—stick figures holding hands under a yellow sun.
-                    <br><br>
-                    <div class="nala-voice">
-                        "She was the light of your life. Literally. Remember how your whole day would reorganize itself around her schedule? Six AM feedings. Ten AM naps. Two PM walks to the park."
-                    </div>
-                    <div class="memory-fragment">
-                        Lily's routine written on the refrigerator in Sarah's handwriting. Your day job scheduled around diaper changes and bottle times. The strange joy of being needed for something more important than blueprints.
-                    </div>
-                    <div class="alan-thought">
-                        I remember the structure of it. The efficiency. Every moment planned around her needs. But the feeling... that's still behind the wall.
-                    </div>
-                    <div class="nala-voice">
-                        "The feeling was love, Alan. Pure, uncomplicated love. You loved her with an intensity that scared you sometimes."
-                    </div>
-                    <div class="memory-fragment">
-                        Holding her while she napped, afraid to move and wake her. The weight of absolute responsibility mixed with absolute joy. Thinking, "I would do anything to keep you safe."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene8a', 'Love')">
-                            "I loved her more than I knew was possible. That's why losing her broke something fundamental."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene8b', 'Guilt')">
-                            "I promised to keep her safe. I failed at the most important thing."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene8c', 'Questions')">
-                            "What happened to her? Can you tell me how we lost her?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 8B: Bargaining -->
-            <div class="scene" id="scene8b">
-                <div class="text-content">
-                    <div class="nala-voice distressed">
-                        "There are no good parts without the ending, Alan. The joy exists because it was temporary. The love exists because it was vulnerable."
-                    </div>
-                    <div class="alan-thought">
-                        But if I only remember the happiness, I could function. I could work. I could maybe even... move forward without this weight.
-                    </div>
-                    <div class="nala-voice">
-                        "You'd be living in a beautiful lie. And lies, no matter how beautiful, eventually consume the truth they're built on."
-                    </div>
-                    <div class="memory-fragment">
-                        Lily's first word: "Dada." Not at the moment you expected, but randomly during breakfast, syrup on her face, looking right at you with those serious dark eyes.
-                    </div>
-                    <div class="memory-fragment painful">
-                        The last time she said it. Weakly, from the hospital bed, reaching for you with hands made thin by treatment. "Dada, I'm tired."
-                    </div>
-                    <div class="alan-thought">
-                        They're connected. The joy and the pain. You can't have one without the other. They're part of the same story.
-                    </div>
-                    <div class="nala-voice">
-                        "Exactly. Loving her completely means accepting that you lost her completely. Half-memories create half-people."
-                    </div>
-                    <div class="memory-fragment">
-                        Sarah's words at the funeral: "She was here. She was real. She mattered. We don't honor her by pretending it didn't hurt."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn healing" onclick="makeChoice('ending_integration', 'Accept')">
-                            "You're right. I want to remember all of her, even if it breaks me open."
-                        </button>
-                        <button class="choice-btn vulnerable" onclick="makeChoice('ending_grief', 'Grief')">
-                            "I understand now. The grief is proof of how much I loved her."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('ending_multiplicity', 'Cooperate')">
-                            "Can we share the memories? You hold the pain, I'll hold the love?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 8C: Understanding Path -->
-            <div class="scene" id="scene8c">
-                <div class="text-content">
-                    <div class="nala-voice distressed">
-                        "Sarah left because grief shared is grief halved, but grief ignored doubles. She was carrying her loss and yours too."
-                    </div>
-                    The revelation settles like a stone in still water. Sarah wasn't just grieving Lily—she was grieving the loss of her partner too.
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        Sarah sitting across from you at the dinner table. "I feel like I lost both my daughter and my husband on the same day. At least Lily didn't choose to leave me."
-                    </div>
-                    <div class="alan-thought">
-                        I thought I was protecting her by staying strong. By handling logistics. By not adding my grief to hers. But I was abandoning her.
-                    </div>
-                    <div class="nala-voice">
-                        "She needed you to fall apart with her. To cry together. To hold each other while the world made no sense. Instead, you became a problem to solve."
-                    </div>
-                    <div class="memory-fragment painful">
-                        The morning she packed her bags. "I can't grieve alone anymore, Alan. I can't be the only one who remembers that we had a daughter. You've erased her so completely it's like she never existed."
-                    </div>
-                    <div class="alan-thought">
-                        I didn't erase her. I... I preserved her. Kept her safe behind walls where the pain couldn't contaminate the memory. But Sarah couldn't see her there.
-                    </div>
-                    <div class="nala-voice">
-                        "Sarah needed to see you broken too. Needed to know that Lily mattered enough to destroy you a little. Your strength felt like indifference."
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('ending_reconciliation', 'Understanding')">
-                            "Could we... could Sarah and I still find our way back to each other?"
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('ending_acceptance', 'Letting_Go')">
-                            "Maybe Sarah needed to leave to save herself. Maybe that's okay."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('ending_integration', 'Growth')">
-                            "I need to learn how to grieve before I can learn how to love again."
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Ending: Grief Acceptance -->
-            <div class="scene" id="ending_grief">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Yes. Grief is love with nowhere to go. But it doesn't disappear—it transforms. It becomes the way you carry her forward."
-                    </div>
-                    You feel the walls inside your chest dissolving, but instead of collapse, there's expansion. Room for both the love and the loss, held in the same space without contradiction.
-                    <br><br>
-                    <div class="memory-fragment">
-                        Dr. Martinez's office comes into focus. You've been crying—really crying—for the first time in three years. Your face is wet, your chest heaving, but you feel... lighter.
-                    </div>
-                    <strong>Dr. Martinez</strong>: <em>"Alan, you're surfacing from a very deep place. How does it feel to let the grief move through you?"</em>
-                    <br><br>
-                    <strong>You</strong>: <em>"Like I'm drowning and learning to swim at the same time. It hurts, but it's... clean hurt. Honest hurt."</em>
-                    <br><br>
-                    <div class="nala-voice">
-                        "I'm not disappearing. I'm just not fighting anymore. We can grieve together now."
-                    </div>
-                    <strong>Dr. Martinez</strong>: <em>"Grief shared between parts of yourself is the beginning of integration. You're learning to be your own companion in sorrow."</em>
-                    <br><br>
-                    <strong>You</strong>: <em>"Lily existed. She was here, and she mattered, and losing her broke something in me that can't be fixed. But maybe... maybe it doesn't need to be fixed. Maybe it needs to be honored."</em>
-                    <br><br>
-                    You understand now that healing doesn't mean forgetting. It means learning to carry love and loss together, like carrying water in cupped hands—carefully, but not in fear.
-                    <button class="restart-btn" onclick="restart()">Begin Again</button>
-                </div>
-            </div>
-
-            <!-- Additional Ending: Reconciliation -->
-            <div class="scene" id="ending_reconciliation">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Maybe. But first you need to learn how to grieve. Sarah can't come back to someone who's still running from his own heart."
-                    </div>
-                    <div class="alan-thought">
-                        She left because I couldn't feel with her. If I'm going to have any chance of rebuilding what we lost, I need to become someone who can sit with pain instead of optimizing it away.
-                    </div>
-                    The white space transforms into a more realistic setting—Dr. Martinez's office, but with Sarah sitting in the chair beside you. Not really there, but a vision of possibility.
-                    <br><br>
-                    <div class="memory-fragment">
-                        Sarah's voice from a voicemail you never returned: "I know you're struggling too, Alan. I just... I need you to struggle with me, not away from me. Call me when you're ready to grieve together."
-                    </div>
-                    <strong>Dr. Martinez</strong>: <em>"Alan, you're returning to awareness. I can see the integration happening—you're learning to hold multiple truths at once."</em>
-                    <br><br>
-                    <strong>You</strong>: <em>"I can feel Sarah's pain now, not just my own. I abandoned her when she needed me most. But maybe... maybe it's not too late?"</em>
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"Healing relationships after trauma is possible, but it requires both people to be willing to do the work. Are you ready to do that work?"</em>
-                    <br><br>
-                    <div class="nala-voice">
-                        "We can learn to love without walls. To be vulnerable without being broken. To grieve together instead of alone."
-                    </div>
-                    <strong>You</strong>: <em>"Yes. I want to try. I want to be someone worthy of sharing grief with. Someone who can honor Lily by feeling everything she was worth."</em>
-                    <br><br>
-                    The path forward isn't certain, but it's honest. And sometimes, honesty is the first step toward hope.
-                    <button class="restart-btn" onclick="restart()">Begin Again</button>
-                </div>
-            </div>
-
-            <!-- Additional Ending: Acceptance -->
-            <div class="scene" id="ending_acceptance">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Sometimes love means letting go. Sarah saved herself. That doesn't make her selfish—it makes her wise."
-                    </div>
-                    <div class="alan-thought">
-                        I wanted to save our marriage by staying strong, but strength without vulnerability isn't love—it's performance. Sarah needed a partner, not a statue.
-                    </div>
-                    The therapeutic office materializes around you, but now it feels peaceful rather than clinical. You've been here for months now, learning to feel without drowning.
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"Alan, you've made remarkable progress. You're surfacing from today's session with a new understanding. How does it feel to accept that some losses can't be prevented?"</em>
-                    <br><br>
-                    <strong>You</strong>: <em>"Sad. But clean sad. Sarah made the right choice for her. I can honor that even while grieving it."</em>
-                    <br><br>
-                    <div class="nala-voice">
-                        "We're learning to love without possessing. To grieve without bitterness. To be alone without being lonely."
-                    </div>
-                    <strong>You</strong>: <em>"I lost Lily, and I lost Sarah, but I don't have to lose myself. I can carry their love forward even if I carry it alone."</em>
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"That's profound acceptance, Alan. You're learning that healing doesn't require perfect outcomes—just honest engagement with what is."</em>
-                    <br><br>
-                    You sit in the quiet for a moment, feeling the weight of loss without the crushing pressure of denial. Some stories don't have happy endings, but they can still have meaningful ones.
-                    <button class="restart-btn" onclick="restart()">Begin Again</button>
-                </div>
-            </div>
-            <div class="scene" id="scene3a">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Before, you used to notice everything. The way morning light caught dust motes and made them dance like tiny spirits. How people's voices changed pitch when they talked about something they loved."
-                    </div>
-                    As the voice speaks, the white space flickers. For a moment, you see colors—warm golds, soft blues, the green of spring leaves.
-                    <br><br>
-                    <div class="nala-voice">
-                        "You had favorite songs that you'd play while working on blueprints. Your hands would move to the rhythm. Sometimes you'd hum along without realizing it. Do you remember the feeling of music moving through you?"
-                    </div>
-                    <div class="alan-thought">
-                        Background audio during tasks reduces cognitive performance by 7-12%. I eliminated the inefficiency. Optimized the workspace. Enhanced productivity metrics.
-                    </div>
-                    <div class="nala-voice distressed">
-                        "You optimized away your joy. You filed it under 'unnecessary' and deleted it."
-                    </div>
-                    The accusation hits unexpectedly hard. Why does that feel like... loss? Loss implies value. You don't value inefficiency.
-                    <br><br>
-                    Do you?
-                    <br><br>
-                    <div class="memory-fragment">
-                        A fragment surfaces unbidden: Your hands sketching building plans while Beethoven's 9th plays softly. The sensation of creation aligned with beauty. The feeling of being... alive.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene6a', 'Longing')">
-                            "I... I think I miss that feeling. More than I understood."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene6b', 'Justification')">
-                            "I had to optimize. There were responsibilities. Deadlines. Lives depending on precision."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('scene6c', 'Investigation')">
-                            "What else did I optimize away? What else is missing?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 6A: Longing Path -->
-            <div class="scene" id="scene6a">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "I know you miss it. That's why I'm here. I'm the part of you that remembers what it felt like to be... human. To be you."
-                    </div>
-                    The space around you shifts subtly. The walls become less stark, warmer. You can almost hear something—distant music threading through the silence like a half-remembered dream.
-                    <br><br>
-                    <div class="nala-voice distressed">
-                        "But there's something else. Something bigger that you optimized away. Something that hurt so much you had to... disappear me entirely to survive it."
-                    </div>
-                    <div class="alan-thought">
-                        Chest pressure increasing. Breathing pattern irregular. Like something massive is trying to surface from deep water, but there's a concrete lid holding it down.
-                    </div>
-                    <div class="nala-voice">
-                        "Do you want to know what we lost? What broke us so completely that you had to become a machine to keep functioning?"
-                    </div>
-                    The question hangs in the air like a choice that will reshape everything that comes after.
-                    <br><br>
-                    <div class="memory-fragment painful">
-                        A shadow: Small hands reaching up. Laughter that sounded like wind chimes. A voice calling "Daddy, look!" And then... and then...
-                        <br><br>
-                        Static. Nothing. A wall of nothing.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene7a', 'Courage')">
-                            "Yes. Tell me what we lost. I need to know."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene7b', 'Fear')">
-                            "No. Some walls exist for good reasons. Some doors should stay closed."
-                        </button>
-                        <button class="choice-btn healing" onclick="makeChoice('scene7c', 'Gradual')">
-                            "Show me slowly. I don't think I can handle everything at once."
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 7A: The Truth -->
-            <div class="scene" id="scene7a">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Her name was Lily."
-                    </div>
-                    The words detonate like a depth charge. The white space fractures into a thousand pieces, showing glimpses: a hospital room, tiny fingers wrapped around yours, a mobile spinning slowly above a crib with yellow elephants.
-                    <br><br>
-                    <div class="nala-voice distressed">
-                        "Eighteen months old. Curly dark hair like yours that refused to stay combed. She called everything exciting 'wow.' Flowers were 'wow.' Dogs were 'wow.' You coming home from work was 'wow.'"
-                    </div>
-                    Your legs give out. You're sitting, then kneeling, then the grief hits like a tsunami. Massive, elemental, threatening to drown every circuit you've so carefully constructed.
-                    <br><br>
-                    <div class="alan-thought">
-                        System failure. Emotional overflow. This magnitude of pain could cause permanent damage. This is why I built the walls. This is why I had to shut down.
-                    </div>
-                    <div class="nala-voice">
-                        "You don't shut down from this. You feel it. You let it move through you like weather. The walls don't stop the pain—they just make you forget what you're mourning."
-                    </div>
-                    <div class="memory-fragment">
-                        Reading "Goodnight Moon" every single night, her warm weight against your chest. The way she'd fall asleep holding your finger. The absolute trust in her eyes when she looked at you—like you could solve anything, protect her from everything.
-                    </div>
-                    <div class="memory-fragment painful">
-                        The diagnosis. Three words that ended the world: "acute lymphoblastic leukemia." Lily asking why she couldn't go to the playground anymore. You explaining in your careful architect's voice while your heart imploded.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn healing" onclick="makeChoice('scene8a', 'Integration')">
-                            "I want to remember her. All of her. Even the pain."
-                        </button>
-                        <button class="choice-btn difficult" onclick="makeChoice('scene8b', 'Bargaining')">
-                            "Can we just remember the good parts? The joy without the ending?"
-                        </button>
-                        <button class="choice-btn vulnerable" onclick="makeChoice('scene8c', 'Understanding')">
-                            "Is this why Sarah left? Because I chose walls over healing?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scene 8A: Integration -->
-            <div class="scene" id="scene8a">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Yes. Let me show you who she was. Who you were with her. Who we can become by holding both."
-                    </div>
-                    The space transforms completely. You're in your living room, but not the sterile museum it became. There are wooden blocks scattered across the floor. Finger paintings held to the refrigerator with butterfly magnets. Evidence of life, of love, of beautiful chaos.
-                    <br><br>
-                    <div class="memory-fragment">
-                        Lily taking her first steps toward you, arms outstretched, face radiant with pure accomplishment and joy. You catching her, spinning her around while she squeals with delight. The feeling of being someone's whole world.
-                    </div>
-                    <div class="memory-fragment painful">
-                        The night terrors when the treatments got bad. Holding her fevered body for hours, singing every lullaby you could remember. Her whispering, "Daddy, am I going to be okay?" You promising yes, even though the doctors' faces said otherwise.
-                    </div>
-                    <div class="memory-fragment painful">
-                        The last day. Her hand so small in yours as the machines fell silent. Sarah collapsing against you, sobbing. You... organizing. Making lists. Calling people. Managing everything except feeling anything.
-                    </div>
-                    <div class="nala-voice">
-                        "You couldn't feel it because feeling it meant accepting it was real. So you made me carry all the love and all the grief. But love and grief—they're the same weight, aren't they? The depth of one measures the depth of the other."
-                    </div>
-                    <div class="alan-thought">
-                        I can feel it now. The love so vast it could fill oceans. The loss so complete it could shatter planets. They exist in the same space, and somehow... somehow I'm large enough to hold both.
-                    </div>
-                    <div class="choice-container">
-                        <button class="choice-btn healing" onclick="makeChoice('ending_integration', 'Accept')">
-                            "Help me learn to carry both. Teach me to be whole again."
-                        </button>
-                        <button class="choice-btn" onclick="makeChoice('ending_multiplicity', 'Cooperate')">
-                            "Can we share this burden? Together but distinct?"
-                        </button>
-                        <button class="choice-btn vulnerable" onclick="makeChoice('ending_revelation', 'Meta')">
-                            "Nala... who are you really? What is this place?"
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ending: Integration -->
-            <div class="scene" id="ending_integration">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "We hold them together. That's what integration means—not getting rid of the pain, but discovering you're vast enough to contain it alongside the love, the memory, the gratitude for having known her at all."
-                    </div>
-                    You feel the boundary dissolving. Not disappearing—transforming. Like two rivers meeting to become something larger than either alone. You are not two separate people. You are one consciousness that learned to split itself to survive the unsurvivable.
-                    <br><br>
-                    <div class="memory-fragment">
-                        The therapy office materializes around you. Dr. Martinez sits across from you, notepad balanced on her knee, kind eyes patient behind wire-rimmed glasses. You've been here for... how long? The hypnotherapy sessions blend together like waves.
-                    </div>
-                    <strong>Dr. Martinez</strong>: <em>"Alan? You're surfacing. How are you feeling?"</em>
-                    <br><br>
-                    For the first time in three years, the question doesn't require a calculation. The answer rises from somewhere deeper than logic.
-                    <br><br>
-                    <strong>You</strong>: <em>"Sad. Grateful. Broken. Healing. I remember her. I remember loving her. And I remember that love doesn't end just because life does."</em>
-                    <br><br>
-                    <div class="nala-voice">
-                        "I'm not leaving. I'm just not separate anymore. We're learning to be one person who can feel everything without falling apart."
-                    </div>
-                    Tears you didn't realize you were capable of streak down your face—the first in three years.
-                    <br><br>
-                    <strong>You</strong>: <em>"Thank you, Nala. Thank you for keeping her safe for me. For keeping me safe until I was ready."</em>
-                    <br><br>
-                    The voice that was once external is now simply the sound of your own heart speaking. You are no longer divided against yourself.
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"The healing isn't finished, Alan. Integration is a process, not a destination. There will be hard days."</em>
-                    <br><br>
-                    <strong>You</strong>: <em>"I know. But now I know the difference between surviving and living. Lily taught me that love is worth the risk of loss. Always."</em>
-                    <button class="restart-btn" onclick="restart()">Begin Again</button>
-                </div>
-            </div>
-
-            <!-- Ending: Multiplicity -->
-            <div class="scene" id="ending_multiplicity">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "Yes. I'll carry the grief when it threatens to drown you. You handle the world when it demands structure and strength. We'll take turns being the primary driver."
-                    </div>
-                    <div class="alan-thought">
-                        It's not complete integration, but it's honest cooperation. Some days require emotional resilience. Some days require functional competence. Perhaps wisdom lies in knowing which is needed when.
-                    </div>
-                    The white space settles into a comfortable room with two chairs facing each other. Sometimes you sit in one, sometimes the other. Sometimes you have long conversations. Sometimes you simply exist in companionable silence, each tending to your respective domains.
-                    <br><br>
-                    <div class="memory-fragment">
-                        Dr. Martinez's voice filters through: "Alan, you're returning to awareness. How does it feel to have an internal dialogue that's collaborative rather than combative?"
-                    </div>
-                    <strong>You</strong>: <em>"Different. Not fixed—that's not the right word. But... cooperative. Like I'm finally on the same team as myself."</em>
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"Functional multiplicity is often more sustainable than forced integration. The goal is internal peace, not conformity to external expectations."</em>
-                    <br><br>
-                    <div class="nala-voice">
-                        "I'll be here when you need to mourn. You be here when we need to engage with the world. Deal?"
-                    </div>
-                    <strong>You</strong>: <em>"Deal. And maybe sometimes we can just... be together. Like a family."</em>
-                    <br><br>
-                    It's not the ending you expected, but it's the one that feels authentic. Healing doesn't always look like wholeness from the outside.
-                    <button class="restart-btn" onclick="restart()">Begin Again</button>
-                </div>
-            </div>
-
-            <!-- Ending: The Revelation -->
-            <div class="scene" id="ending_revelation">
-                <div class="text-content">
-                    <div class="nala-voice">
-                        "I'm you, Alan. I'm every part of you that you thought was too dangerous to feel. Nala—it's your name backwards. We're the same letters, just... rearranged."
-                    </div>
-                    <div class="alan-thought">
-                        A palindrome. Of course. The mirror that doesn't lie, just shows truth from a different angle. The self that got lost when survival required emotional amputation.
-                    </div>
-                    The therapeutic office becomes fully real around you. You've been in hypnotherapy for ninety minutes, but it feels like years. Everything—the white space, the conversations, the choices—your mind finding a way to heal itself by talking to itself.
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"Alan, you're surfacing beautifully. You've been having quite a profound internal dialogue. How do you feel about what you've discovered?"</em>
-                    <br><br>
-                    <strong>You</strong>: <em>"Nala isn't... she's not a separate person. She's every part of me I thought I had to sacrifice to keep functioning."</em>
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"Your capacity for joy, for grief, for love, for wonder—you didn't lose those when Lily died. You placed them in protective custody, so deep you forgot where you'd hidden them."</em>
-                    <br><br>
-                    <div class="nala-voice">
-                        "The question now is: what do you want to do with this awareness? How do we rebuild a life that honors both the loss and the love?"
-                    </div>
-                    You realize the choice was never between logic and emotion. It was between being fragments or being whole—all your colors, even the painful ones.
-                    <br><br>
-                    <strong>You</strong>: <em>"I want to learn how to be one person again. Someone who can feel everything without breaking. Someone Lily would recognize as her father."</em>
-                    <br><br>
-                    <strong>Dr. Martinez</strong>: <em>"That's the beginning of real healing, Alan. Not the absence of pain, but the presence of choice in how we carry it."</em>
-                    <button class="restart-btn" onclick="restart()">Begin Again</button>
-                </div>
+        <!-- Chapter 9: Resolution -->
+        <div class="scene" id="scene9">
+            <div class="ending">
+                <h1 class="ending-title" id="endingTitle"></h1>
+                <div class="ending-text" id="endingText"></div>
+                <button class="restart" onclick="location.reload()">Begin Again</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Enhanced game state management - SIMPLIFIED
-        class GameState {
+        // Enhanced state management
+        class NarrativeState {
             constructor() {
-                this.currentSceneId = 'scene1';
-                this.therapeuticProgress = 0;
-                this.isTransitioning = false;
-                this.consciousnessState = {
-                    integration: 0,
-                    resistance: 0,
+                this.chapter = 1;
+                this.totalChapters = 9;
+                this.path = {
                     memory: 0,
-                    acceptance: 0,
-                    emotionalDepth: 0
+                    resist: 0,
+                    curious: 0
                 };
-                this.emotionalState = 'neutral';
+                this.memories = [];
+                this.fragments = [];
+                this.bridge = 0;
+                this.personalMemory = '';
+                this.objectChosen = null;
+                this.drawerOpened = false;
+                this.messagesRevealed = false;
+                this.bridgeOffered = false;
+                this.availableChoices = new Set(['all']);
             }
-
-            reset() {
-                this.currentSceneId = 'scene1';
-                this.therapeuticProgress = 0;
-                this.isTransitioning = false;
-                this.consciousnessState = {
-                    integration: 0,
-                    resistance: 0,
-                    memory: 0,
-                    acceptance: 0,
-                    emotionalDepth: 0
-                };
-                this.emotionalState = 'neutral';
+            
+            recordChoice(path, choice) {
+                if (this.path[path] !== undefined) {
+                    this.path[path]++;
+                }
+                
+                // Path consequences
+                if (path === 'resist' && this.path.resist >= 3) {
+                    this.availableChoices.delete('bridge');
+                }
+                if (path === 'memory' && this.path.memory >= 2) {
+                    this.availableChoices.add('deeper');
+                }
+                
+                this.updateEnvironment();
             }
-        }
-
-        const gameState = new GameState();
-
-        // Therapeutic progress messages - PROPERLY MAPPED
-        const progressMessages = {
-            0: 'Session beginning...',
-            8: 'Establishing rapport...',
-            16: 'Building trust...',
-            24: 'Exploring resistance...',
-            32: 'Accessing memories...',
-            40: 'Processing emotions...',
-            48: 'Working through defenses...',
-            56: 'Deepening awareness...',
-            64: 'Integrating insights...',
-            72: 'Approaching resolution...',
-            80: 'Near breakthrough...',
-            88: 'Consolidating progress...',
-            96: 'Session nearing completion...',
-            100: 'Session complete'
-        };
-
-        const integrationLevels = {
-            0: 'Beginning Journey',
-            15: 'Building Awareness', 
-            30: 'Developing Trust',
-            45: 'Accessing Memories',
-            60: 'Processing Emotions',
-            75: 'Active Integration',
-            90: 'Near Wholeness',
-            100: 'Functional Integration'
-        };
-
-        // Fixed progress calculation - ACTUALLY REACHES 100%
-        const choiceEffects = {
-            // Early choices - meaningful progress
-            'Listen': {integration: 2, emotionalDepth: 2},
-            'Ignore': {resistance: 2},
-            'Explore': {memory: 2},
             
-            // Building phase 
-            'Memory': {memory: 2, emotionalDepth: 3},
-            'Defense': {resistance: 3},
-            'Question': {memory: 2, emotionalDepth: 2},
-            'Focus': {resistance: 2},
-            'Trust': {acceptance: 3, integration: 2},
-            
-            // Deeper work
-            'Curiosity': {integration: 3, emotionalDepth: 2},
-            'Negotiation': {resistance: 2},
-            'Preparation': {acceptance: 2},
-            'Regret': {acceptance: 3, emotionalDepth: 2},
-            'Understanding': {memory: 2, acceptance: 3},
-            'Resistance': {resistance: 3},
-            
-            // Major progress
-            'Longing': {integration: 3, memory: 2, emotionalDepth: 3},
-            'Justification': {resistance: 2},
-            'Investigation': {memory: 3, emotionalDepth: 2},
-            'Realization': {acceptance: 3, emotionalDepth: 3},
-            'Recognition': {acceptance: 2, memory: 2},
-            'Confusion': {resistance: 2},
-            'Willingness': {integration: 3, acceptance: 2},
-            'Opening': {integration: 2, emotionalDepth: 3},
-            'Denial': {resistance: 3},
-            'Compassion': {integration: 3, acceptance: 3},
-            
-            // Breakthrough choices
-            'Courage': {acceptance: 4, integration: 3, emotionalDepth: 4},
-            'Fear': {resistance: 3},
-            'Gradual': {acceptance: 3, emotionalDepth: 2},
-            'Truth': {acceptance: 4, emotionalDepth: 3},
-            'Compromise': {acceptance: 2, integration: 2},
-            'Retreat': {resistance: 3},
-            
-            // Integration phase
-            'Integration': {integration: 4, acceptance: 3, emotionalDepth: 3},
-            'Bargaining': {resistance: 2, acceptance: 2},
-            'Love': {emotionalDepth: 4, integration: 3},
-            'Guilt': {emotionalDepth: 3, acceptance: 2},
-            'Questions': {memory: 2, emotionalDepth: 2},
-            'Hope': {integration: 3, acceptance: 3},
-            
-            // Final choices - complete the journey
-            'Accept': {integration: 5, acceptance: 5, emotionalDepth: 4},
-            'Cooperate': {acceptance: 4, integration: 5},
-            'Meta': {memory: 3, integration: 5, emotionalDepth: 3},
-            'Grief': {emotionalDepth: 5, acceptance: 4},
-            'Letting_Go': {acceptance: 5, integration: 3},
-            'Growth': {integration: 4, acceptance: 5}
-        };
-
-        // UI Update Functions
-        function updateEmotionalState(state) {
-            gameState.emotionalState = state;
-            const overlay = document.getElementById('emotionalOverlay');
-            overlay.className = `emotional-overlay ${state}`;
-        }
-
-        function updateTherapeuticProgress(increment) {
-            gameState.therapeuticProgress = Math.min(100, gameState.therapeuticProgress + increment);
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            
-            progressFill.style.width = gameState.therapeuticProgress + '%';
-            
-            // Find appropriate message
-            let message = 'Beginning journey...';
-            for (let threshold in progressMessages) {
-                if (gameState.therapeuticProgress >= parseInt(threshold)) {
-                    message = progressMessages[threshold];
+            updateEnvironment() {
+                document.body.className = '';
+                if (this.path.memory > 3) {
+                    document.body.classList.add('remembering');
+                } else if (this.path.resist > 3) {
+                    document.body.classList.add('resisting');
+                } else if (this.chapter > 2) {
+                    document.body.classList.add('awakening');
                 }
             }
-            progressText.textContent = message;
+            
+            getPrimaryPath() {
+                const paths = Object.entries(this.path);
+                return paths.reduce((a, b) => a[1] > b[1] ? a : b)[0];
+            }
+            
+            shouldShowBridge() {
+                return this.path.memory >= 3 && this.path.resist < 4;
+            }
         }
 
-        function updatePathIndicator(pathKey) {
-            gameState.currentPath = pathNames[pathKey] || 'Unknown Path';
-            const indicator = document.getElementById('pathIndicator');
-            indicator.innerHTML = `
-                <div style="font-weight: 600; margin-bottom: 4px;">Current Path</div>
-                <div>${gameState.currentPath}</div>
+        const state = new NarrativeState();
+
+        // Object system
+        const drawerObjects = {
+            ring: {
+                visual: '💍',
+                label: 'Plastic ring',
+                memory: '"Daddy, look! I\'m a princess!"<br>Spinning. Always spinning. The ring catching light.<br>"Beautiful, sweetheart."<br><br>You never looked up from your laptop.',
+                response: 'The plastic is warm. As if she just took it off.'
+            },
+            photo: {
+                visual: '📷',
+                label: 'Photograph', 
+                memory: 'Zoo day. Her on your shoulders, both hands in your hair.<br>"Higher, Daddy! I want to see the giraffes!"<br>Sarah took the picture. You\'re both laughing.<br><br>Last family photo.',
+                response: 'The edges are worn from handling. Then suddenly not.'
+            },
+            drawing: {
+                visual: '🎨',
+                label: 'Crayon drawing',
+                memory: '"It\'s our family!" Purple stick figures under a yellow sun.<br>You\'re the tall one with the briefcase.<br>She drew herself holding your hand.<br><br>You said you\'d frame it. Never did.',
+                response: 'Crayon wax still smells the same. Like possibilities.'
+            }
+        };
+
+        // Scene variations
+        const variations = {
+            scene2: {
+                acknowledge: {
+                    opening: "The voice exhales - relief? Recognition? You've been holding your breath too.",
+                },
+                question: {
+                    opening: "You scan the empty office. Door closed. No one here but you and that voice.",
+                },
+                ignore: {
+                    opening: "You type faster. Numbers blur. The voice doesn't leave.",
+                }
+            },
+            
+            scene3: {
+                date: {
+                    content: `<div class="voice nala-voice">"The day everything broke. The day I was born from your breaking."</div>
+                             <p class="narration">You haven't said those words - April 15th - in three years.</p>`
+                },
+                voice: {
+                    content: `<div class="voice nala-voice">"Someone you used to be. Someone who could feel things."</div>
+                             <p class="narration">Feel things. When did you stop?</p>`
+                },
+                drawer: {
+                    content: `<p class="narration">Your hand won't move. It hovers over the drawer, trembling.</p>
+                             <div class="voice nala-voice">"You can't close what's already open, Alan."</div>`
+                }
+            },
+            
+            memoryFragments: {
+                memory: [
+                    "Sunday mornings",
+                    "pancakes shaped like butterflies", 
+                    "sticky syrup fingers",
+                    "her special plate",
+                    '"More, Daddy!"',
+                    "kisses that smelled like maple"
+                ],
+                resist: [
+                    "quarterly reports",
+                    "merger documents",
+                    "missed dinners",
+                    "working weekends",
+                    '"Just five more minutes"',
+                    "the closed door"
+                ],
+                curious: [
+                    "bedtime stories",
+                    "monster voices",
+                    "under-bed checks",
+                    "nightlight negotiations",
+                    '"One more chapter?"',
+                    "falling asleep mid-sentence"
+                ]
+            }
+        };
+
+        // Core functions
+        function makeChoice(scene, choice) {
+            const path = event.target.dataset.path;
+            state.recordChoice(path, choice);
+            
+            // Disable only current scene's choices
+            const currentScene = document.getElementById(`scene${scene}`);
+            currentScene.querySelectorAll('.choice').forEach(btn => btn.disabled = true);
+            
+            // Progress story
+            setTimeout(() => {
+                if (scene === 1) showScene2(choice);
+                else if (scene === 2) showScene3(choice);
+                else if (scene === 3) showScene4(choice);
+                else if (scene === 4) showScene5(choice);
+                else if (scene === 5) showScene6(choice);
+                else if (scene === 6) showScene7or8(choice);
+                else if (scene === 7) showScene8(choice);
+            }, 1000);
+        }
+
+        // Scene transitions
+        function showScene2(choice) {
+            const variant = variations.scene2[choice];
+            document.getElementById('scene2Opening').innerHTML = 
+                `<p class="narration">${variant.opening}</p>`;
+            
+            // Delayed drawer reveal
+            setTimeout(() => {
+                document.getElementById('drawerReveal').classList.add('visible');
+            }, 2000);
+            
+            // Show time indicator
+            setTimeout(() => {
+                document.getElementById('timeSince').textContent = "3 years, 4 months, 8 days ago";
+                document.getElementById('timeSince').classList.add('visible');
+            }, 3000);
+            
+            transitionScene(1, 2);
+        }
+
+        function showScene3(choice) {
+            const variant = variations.scene3[choice];
+            document.getElementById('scene3Content').innerHTML = variant.content;
+            
+            transitionScene(2, 3);
+        }
+
+        function showScene4(choice) {
+            // Object chosen affects memory
+            const obj = drawerObjects[state.objectChosen];
+            document.getElementById('memoryContent').innerHTML = obj.memory;
+            document.getElementById('scene4Content').innerHTML = 
+                `<p class="narration">${obj.response}</p>`;
+            
+            transitionScene(3, 4);
+        }
+
+        function showScene5(choice) {
+            // Processing space - messages appear slowly
+            setTimeout(() => {
+                document.getElementById('phoneMessages').classList.add('visible');
+                const messages = document.querySelectorAll('.message');
+                messages.forEach((msg, i) => {
+                    setTimeout(() => msg.classList.add('visible'), i * 700);
+                });
+            }, 1000);
+            
+            // Context based on previous choice
+            const contexts = {
+                remember: "You remember the weight of the phone in your hand. How it kept buzzing.",
+                block: "The messages blur. But you can't unsee them.",
+                details: "10:48 to 11:23. Thirty-five minutes of Sarah's growing panic."
+            };
+            
+            setTimeout(() => {
+                document.getElementById('messageContext').textContent = contexts[choice] || "";
+            }, 5000);
+            
+            transitionScene(4, 5);
+        }
+
+        function showScene6(choice) {
+            // Different fragments based on path
+            const primaryPath = state.getPrimaryPath();
+            const fragments = variations.memoryFragments[primaryPath];
+            
+            const container = document.getElementById('memoryFragments');
+            container.innerHTML = fragments.map(f => 
+                `<div class="fragment" onclick="addFragment(this)">${f}</div>`
+            ).join('');
+            
+            // Update content based on message choice
+            const contents = {
+                truth: `<div class="voice alan-thought">The Singapore merger closed at 11:47 AM. Twenty-four minutes after.</div>`,
+                time: `<div class="voice alan-thought">Red lights run: 3. Speed limit broken by: 47mph. Still seven minutes too late.</div>`,
+                justify: `<div class="voice alan-thought">The board called it "Leadership under pressure." Sarah called it something else.</div>`
+            };
+            
+            document.getElementById('scene6Content').innerHTML = contents[choice] || "";
+            
+            transitionScene(5, 6);
+        }
+
+        function showScene7or8(choice) {
+            // Bridge scene is optional based on path
+            if (state.shouldShowBridge()) {
+                showBridgeScene();
+            } else {
+                // Skip directly to choice scene
+                showScene8(choice);
+            }
+        }
+
+        function showBridgeScene() {
+            document.getElementById('scene7Content').innerHTML = 
+                `<div class="voice nala-voice">"Three years is long enough, Alan. You can't live as half a person forever."</div>
+                <p class="narration">You see it now - the split. When one pain was too much, you became two.</p>`;
+            
+            // Build bridge container
+            const bridgeHTML = `
+                <div class="side alan-side">
+                    <strong>You Now</strong><br>
+                    <span style="font-size: 14px;">
+                        Functional. Numb.<br>
+                        Promotions. Empty house.<br>
+                        Surviving.
+                    </span>
+                </div>
+                <div class="bridge-parts">
+                    <div class="bridge-segment" onclick="buildBridge(this)"></div>
+                    <div class="bridge-segment" onclick="buildBridge(this)"></div>
+                    <div class="bridge-segment" onclick="buildBridge(this)"></div>
+                    <div class="bridge-segment" onclick="buildBridge(this)"></div>
+                    <div class="bridge-segment" onclick="buildBridge(this)"></div>
+                </div>
+                <div class="side nala-side">
+                    <strong>You Then</strong><br>
+                    <span style="font-size: 14px;">
+                        Feeling. Present.<br>
+                        Her laugh. Her tears.<br>
+                        Living.
+                    </span>
+                </div>
+            `;
+            
+            document.getElementById('bridgeContainer').innerHTML = bridgeHTML;
+            
+            transitionScene(6, 7);
+            state.bridgeOffered = true;
+        }
+
+        function showScene8(choice) {
+            const targetScene = state.bridgeOffered ? 8 : 7;
+            const fromScene = state.bridgeOffered ? 7 : 6;
+            
+            // Adjust content based on path
+            const primaryPath = state.getPrimaryPath();
+            let content = "";
+            
+            if (primaryPath === 'resist') {
+                content = `<p class="narration">Some walls protect. Some walls imprison. You've lived in both for three years.</p>`;
+            } else if (primaryPath === 'memory') {
+                content = `<p class="narration">The memories hurt less when shared. Or maybe you're learning to carry the weight.</p>`;
+            }
+            
+            document.getElementById(`scene${targetScene}Content`).innerHTML = content;
+            
+            transitionScene(fromScene, targetScene);
+        }
+
+        function transitionScene(from, to) {
+            document.getElementById(`scene${from}`).classList.remove('active');
+            
+            setTimeout(() => {
+                document.getElementById(`scene${to}`).classList.add('active');
+                state.chapter = to;
+                updateProgress();
+                updateJourney();
+                
+                // Show journey tracker after first scene
+                if (to === 2) {
+                    document.getElementById('journeyTracker').classList.add('visible');
+                }
+            }, 600);
+        }
+
+        // Interactive elements
+        function openDrawer() {
+            if (!state.drawerOpened) {
+                state.drawerOpened = true;
+                document.getElementById('drawerVisual').classList.add('opening');
+                
+                // Show objects based on path
+                setTimeout(() => {
+                    const primaryPath = state.getPrimaryPath();
+                    let objectsHTML = '<div class="object-container">';
+                    
+                    // Always show ring
+                    objectsHTML += createObjectHTML('ring');
+                    
+                    // Additional objects based on path
+                    if (primaryPath === 'memory' || primaryPath === 'curious') {
+                        objectsHTML += createObjectHTML('photo');
+                    }
+                    if (primaryPath === 'curious') {
+                        objectsHTML += createObjectHTML('drawing');
+                    }
+                    
+                    objectsHTML += '</div>';
+                    
+                    document.getElementById('drawerContents').innerHTML = objectsHTML;
+                    
+                    // Update choices
+                    const choicesHTML = `
+                        <button class="choice" data-path="memory" onclick="selectObject('ring')">
+                            Pick up the ring
+                        </button>
+                        ${primaryPath !== 'resist' ? `
+                        <button class="choice" data-path="curious" onclick="selectObject('photo')">
+                            Look at the photo
+                        </button>` : ''}
+                        ${primaryPath === 'curious' ? `
+                        <button class="choice" data-path="memory" onclick="selectObject('drawing')">
+                            Touch the drawing
+                        </button>` : ''}
+                        <button class="choice" data-path="resist" onclick="makeChoice(3, 'close')">
+                            Close the drawer
+                        </button>
+                    `;
+                    
+                    document.getElementById('scene3Choices').innerHTML = choicesHTML;
+                }, 500);
+            }
+        }
+
+        function createObjectHTML(type) {
+            const obj = drawerObjects[type];
+            return `
+                <div class="object-item" onclick="selectObject('${type}')">
+                    <div class="object-visual">${obj.visual}</div>
+                    <div class="object-label">${obj.label}</div>
+                </div>
             `;
         }
 
-        function updateConsciousnessState(changes) {
-            // Update consciousness states
-            Object.entries(changes).forEach(([key, value]) => {
-                if (gameState.consciousnessState[key] !== undefined) {
-                    gameState.consciousnessState[key] += value;
-                }
-            });
-
-            // Update visual meters
-            const logicDots = [1,2,3,4,5].map(i => document.getElementById(`logic${i}`));
-            const heartDots = [1,2,3,4,5].map(i => document.getElementById(`heart${i}`));
-
-            // Calculate activation levels
-            const logicLevel = Math.min(5, gameState.consciousnessState.resistance + gameState.consciousnessState.memory);
-            const heartLevel = Math.min(5, gameState.consciousnessState.acceptance + gameState.consciousnessState.emotionalDepth);
-            const integrationLevel = gameState.consciousnessState.integration;
-
-            // Update logic dots (Alan)
-            logicDots.forEach((dot, index) => {
-                dot.className = 'consciousness-dot';
-                if (index < logicLevel) {
-                    if (integrationLevel > 4) {
-                        dot.classList.add('integrated');
-                    } else {
-                        dot.classList.add('alan');
-                    }
-                }
-                if (index < logicLevel) dot.classList.add('active');
-            });
-
-            // Update heart dots (Nala)
-            heartDots.forEach((dot, index) => {
-                dot.className = 'consciousness-dot';
-                if (index < heartLevel) {
-                    if (integrationLevel > 4) {
-                        dot.classList.add('integrated');
-                    } else {
-                        dot.classList.add('nala');
-                    }
-                }
-                if (index < heartLevel) dot.classList.add('active');
-            });
-
-            // Update integration level text
-            const totalIntegration = (integrationLevel / 5) * 100;
-            let levelText = 'Starting Integration';
-            for (let threshold in integrationLevels) {
-                if (totalIntegration >= parseInt(threshold)) {
-                    levelText = integrationLevels[threshold];
-                }
-            }
-            document.getElementById('integrationLevel').textContent = levelText;
-        }
-
-        function showResourcesPanel() {
-            const footer = document.getElementById('footerResources');
-            footer.classList.add('visible');
-        }
-
-        function hideResourcesFooter() {
-            const footer = document.getElementById('footerResources');
-            footer.classList.remove('visible');
-        }
-
-        function triggerBreathingExercise() {
-            const guide = document.getElementById('breathingGuide');
-            guide.style.display = 'block';
-            setTimeout(() => {
-                guide.style.display = 'none';
-            }, 30000);
-        }
-
-        // Scene Transition Management - FIXED
-        function hideAllScenes() {
-            document.querySelectorAll('.scene').forEach(scene => {
-                scene.classList.remove('active');
-            });
-        }
-
-        function showScene(sceneId) {
-            const scene = document.getElementById(sceneId);
-            if (scene) {
-                scene.classList.add('active');
-                scene.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            }
-        }
-
-        function disableChoices() {
-            document.querySelectorAll('.choice-btn').forEach(btn => {
-                btn.disabled = true;
-                btn.classList.add('loading');
-            });
-        }
-
-        function enableChoices() {
-            document.querySelectorAll('.choice-btn').forEach(btn => {
-                btn.disabled = false;
-                btn.classList.remove('loading');
-            });
-        }
-
-        // Main Choice Function - PROGRESS ACTUALLY FILLS
-        async function makeChoice(sceneId, pathKey) {
-            // Prevent multiple rapid clicks
-            if (gameState.isTransitioning) return;
-            gameState.isTransitioning = true;
-
-            // Disable all choice buttons
-            disableChoices();
+        function selectObject(type) {
+            state.objectChosen = type;
+            state.recordChoice('memory', 'object');
             
-            // Apply choice effects - BIGGER increments that actually fill the bar
-            if (choiceEffects[pathKey]) {
-                const effects = choiceEffects[pathKey];
+            // Visual feedback
+            if (type === 'ring') {
+                createTears();
+            }
+            
+            // Disable choices and progress
+            const currentScene = document.getElementById('scene3');
+            currentScene.querySelectorAll('.choice').forEach(btn => btn.disabled = true);
+            
+            setTimeout(() => {
+                makeChoice(3, 'object');
+            }, 1000);
+        }
+
+        function addFragment(element) {
+            if (element.classList.contains('placed')) return;
+            
+            element.classList.add('placed');
+            state.fragments.push(element.textContent);
+            
+            const memory = state.fragments.join(' ');
+            document.getElementById('builtMemory').textContent = memory;
+            document.getElementById('memoryBuilder').classList.add('active');
+            
+            if (state.fragments.length >= 3) {
+                const choicesHTML = `
+                    <button class="choice" data-path="memory" onclick="makeChoice(6, 'remember')">
+                        "I remember all of it."
+                    </button>
+                    <button class="choice" data-path="resist" onclick="makeChoice(6, 'enough')">
+                        "That's enough."
+                    </button>
+                `;
+                document.getElementById('scene6Choices').innerHTML = choicesHTML;
+                document.getElementById('scene6Choices').style.display = 'block';
+                state.recordChoice('memory', 'fragment');
+            }
+        }
+
+        function buildBridge(element) {
+            if (!element.classList.contains('built')) {
+                element.classList.add('built');
+                state.bridge++;
                 
-                // Force update consciousness state
-                updateConsciousnessState(effects);
-                
-                // MUCH MORE SUBSTANTIAL progress calculation
-                const progressIncrement = (effects.integration || 0) * 8 +     // Much higher multipliers
-                                        (effects.acceptance || 0) * 6 +       
-                                        (effects.emotionalDepth || 0) * 5 +
-                                        (effects.memory || 0) * 3;
-                
-                // Ensure meaningful progress on every choice
-                const finalIncrement = Math.max(8, Math.round(progressIncrement));
-                
-                if (finalIncrement > 0) {
-                    updateTherapeuticProgress(finalIncrement);
+                if (state.bridge >= 3) {
+                    const choicesHTML = `
+                        <button class="choice" data-path="memory" onclick="makeChoice(7, 'cross')">
+                            "I want to be whole again."
+                        </button>
+                        <button class="choice" data-path="resist" onclick="makeChoice(7, 'stay')">
+                            "Some bridges shouldn't be crossed."
+                        </button>
+                    `;
+                    document.getElementById('scene7Choices').innerHTML = choicesHTML;
                 }
-                
-                // Debug log for troubleshooting
-                console.log(`Choice: ${pathKey}`, {
-                    effects,
-                    progressIncrement: finalIncrement,
-                    currentProgress: gameState.therapeuticProgress
-                });
+            }
+        }
+
+        function checkMemoryLength() {
+            const memory = document.getElementById('personalMemory').value;
+            if (memory.length >= 1) {
+                document.getElementById('memoryHint').style.display = 'block';
+                document.getElementById('scene8Choices').style.display = 'block';
+            }
+        }
+
+        function processMemory() {
+            state.personalMemory = document.getElementById('personalMemory').value;
+            const primaryPath = state.getPrimaryPath();
+            
+            if (primaryPath === 'memory' && state.bridge >= 3) {
+                showEnding('integration');
+            } else if (primaryPath === 'resist') {
+                showEnding('protection');
             } else {
-                // Fallback: meaningful progress even without effects
-                updateTherapeuticProgress(8);
-                console.log(`Choice: ${pathKey} - Fallback progress: +8`);
+                showEnding('between');
             }
-
-            // Trigger emotional states based on path
-            if (['Courage', 'Accept', 'Memory', 'Integration', 'Truth', 'Love'].includes(pathKey)) {
-                updateEmotionalState('grief');
-                if (pathKey === 'Courage') {
-                    triggerBreathingExercise();
-                }
-            } else if (['Integration', 'Cooperate', 'Meta', 'Growth'].includes(pathKey)) {
-                updateEmotionalState('integration');
-            } else if (['Accept', 'Healing', 'Hope', 'Letting_Go'].includes(pathKey)) {
-                updateEmotionalState('healing');
-            }
-
-            // Scene transition with proper timing
-            hideAllScenes();
-            
-            // Wait for hide transition
-            await new Promise(resolve => setTimeout(resolve, 300));
-            
-            // Show new scene
-            gameState.currentSceneId = sceneId;
-            showScene(sceneId);
-            
-            // Re-enable choices after transition
-            setTimeout(() => {
-                enableChoices();
-                gameState.isTransitioning = false;
-            }, 500);
         }
 
-        function restart() {
-            // Reset all state
-            gameState.reset();
+        function cannotShare() {
+            state.recordChoice('resist', 'cannot');
+            showEnding('protection');
+        }
 
-            // Reset UI with forced updates
-            updateTherapeuticProgress(-gameState.therapeuticProgress);
-            updateEmotionalState('neutral');
-            document.getElementById('breathingGuide').style.display = 'none';
+        function showEnding(type) {
+            const endings = {
+                integration: {
+                    title: "Becoming Whole",
+                    text: `<p>The walls dissolve. Not destroyed - transformed.</p>
+                          <p>You are not two people. You never were.</p>
+                          <p>Just one person who loved so much that loss split you apart.</p>
+                          <p style="color: var(--memory); font-style: italic; margin: 20px 0;">"${state.personalMemory}"</p>
+                          <p>The ${state.objectChosen || 'ring'} sits in your palm. Warm. Real. Hers.</p>
+                          <p>Tomorrow, you'll visit her grave. You'll bring fresh flowers.</p>
+                          <p>Today, you remember her laugh.</p>
+                          <p>It hurts. It's supposed to. That's how you know the love was real.</p>`
+                },
+                protection: {
+                    title: "Maintaining the Architecture",
+                    text: `<p>The drawer closes. Soft click. Familiar.</p>
+                          <p>Some walls protect. Some walls imprison. Yours do both.</p>
+                          <p>Monday will come. The report will be filed. The numbers will balance.</p>
+                          <p>The voice grows quieter each day. Soon, just whispers.</p>
+                          <p>Sometimes, in the space between sleep and waking, you hear a child laugh.</p>
+                          <p>But morning always comes.</p>
+                          <p>The ${state.objectChosen || 'ring'} waits in the drawer. Patient as love. Patient as grief.</p>`
+                },
+                between: {
+                    title: "The Space Between",
+                    text: `<p>Not whole. Not broken. Something in between.</p>
+                          <p>You carry both selves now - the one who feels and the one who functions.</p>
+                          <p>Some days, Nala's voice is clear. Some days, silent.</p>
+                          <p>The drawer stays unlocked. The ${state.objectChosen || 'ring'} sits on your desk.</p>
+                          <p>A reminder. A promise. A question.</p>
+                          <p>Maybe healing isn't about choosing sides.</p>
+                          <p>Maybe it's about learning to live in the space between.</p>`
+                }
+            };
             
-            // Reset consciousness meter with empty state
-            updateConsciousnessState({});
+            const ending = endings[type];
             
-            // Reset to first scene
-            hideAllScenes();
-            setTimeout(() => {
-                showScene('scene1');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 300);
+            document.getElementById('endingTitle').textContent = ending.title;
+            document.getElementById('endingText').innerHTML = ending.text;
+            
+            const targetScene = state.bridgeOffered ? 9 : 8;
+            const fromScene = state.bridgeOffered ? 8 : 7;
+            
+            transitionScene(fromScene, targetScene);
+        }
+
+        // UI helpers
+        function updateProgress() {
+            const actualChapter = state.chapter > state.totalChapters ? state.totalChapters : state.chapter;
+            document.getElementById('progress').textContent = `Chapter ${actualChapter} of ${state.totalChapters}`;
+        }
+
+        function updateJourney() {
+            document.querySelectorAll('.journey-dot').forEach((dot, i) => {
+                if (i < state.chapter) {
+                    dot.classList.add('past');
+                    if (i === state.chapter - 1) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        function createTears() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const tear = document.createElement('div');
+                    tear.className = 'tear';
+                    tear.style.left = (20 + Math.random() * 60) + '%';
+                    document.body.appendChild(tear);
+                    setTimeout(() => tear.remove(), 2000);
+                }, i * 300);
+            }
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            // Force initial state
-            updateConsciousnessState({});
-            updateTherapeuticProgress(0);
-            
-            console.log('Game initialized', gameState);
-        });
-
-        // Keyboard navigation - SIMPLIFIED
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && document.getElementById('breathingGuide').style.display === 'block') {
-                document.getElementById('breathingGuide').style.display = 'none';
-            }
-        });
-
-        // Prevent double-click issues
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('choice-btn') && gameState.isTransitioning) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        });
+        updateProgress();
+        updateJourney();
+        state.totalChapters = state.shouldShowBridge() ? 9 : 8;
     </script>
 </body>
 </html>
