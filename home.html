@@ -168,13 +168,6 @@
             font-style: italic;
             border-left: 3px solid var(--nala);
             background: rgba(167, 139, 250, 0.05);
-            opacity: 0;
-            animation: voiceFade 1s ease forwards;
-            animation-delay: 0.5s;
-        }
-
-        @keyframes voiceFade {
-            to { opacity: 1; }
         }
 
         .nala-voice.fading {
@@ -199,13 +192,6 @@
             font-style: italic;
             border-left: 3px solid var(--memory);
             background: rgba(251, 191, 36, 0.05);
-            opacity: 0;
-            animation: memoryFade 1s ease forwards;
-            animation-delay: 0.5s;
-        }
-
-        @keyframes memoryFade {
-            to { opacity: 0.9; }
         }
 
         .physical-response {
@@ -214,17 +200,11 @@
             font-style: italic;
             margin: 15px 0;
             text-align: center;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: 0.3s;
         }
 
         /* Choices */
         .choices {
             margin-top: 30px;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
-            animation-delay: 1s;
         }
 
         .choice {
@@ -355,13 +335,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeIn 0.5s ease forwards;
         }
-
-        .object-item:nth-child(1) { animation-delay: 0.2s; }
-        .object-item:nth-child(2) { animation-delay: 0.4s; }
-        .object-item:nth-child(3) { animation-delay: 0.6s; }
 
         .object-item:hover {
             transform: translateY(-5px);
@@ -834,18 +808,7 @@
                 this.selfStates = [];
                 
                 // Randomized elements
-                this.objectOrder = this.shuffleArray(['ring', 'photo', 'drawing', 'letter', 'toy']);
-                this.messageOrder = this.shuffleArray([1, 2, 3, 4, 5, 6, 7]);
                 this.voicePersonality = this.selectVoiceType();
-            }
-            
-            shuffleArray(array) {
-                const shuffled = [...array];
-                for (let i = shuffled.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-                }
-                return shuffled;
             }
             
             selectVoiceType() {
@@ -921,57 +884,25 @@
 
         const state = new NarrativeState();
 
-        // Expanded object system with randomized memories
+        // Expanded object system
         const drawerObjects = {
             ring: {
                 visual: '💍',
                 label: 'Plastic ring',
-                memories: [
-                    '"Daddy, look! I\'m a princess!" Spinning. Always spinning.',
-                    'She wore it to bed every night. "Princesses need their crowns."',
-                    'Found it under the car seat. Three days after.'
-                ],
+                memory: '"Daddy, look! I\'m a princess!" Spinning. Always spinning. The ring catching light.<br>"Beautiful, sweetheart."<br><br>You never looked up from your laptop.',
                 response: 'The plastic is warm. As if she just took it off.'
             },
             photo: {
                 visual: '📷',
                 label: 'Photograph', 
-                memories: [
-                    'Zoo day. Her on your shoulders. Last family photo.',
-                    'Christmas morning. Wrapping paper everywhere. Her smile bigger than the tree.',
-                    'First day of preschool. Backpack almost bigger than her.'
-                ],
+                memory: 'Zoo day. Her on your shoulders, both hands in your hair.<br>"Higher, Daddy! I want to see the giraffes!"<br>Sarah took the picture. You\'re both laughing.<br><br>Last family photo.',
                 response: 'The edges are worn from handling. Then suddenly not.'
             },
             drawing: {
                 visual: '🎨',
                 label: 'Crayon drawing',
-                memories: [
-                    '"It\'s our family!" You\'re the tall one with the briefcase.',
-                    '"This is you at work. This is me waiting."',
-                    'Purple sun, green sky. "That\'s how happy feels, Daddy."'
-                ],
-                response: 'Crayon wax still smells the same.'
-            },
-            letter: {
-                visual: '✉️',
-                label: 'Envelope',
-                memories: [
-                    'Sarah\'s handwriting. "I can\'t watch you disappear too."',
-                    'Lily\'s attempt. "I LOV YU DADY" in shaky letters.',
-                    'The hospital bill. $847,293.42. Paid in full.'
-                ],
-                response: 'Paper yellowed at the edges.'
-            },
-            toy: {
-                visual: '🧸',
-                label: 'Small toy',
-                memories: [
-                    'Mr. Buttons. He went everywhere with her.',
-                    'Tiny dinosaur. "Roar means I love you in dinosaur."',
-                    'Half a pair. "You keep one, Daddy. So we match."'
-                ],
-                response: 'Still smells like her.'
+                memory: '"It\'s our family!" Purple stick figures under a yellow sun.<br>You\'re the tall one with the briefcase.<br>She drew herself holding your hand.<br><br>You said you\'d frame it. Never did.',
+                response: 'Crayon wax still smells the same. Like possibilities.'
             }
         };
 
@@ -1120,13 +1051,12 @@
 
         function generateScene4(lastChoice) {
             const obj = drawerObjects[state.objectChosen];
-            const memory = obj.memories[Math.floor(Math.random() * obj.memories.length)];
             
             return `
                 <p class="narration">${obj.response}</p>
                 
                 <div class="voice memory-flash">
-                    ${memory}
+                    ${obj.memory}
                 </div>
                 
                 <p class="narration emphasis">
@@ -1157,17 +1087,14 @@
 
         function generateScene5(lastChoice) {
             const messages = [
-                "Lily's been in an accident",
-                "Please come NOW", 
-                "She's asking for you",
-                "ALAN PLEASE",
-                "They're taking her to surgery",
-                "She's scared",
-                "Alan where are you"
+                { time: "10:48", text: "Lily's been in an accident" },
+                { time: "10:52", text: "Please come NOW" },
+                { time: "10:55", text: "She's asking for you" },
+                { time: "11:01", text: "ALAN PLEASE" },
+                { time: "11:08", text: "They're taking her to surgery" },
+                { time: "11:15", text: "She's scared", unread: true },
+                { time: "11:23", text: "Alan where are you", unread: true }
             ];
-            
-            // Randomize message order
-            const shuffledMessages = state.messageOrder.map(i => messages[i-1]);
             
             return `
                 <p class="narration">
@@ -1175,9 +1102,9 @@
                 </p>
                 
                 <div class="phone-messages" id="phoneMessages">
-                    ${shuffledMessages.map((msg, i) => `
-                        <div class="message ${i > 4 ? 'unread' : ''}">
-                            ${10 + (i * 5)}:${48 + (i * 4) % 60} AM - Sarah: "${msg}"
+                    ${messages.map(msg => `
+                        <div class="message ${msg.unread ? 'unread' : ''}">
+                            ${msg.time} AM - Sarah: "${msg.text}"
                         </div>
                     `).join('')}
                 </div>
@@ -1529,35 +1456,32 @@
                 state.drawerOpened = true;
                 document.getElementById('drawerVisual').classList.add('opening');
                 
-                // Show objects based on randomized order
+                // Always show the same 3 objects in consistent order
                 setTimeout(() => {
-                    const availableObjects = state.objectOrder.slice(0, 3);
-                    let objectsHTML = '<div class="object-container">';
-                    
-                    availableObjects.forEach(objType => {
-                        const obj = drawerObjects[objType];
-                        objectsHTML += `
-                            <div class="object-item" onclick="selectObject('${objType}')">
-                                <div class="object-visual">${obj.visual}</div>
-                                <div class="object-label">${obj.label}</div>
+                    const objectsHTML = `
+                        <div class="object-container">
+                            <div class="object-item" onclick="selectObject('ring')">
+                                <div class="object-visual">💍</div>
+                                <div class="object-label">Plastic ring</div>
                             </div>
-                        `;
-                    });
+                            <div class="object-item" onclick="selectObject('photo')">
+                                <div class="object-visual">📷</div>
+                                <div class="object-label">Photograph</div>
+                            </div>
+                            <div class="object-item" onclick="selectObject('drawing')">
+                                <div class="object-visual">🎨</div>
+                                <div class="object-label">Crayon drawing</div>
+                            </div>
+                        </div>
+                    `;
                     
-                    objectsHTML += '</div>';
                     document.getElementById('drawerContents').innerHTML = objectsHTML;
                     
-                    // Generate choices
+                    // Simple instruction
                     const choicesHTML = `
-                        <button class="choice" data-path="memory" onclick="selectObject('${availableObjects[0]}')">
-                            Reach for the ${drawerObjects[availableObjects[0]].label.toLowerCase()}
-                        </button>
-                        <button class="choice" data-path="curious" onclick="selectObject('${availableObjects[1]}')">
-                            Examine the ${drawerObjects[availableObjects[1]].label.toLowerCase()}
-                        </button>
-                        <button class="choice" data-path="resist" onclick="makeChoice(3, 'close')">
-                            Close the drawer
-                        </button>
+                        <p class="narration context" style="text-align: center; margin-top: 20px;">
+                            Choose what calls to you...
+                        </p>
                     `;
                     
                     document.getElementById('scene3Choices').innerHTML = choicesHTML;
@@ -1566,9 +1490,21 @@
         }
 
         function selectObject(type) {
+            if (state.objectChosen) return; // Prevent multiple selections
+            
             state.objectChosen = type;
             state.recordChoice('memory', 'object');
-            makeChoice(3, 'object');
+            
+            // Visual feedback
+            document.querySelectorAll('.object-item').forEach(item => {
+                item.style.opacity = '0.3';
+                item.style.cursor = 'not-allowed';
+            });
+            
+            // Progress after a moment
+            setTimeout(() => {
+                generateNextScene(4, 'object');
+            }, 1000);
         }
 
         function addFragment(element) {
