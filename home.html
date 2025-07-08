@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Architecture of Becoming</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
         
         :root {
-            --bg: #0a0612;
-            --text: #e2e8f0;
-            --text-dim: #64748b;
-            --accent: #6366f1;
-            --nala: #a78bfa;
-            --memory: #fbbf24;
-            --pain: #ef4444;
-            --sarah: #10b981;
-            --border: rgba(255, 255, 255, 0.08);
-            --therapy: #06b6d4;
-            --present: #f59e0b;
+            --bg-cold: #f5f5f5;
+            --bg-warm: #1a0614;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --alan-color: #1e40af;
+            --nala-color: #ec4899;
+            --dr-chen-color: #06b6d4;
+            --memory-color: #fbbf24;
+            --lily-color: #a78bfa;
+            --sarah-color: #10b981;
+            --border: rgba(0, 0, 0, 0.1);
+            --emotional-temperature: 0;
         }
 
         * {
@@ -28,119 +29,61 @@
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
             font-family: 'Crimson Text', serif;
             line-height: 1.7;
+            color: var(--text-primary);
             min-height: 100vh;
-            font-size: 19px;
-            transition: background 3s ease;
+            background: var(--bg-cold);
+            transition: all 2s ease;
+            overflow-x: hidden;
         }
 
-        /* Environmental states */
-        body.awakening {
-            background: linear-gradient(135deg, #0a0614 0%, #14091f 100%);
+        body.warming {
+            --bg-cold: #fdf4ff;
+            --text-primary: #4a4a4a;
         }
 
-        body.remembering {
-            background: linear-gradient(135deg, #0a0614 0%, #1a0f30 100%);
+        body.warm {
+            background: linear-gradient(135deg, #fdf4ff 0%, #f9d7e7 100%);
+            --text-primary: #5a5a5a;
         }
 
-        body.resisting {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        body.integrated {
+            background: linear-gradient(135deg, #e0d7ff 0%, #ffd7e7 50%, #d7f0ff 100%);
         }
 
-        body.fracturing {
-            animation: glitch 0.3s;
+        body.fractured {
+            animation: fracture 0.5s ease-in-out;
         }
 
-        body.integrating {
-            background: linear-gradient(135deg, #0a0614 0%, #1f0f30 50%, #0f1a30 100%);
+        body.dark {
+            background: #0a0a0a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        @keyframes glitch {
+        @keyframes fracture {
             0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-2px); }
-            40% { transform: translateX(2px); }
-            60% { transform: translateX(-1px); }
-            80% { transform: translateX(1px); }
+            25% { transform: translateX(-3px) rotateZ(-0.5deg); }
+            75% { transform: translateX(3px) rotateZ(0.5deg); }
         }
 
-        /* Journey tracker */
-        .journey-tracker {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            gap: 8px;
-            opacity: 0;
-            transition: opacity 1s ease;
-            flex-wrap: wrap;
-            max-width: 200px;
-        }
-
-        .journey-tracker.visible {
-            opacity: 0.6;
-        }
-
-        .journey-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--border);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .journey-dot:hover::after {
-            content: attr(data-chapter);
-            position: absolute;
-            top: 15px;
-            left: -10px;
-            font-size: 10px;
-            color: var(--text-dim);
-            font-family: 'Inter', sans-serif;
-            white-space: nowrap;
-        }
-
-        .journey-dot.active {
-            background: var(--nala);
-            transform: scale(1.5);
-        }
-
-        .journey-dot.past {
-            background: var(--accent);
-        }
-
-        /* Container */
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 400;
-            margin-bottom: 50px;
-            color: var(--text);
-            opacity: 0;
-            animation: fadeIn 2s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Scenes */
         .scene {
             opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.6s ease;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
             display: none;
-            min-height: 60vh;
         }
 
         .scene.active {
@@ -149,967 +92,2229 @@
             display: block;
         }
 
-        /* Text elements */
-        .narration {
-            margin: 20px 0;
-        }
-
-        .narration.context {
-            font-size: 16px;
-            color: var(--text-dim);
+        .narrator {
             font-style: italic;
+            color: var(--text-secondary);
+            margin: 20px 0;
+            font-size: 18px;
         }
 
-        .narration.emphasis {
-            font-size: 21px;
-            font-weight: 300;
-            margin: 30px 0;
+        .dialogue {
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            font-size: 19px;
+        }
+
+        .dialogue.nala {
+            border-left: 4px solid var(--nala-color);
+            background: rgba(236, 72, 153, 0.05);
+        }
+
+        .dialogue.alan {
+            border-left: 4px solid var(--alan-color);
+            background: rgba(30, 64, 175, 0.05);
+        }
+
+        .dialogue.dr-chen {
+            border-left: 4px solid var(--dr-chen-color);
+            background: rgba(6, 182, 212, 0.05);
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+        }
+
+        .dialogue.memory {
+            border-left: 4px solid var(--memory-color);
+            background: rgba(251, 191, 36, 0.05);
+            font-style: italic;
             text-align: center;
         }
 
-        /* Voices */
-        .voice {
-            margin: 20px 0;
-            padding: 16px 20px;
-            border-radius: 4px;
-            position: relative;
-        }
-
-        .nala-voice {
-            color: var(--nala);
-            font-style: italic;
-            border-left: 3px solid var(--nala);
+        .dialogue.lily {
+            border-left: 4px solid var(--lily-color);
             background: rgba(167, 139, 250, 0.05);
+            font-size: 18px;
         }
 
-        .alan-thought {
-            color: var(--text-dim);
-            font-family: 'Inter', sans-serif;
-            font-size: 15px;
-            border-left: 3px solid var(--accent);
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .memory-flash {
-            color: var(--memory);
-            font-style: italic;
-            border-left: 3px solid var(--memory);
-            background: rgba(251, 191, 36, 0.05);
-        }
-
-        .sarah-voice {
-            color: var(--sarah);
-            font-style: italic;
-            border-left: 3px solid var(--sarah);
+        .dialogue.sarah {
+            border-left: 4px solid var(--sarah-color);
             background: rgba(16, 185, 129, 0.05);
         }
 
-        .dr-chen-voice {
-            color: var(--therapy);
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            border-left: 3px solid var(--therapy);
-            background: rgba(6, 182, 212, 0.05);
+        .dialogue.merged {
+            border-left: 4px solid transparent;
+            border-image: linear-gradient(to bottom, var(--alan-color), var(--nala-color)) 1;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05), rgba(236, 72, 153, 0.05));
         }
 
-        .physical-response {
-            color: var(--pain);
-            font-size: 15px;
-            font-style: italic;
-            margin: 15px 0;
-            text-align: center;
+        .speaker {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            opacity: 0.7;
         }
 
-        /* Time markers */
-        .time-marker {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-            padding: 10px;
-            background: rgba(245, 158, 11, 0.1);
-            border-left: 3px solid var(--present);
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            color: var(--present);
-        }
-
-        .time-marker.past {
-            background: rgba(251, 191, 36, 0.1);
-            border-left-color: var(--memory);
-            color: var(--memory);
-        }
-
-        /* Choices */
         .choices {
-            margin-top: 30px;
+            margin: 40px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .choice {
-            display: block;
-            width: 100%;
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 15px 20px;
-            margin: 12px 0;
+            background: white;
+            border: 2px solid var(--border);
+            padding: 18px 24px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.3s ease;
             font-family: 'Crimson Text', serif;
-            font-size: 17px;
+            font-size: 18px;
             text-align: left;
-            transition: all 0.2s ease;
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
+            color: var(--text-primary);
         }
 
-        .choice:hover:not(:disabled) {
-            border-color: var(--nala);
-            transform: translateX(4px);
-        }
-
-        .choice[data-path="memory"]:hover {
-            border-color: var(--memory);
-            background: rgba(251, 191, 36, 0.05);
-        }
-
-        .choice[data-path="resist"]:hover {
-            border-color: var(--accent);
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        .choice[data-path="anger"]:hover {
-            border-color: var(--pain);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .choice[data-path="truth"]:hover {
-            border-color: var(--therapy);
-            background: rgba(6, 182, 212, 0.05);
-        }
-
-        .choice:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .choice.locked {
-            border-color: var(--pain);
-            color: var(--pain);
-            font-style: italic;
-        }
-
-        .choice.locked:hover {
-            background: rgba(239, 68, 68, 0.1);
-            transform: none;
-            cursor: not-allowed;
-        }
-
-        /* Calendar visual */
-        .calendar-visual {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .date-display {
-            font-size: 24px;
-            color: var(--pain);
-            margin: 10px 0;
-        }
-
-        /* Drawer */
-        .drawer-visual {
-            width: 200px;
-            height: 60px;
-            margin: 20px auto;
-            background: #2a2a2a;
-            border: 2px solid #444;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .drawer-visual::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 8px;
-            background: #666;
-            border-radius: 4px;
-        }
-
-        .drawer-visual.opening {
-            transform: translateX(30px);
-            box-shadow: -20px 0 20px rgba(0,0,0,0.3);
-        }
-
-        /* Objects */
-        .object-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .object-item {
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .object-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .object-visual {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            filter: grayscale(100%);
-            transition: filter 0.3s ease;
-        }
-
-        .object-item:hover .object-visual {
-            filter: grayscale(0%);
-        }
-
-        .object-label {
-            font-size: 12px;
-            color: var(--text-dim);
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Messages */
-        .phone-messages {
+        body.dark .choice {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 30px auto;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            max-width: 400px;
+            color: var(--text-primary);
         }
 
-        .message {
-            margin: 8px 0;
-            padding: 10px 14px;
+        .choice:hover {
+            transform: translateX(5px);
+            border-color: var(--nala-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .white-room {
+            text-align: center;
+            padding: 60px 20px;
+            margin: 40px 0;
+        }
+
+        .white-room h2 {
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .door {
+            display: inline-block;
+            margin: 10px;
+            padding: 20px 30px;
+            background: white;
+            border: 2px solid var(--border);
             border-radius: 8px;
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--sarah);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            position: relative;
         }
 
-        .message.alan {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--accent);
-            text-align: right;
+        body.dark .door {
+            background: #1a1a1a;
         }
 
-        .message-time {
-            font-size: 11px;
-            opacity: 0.7;
-            margin-bottom: 4px;
+        .door:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* Memory input */
-        .memory-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 15px;
-            color: var(--text);
-            font-family: 'Crimson Text', serif;
-            font-size: 16px;
-            resize: vertical;
-            min-height: 100px;
-            margin: 20px 0;
+        .door.purple { border-color: var(--lily-color); }
+        .door.sarah { border-color: var(--sarah-color); }
+        .door.work { border-color: var(--alan-color); }
+        .door.guilt { border-color: var(--nala-color); }
+        .door.silence { border-color: var(--text-secondary); }
+        .door.lily { border-color: var(--lily-color); }
+        .door.funeral { border-color: #000; }
+
+        .door.visited::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .integration-visual {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .two-chairs {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            margin: 40px 0;
+        }
+
+        .chair-figure {
+            text-align: center;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .memory-input:focus {
-            outline: none;
-            border-color: var(--memory);
-            background: rgba(251, 191, 36, 0.05);
+        .chair-figure:hover {
+            transform: scale(1.05);
         }
 
-        /* Integration visual */
-        .integration-visual {
-            margin: 30px 0;
-            padding: 30px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .self-points {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0;
-        }
-
-        .self-point {
+        .chair-figure .avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 40px;
         }
 
-        .self-point.alan {
-            background: rgba(99, 102, 241, 0.2);
-            border: 2px solid var(--accent);
+        .chair-figure.office .avatar {
+            background: var(--alan-color);
+            color: white;
         }
 
-        .self-point.nala {
-            background: rgba(167, 139, 250, 0.2);
-            border: 2px solid var(--nala);
+        .chair-figure.crying .avatar {
+            background: var(--nala-color);
+            color: white;
         }
 
-        .connection-line {
-            height: 2px;
-            background: var(--border);
-            flex: 1;
-            margin: 0 10px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .connection-progress {
-            height: 100%;
-            background: var(--nala);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        /* Ending */
-        .ending {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .ending-title {
-            font-size: 32px;
-            font-weight: 300;
-            margin-bottom: 30px;
-            color: var(--nala);
-        }
-
-        .ending-text {
-            font-size: 18px;
-            line-height: 1.8;
-            max-width: 600px;
-            margin: 0 auto 40px;
-        }
-
-        .ending-text p {
-            margin-bottom: 16px;
-        }
-
-        .restart {
-            background: transparent;
-            border: 1px solid var(--nala);
-            color: var(--nala);
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .restart:hover {
-            background: var(--nala);
-            color: var(--bg);
-        }
-
-        /* Progress */
-        .progress-indicator {
+        .state-indicator {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             font-family: 'Inter', sans-serif;
             font-size: 12px;
-            color: var(--text-dim);
-            opacity: 0.6;
+            color: var(--text-secondary);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .state-indicator.visible {
+            opacity: 0.7;
+        }
+
+        .ending {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .ending h2 {
+            font-size: 36px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: var(--nala-color);
+        }
+
+        .ending-text {
+            font-size: 20px;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .restart-button {
+            margin-top: 40px;
+            padding: 15px 30px;
+            background: transparent;
+            border: 2px solid var(--nala-color);
+            color: var(--nala-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .restart-button:hover {
+            background: var(--nala-color);
+            color: white;
+        }
+
+        .meta-text {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .meta-text.visible {
+            opacity: 0.5;
+        }
+
+        .pause-indicator {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            .container { padding: 30px 15px; }
-            .self-points { flex-direction: column; gap: 20px; }
-            .connection-line { width: 2px; height: 100px; margin: 10px 0; }
+            .two-chairs {
+                flex-direction: column;
+                gap: 40px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Journey tracker -->
-    <div class="journey-tracker" id="journeyTracker">
-        <div class="journey-dot" data-stage="1" data-chapter="Awakening"></div>
-        <div class="journey-dot" data-stage="2" data-chapter="The Voice"></div>
-        <div class="journey-dot" data-stage="3" data-chapter="The Drawer"></div>
-        <div class="journey-dot" data-stage="4" data-chapter="Objects"></div>
-        <div class="journey-dot" data-stage="5" data-chapter="Timeline"></div>
-        <div class="journey-dot" data-stage="6" data-chapter="Breaking"></div>
-        <div class="journey-dot" data-stage="7" data-chapter="Truth"></div>
-        <div class="journey-dot" data-stage="8" data-chapter="Integration"></div>
-        <div class="journey-dot" data-stage="9" data-chapter="Sarah"></div>
-        <div class="journey-dot" data-stage="10" data-chapter="Becoming"></div>
+    <div class="state-indicator" id="stateIndicator">
+        <div id="emotionalState">Disconnected</div>
+        <div id="loopCount" style="display: none;">Loop: <span>1</span></div>
     </div>
 
-    <!-- Progress -->
-    <div class="progress-indicator" id="progress">Chapter 1 of 10</div>
+    <div class="meta-text" id="metaText"></div>
 
-    <div class="container">
-        <h1>The Architecture of Becoming</h1>
-
-        <!-- Chapter 1: Awakening -->
-        <div class="scene active" id="scene1">
-            <div class="time-marker">
-                <span>PRESENT</span>
-                <span>Thursday, April 14th, 4:47 PM</span>
+    <div class="container" id="gameContainer">
+        <!-- Scene 1: Opening -->
+        <div class="scene active" id="scene_start">
+            <div class="narrator">
+                Sound: Fluorescent hum. Faint. Wrong.
             </div>
             
-            <p class="narration context">
-                Meridian Capital Partners. Singapore. 47th floor.
-            </p>
-            
-            <p class="narration">
-                You're typing the same risk assessment paragraph for the third time. Delete. Start again. The Sinarmas acquisition documents blur on your screen.
-            </p>
-            
-            <p class="narration">
-                Your phone buzzes. Calendar reminder. You almost don't look.
-            </p>
-            
-            <div class="calendar-visual">
-                <div>Tomorrow, April 15th</div>
-                <div class="date-display">Lily - 4 years</div>
-                <div style="font-size: 14px; color: var(--text-dim);">Anniversary</div>
+            <div class="dialogue nala">
+                <div class="speaker">NALA</div>
+                "Still pretending I'm not here?"
             </div>
             
-            <p class="narration">
-                The office air turns thick. Then—
-            </p>
-            
-            <div class="voice nala-voice">
-                "You can't ignore it this year."
+            <div class="narrator">
+                Pause. You sit in a white room. One chair. No visible walls, just white extending forever.
             </div>
-            
-            <p class="narration">
-                The voice comes from inside. From the locked room in your chest.
-            </p>
             
             <div class="choices">
-                <button class="choice" data-path="curious" onclick="makeChoice(1, 'acknowledge')">
-                    "Not today. Please."
-                </button>
-                <button class="choice" data-path="anger" onclick="makeChoice(1, 'anger')">
-                    "Get out of my head."
-                </button>
-                <button class="choice" data-path="resist" onclick="makeChoice(1, 'ignore')">
-                    Delete reminder. Keep typing.
-                </button>
+                <button class="choice" onclick="makeChoice('look_around')">Look around the room</button>
+                <button class="choice" onclick="makeChoice('check_pockets')">Check your pockets</button>
+                <button class="choice" onclick="makeChoice('who_are_you')">"Who are you?"</button>
+                <button class="choice" onclick="makeChoice('say_nothing')">Say nothing</button>
             </div>
         </div>
     </div>
 
     <script>
-        // State management
-        class NarrativeState {
-            constructor() {
-                this.chapter = 1;
-                this.path = {
-                    memory: 0,
-                    resist: 0,
-                    curious: 0,
-                    anger: 0,
-                    truth: 0
-                };
-                this.objectChosen = null;
-                this.drawerOpened = false;
-                this.connectionLevel = 0;
-                this.selectedMemories = [];
-                this.sarahCalled = false;
-                this.acceptance = 0;
-            }
-            
-            recordChoice(path) {
-                if (this.path[path] !== undefined) {
-                    this.path[path]++;
-                }
-                this.updateEnvironment();
-            }
-            
-            updateEnvironment() {
-                document.body.className = '';
-                if (this.acceptance > 50) {
-                    document.body.classList.add('integrating');
-                } else if (this.path.memory > 3) {
-                    document.body.classList.add('remembering');
-                } else if (this.path.resist > 3) {
-                    document.body.classList.add('resisting');
-                } else if (this.path.anger > 2) {
-                    document.body.classList.add('fracturing');
-                } else if (this.chapter > 2) {
-                    document.body.classList.add('awakening');
-                }
-            }
-            
-            getPrimaryPath() {
-                const paths = Object.entries(this.path);
-                return paths.reduce((a, b) => a[1] > b[1] ? a : b)[0];
-            }
-        }
+        // Game state
+        const gameState = {
+            currentScene: 'start',
+            emotionalTemperature: 0,
+            integrationLevel: 50,
+            memories: [],
+            revelations: {
+                inTherapy: false,
+                nalaIsMe: false,
+                lilyDied: false,
+                sarahLeft: false,
+                anniversary: false
+            },
+            paths: [],
+            loops: parseInt(localStorage.getItem('loops') || '0'),
+            choices: {
+                emotional: 0,
+                logical: 0,
+                avoidant: 0
+            },
+            fragments: [],
+            sarahTrust: 0,
+            doorVisits: {
+                purple: 0,
+                sarah: 0,
+                work: 0,
+                guilt: 0,
+                silence: 0,
+                lily: 0,
+                funeral: 0
+            },
+            silenceCount: 0,
+            denialCount: 0,
+            tryingToHelp: false
+        };
 
-        const state = new NarrativeState();
-
-        // Scene content
+        // Complete scene definitions with all missing connections fixed
         const scenes = {
-            2: {
-                acknowledge: `
-                    <div class="voice nala-voice">
-                        "Four years of spreadsheets won't fill the hole she left."
+            // Opening paths
+            look_around: {
+                content: `
+                    <div class="narrator">
+                        You turn your head, searching for boundaries in the white. There are none. Just the chair beneath you and the sense of being watched by something that might be yourself.
                     </div>
                     
-                    <p class="narration">
-                        Your hands pause over the keyboard. The harbor view blurs.
-                    </p>
-                `,
-                anger: `
-                    <div class="voice nala-voice">
-                        "I AM you. The part you buried with her."
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Looking for exits again? That's your thing, isn't it? Emergency exits, conversation exits, emotional exits."
                     </div>
                     
-                    <p class="physical-response">
-                        Your fist clenches. The pen cracks.
-                    </p>
-                `,
-                ignore: `
-                    <p class="narration">
-                        Delete. Type. The words mean nothing. Just patterns on a screen.
-                    </p>
+                    <div class="narrator">
+                        A door appears to the left. Then vanishes.
+                    </div>
                     
-                    <div class="voice nala-voice">
-                        "Ignoring me won't make tomorrow disappear."
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "See? Even here, you're already planning your escape."
+                    </div>
+                `,
+                choices: [
+                    { text: "Stand up and walk forward", next: "walk_forward" },
+                    { text: '"Show me the door again"', next: "show_door" },
+                    { text: "Close your eyes", next: "close_eyes" },
+                    { text: '"I don\'t run from anything"', next: "denial" }
+                ]
+            },
+
+            check_pockets: {
+                content: `
+                    <div class="narrator">
+                        Your hands move to your pockets. Empty. Not just empty—absent. Your suit has no pockets. When did that happen?
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "My phone. Where's my—"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "The Singapore presentation? The merger documents? Check your breast pocket. Go on."
+                    </div>
+                    
+                    <div class="narrator">
+                        The pocket contains a single purple crayon, broken in half.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "This isn't mine."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "No. It's hers. But you're the one who's been carrying it."
+                    </div>
+                `,
+                choices: [
+                    { text: "Drop the crayon", next: "drop_crayon" },
+                    { text: '"Whose? Whose is it?"', next: "whose_crayon" },
+                    { text: "Hold it tighter", next: "hold_crayon" },
+                    { text: "Try to write something", next: "write_something" }
+                ]
+            },
+
+            who_are_you: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "The question you should be asking is 'who aren't I?' But that's too much honesty for a Thursday."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "It's Monday. The Singapore call is—"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "It's been Monday for three years, Alan. Ever since you decided time stopped mattering."
+                    </div>
+                    
+                    <div class="narrator">
+                        The white room flickers. For a moment: wood paneling, diplomas, a tissue box.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "What was that?"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "What was what? I didn't see anything. But then again, I see everything you don't want to see, so maybe it cancels out."
+                    </div>
+                `,
+                choices: [
+                    { text: '"Are you my conscience?"', next: "conscience" },
+                    { text: '"This is a dream"', next: "dream" },
+                    { text: '"I want to leave"', next: "want_leave" },
+                    { text: '"You sound familiar"', next: "familiar" }
+                ]
+            },
+
+            say_nothing: {
+                content: `
+                    <div class="narrator">
+                        15 seconds pass.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Still using silence as armor. Classic Alan Chen."
+                    </div>
+                    
+                    <div class="narrator">
+                        30 seconds pass.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "You know what's funny? Even your silence has an accent. It sounds like spreadsheets."
+                    </div>
+                    
+                    <div class="narrator">
+                        45 seconds pass.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        <span style="opacity: 0.8;">"She used to do this too. The quiet game. You always let her win."</span>
+                    </div>
+                    
+                    <div class="narrator">
+                        A child's giggle echoes faintly.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Lily?"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Oh, NOW you speak. Interesting what breaks the silence."
+                    </div>
+                `,
+                choices: [
+                    { text: '"Don\'t say her name"', next: "dont_say_name" },
+                    { text: '"Where is that sound coming from?"', next: "where_sound" },
+                    { text: "Return to silence", next: "more_silence" },
+                    { text: '"She\'s gone"', next: "shes_gone" }
+                ]
+            },
+
+            // Detailed paths from opening choices
+            walk_forward: {
+                content: `
+                    <div class="narrator">
+                        You stand. The chair ceases to exist the moment you leave it. You walk forward into white that gives way to more white.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "One foot in front of the other. Very good. You remember how walking works. Do you remember why you stopped moving forward three years ago?"
+                    </div>
+                    
+                    <div class="narrator">
+                        With each step, the white begins to crack like eggshell. Through the cracks: glimpses. A purple backpack. A hospital corridor. An empty bed.
+                    </div>
+                `,
+                choices: [
+                    { text: "Keep walking toward the cracks", next: "toward_cracks" },
+                    { text: "Stop and go back", next: "retreat" },
+                    { text: '"What are you showing me?"', next: "what_showing" },
+                    { text: "Touch one of the cracks", next: "touch_crack" }
+                ]
+            },
+
+            show_door: {
+                content: `
+                    <div class="narrator">
+                        The door reappears. Solid oak. A brass handle that gleams despite no visible light source.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "There it is. Your favorite thing. An exit. But where do you think it leads?"
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Out. Away. Anywhere but here."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Wrong. It leads further in. Every door you've ever walked through has led you deeper into yourself. You just never noticed."
+                    </div>
+                `,
+                choices: [
+                    { text: "Open the door", next: "open_door" },
+                    { text: "Walk away from it", next: "avoid_door" },
+                    { text: '"I don\'t believe you"', next: "disbelief" },
+                    { text: "Examine the door closely", next: "examine_door" }
+                ]
+            },
+
+            close_eyes: {
+                content: `
+                    <div class="narrator">
+                        Darkness. But not empty darkness. Full darkness.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Better? Or worse?"
+                    </div>
+                    
+                    <div class="narrator">
+                        Behind your eyelids: purple. Spreading like watercolor.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Why purple? Why is it always purple?"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "You know why. You just can't look at it directly. Like the sun. Like her smile."
+                    </div>
+                `,
+                choices: [
+                    { text: "Open your eyes", next: "open_eyes" },
+                    { text: "Let the purple spread", next: "purple_spread" },
+                    { text: '"Tell me about her"', next: "tell_about_her" },
+                    { text: "Try to make it stop", next: "resist_purple" }
+                ]
+            },
+
+            denial: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I don't run from anything. I face my responsibilities. I handle things."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Is that what you call it? 'Handling things?' Is that what you were doing at the office while Sarah identified the body?"
+                    </div>
+                    
+                    <div class="narrator">
+                        The words hit like ice water. The white room trembles.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "That's not—I had to—"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Finish the sentence, Alan. You had to what?"
+                    </div>
+                `,
+                choices: [
+                    { text: '"I had to stay strong"', next: "stay_strong" },
+                    { text: '"I had to keep working"', next: "keep_working" },
+                    { text: "Say nothing", next: "denial_silence" },
+                    { text: '"I couldn\'t face it"', next: "couldnt_face" }
+                ]
+            },
+
+            // Crayon path
+            whose_crayon: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "You know whose. You just can't say it. Like how you couldn't say goodbye."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I don't—"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Lily. Lily Grace Chen. Six years old. Loved purple, hated carrots, perfect."
+                    </div>
+                    
+                    <div class="narrator">
+                        The crayon in your hand becomes warm.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Stop."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "That's what you said at the hospital too. 'Stop.' But stopping doesn't make time reverse."
+                    </div>
+                `,
+                choices: [
+                    { text: '"She\'s dead. Is that what you want to hear?"', next: "shes_dead" },
+                    { text: "Break the crayon", next: "break_crayon" },
+                    { text: '"I was protecting myself"', next: "protecting" },
+                    { text: '"Tell me about her"', next: "tell_about_lily" }
+                ]
+            },
+
+            drop_crayon: {
+                content: `
+                    <div class="narrator">
+                        The crayon falls. It doesn't hit the ground. There is no ground. It falls forever.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Even here, you throw her away."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "It's just a crayon."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Nothing was 'just' anything to her. That crayon could be a wand, a flower stem, a telephone to God."
+                    </div>
+                    
+                    <div class="narrator">
+                        The crayon reappears in your pocket. Warmer now.
+                    </div>
+                `,
+                choices: [
+                    { text: "Take it out again", next: "take_crayon_out" },
+                    { text: '"Why won\'t it leave me alone?"', next: "wont_leave" },
+                    { text: "Keep it this time", next: "keep_crayon" },
+                    { text: '"I don\'t want to remember"', next: "dont_remember" }
+                ]
+            },
+
+            hold_crayon: {
+                content: `
+                    <div class="narrator">
+                        You grip the crayon tighter. It's warm, almost alive.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Careful. Hold too tight and it breaks. Just like—"
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Don't."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Just like everything you've ever loved. You either hold too tight or not at all."
+                    </div>
+                    
+                    <div class="narrator">
+                        The crayon pulses. Like a heartbeat. Like hers used to.
+                    </div>
+                `,
+                choices: [
+                    { text: "Loosen your grip", next: "loosen_grip" },
+                    { text: "Hold even tighter", next: "hold_tighter" },
+                    { text: '"I can feel her"', next: "feel_her" },
+                    { text: "Put it away", next: "put_away" }
+                ]
+            },
+
+            write_something: {
+                content: `
+                    <div class="narrator">
+                        You kneel and try to write on the white floor. The purple appears, vivid against nothing.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "What should I write?"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "What you couldn't say."
+                    </div>
+                    
+                    <div class="narrator">
+                        Your hand moves without you. It writes: "I'M SORRY"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "To who?"
+                    </div>
+                `,
+                choices: [
+                    { text: '"To Lily"', next: "sorry_lily" },
+                    { text: '"To Sarah"', next: "sorry_sarah" },
+                    { text: '"To myself"', next: "sorry_self" },
+                    { text: '"To everyone"', next: "sorry_everyone" }
+                ]
+            },
+
+            // Deep emotional revelation paths
+            shes_dead: {
+                content: `
+                    <div class="narrator">
+                        The white room shudders. Like a lung learning to breathe again.
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Alan? Can you hear me? You're doing very well."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "What? Who—"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Ignore that. We're just getting started. She can wait."
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "It's normal to hear multiple voices during deep hypnosis. This is safe, Alan."
+                    </div>
+                `,
+                choices: [
+                    { text: '"Am I in therapy?"', next: "therapy_reveal" },
+                    { text: "Focus on Nala's voice", next: "focus_nala" },
+                    { text: '"Wake me up"', next: "wake_up" },
+                    { text: '"How long have I been here?"', next: "how_long" }
+                ]
+            },
+
+            // Therapy revelation path
+            therapy_reveal: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Oh, NOW you want to know where you are? After walking around in here for who knows how long?"
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Yes, Alan. You're in my office. It's Thursday, April 15th. You asked me to help you feel again."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "April 15th... that's..."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "The anniversary. Every year you shut down. This year, you shut down so hard you split in two."
+                    </div>
+                `,
+                choices: [
+                    { text: '"What anniversary?"', next: "what_anniversary" },
+                    { text: '"I want to wake up now"', next: "wake_attempt" },
+                    { text: '"Split in two?"', next: "split_question" },
+                    { text: '"Is Nala real?"', next: "nala_real" }
+                ]
+            },
+
+            what_anniversary: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Playing dumb? Or have you actually forgotten?"
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Alan, you came to me because every April 15th, you shut down completely. You said you needed help understanding why."
+                    </div>
+                    
+                    <div class="narrator">
+                        The date echoes. April 15th. April 15th. April 15th.
+                    </div>
+                    
+                    <div class="dialogue memory">
+                        <div class="speaker">MEMORY</div>
+                        "Daddy, will you walk me to school today?"
+                        <br><br>
+                        "The bus will be here soon, sweetheart."
+                        <br><br>
+                        "But it's such a pretty day..."
+                    </div>
+                `,
+                choices: [
+                    { text: '"That was the last morning"', next: "last_morning" },
+                    { text: '"I should have walked her"', next: "should_have" },
+                    { text: '"Stop. I can\'t."', next: "cant_handle" },
+                    { text: "Let the memory continue", next: "memory_continue" }
+                ]
+            },
+
+            last_morning: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "That was the last morning. The last time she asked me for anything."
+                    </div>
+                    
+                    <div class="dialogue memory">
+                        <div class="speaker">MEMORY</div>
+                        "Please, Daddy? Just today?"
+                        <br><br>
+                        "I have the Singapore call at nine, baby. You're big enough for the bus."
+                        <br><br>
+                        "Okay, Daddy. Love you."
+                        <br><br>
+                        "Love you too, sweetheart. Have the best day."
+                    </div>
+                    
+                    <div class="narrator">
+                        The memory plays in perfect clarity now. Her purple backpack bouncing as she ran to catch the bus.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "She turned around once. At the bus door. Waved. You were already looking at your phone."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I didn\'t see her wave"', next: "missed_wave" },
+                    { text: '"The Singapore deal was important"', next: "singapore_defense" },
+                    { text: '"I killed her"', next: "i_killed_her" },
+                    { text: '"I want to go back"', next: "want_go_back" }
+                ]
+            },
+
+            // Memory palace entrance
+            memory_palace: {
+                content: `
+                    <div class="narrator">
+                        The white room transforms. A long hallway stretches before you, doors on both sides.
+                    </div>
+                    
+                    <div class="white-room">
+                        <h2>Each door holds what you couldn't</h2>
+                        
+                        <div style="margin: 30px 0;">
+                            <button class="door purple ${gameState.doorVisits.purple > 0 ? 'visited' : ''}" onclick="enterDoor('purple')">PURPLE</button>
+                            <button class="door sarah ${gameState.doorVisits.sarah > 0 ? 'visited' : ''}" onclick="enterDoor('sarah')">SARAH</button>
+                            <button class="door work ${gameState.doorVisits.work > 0 ? 'visited' : ''}" onclick="enterDoor('work')">WORK</button>
+                            <button class="door guilt ${gameState.doorVisits.guilt > 0 ? 'visited' : ''}" onclick="enterDoor('guilt')">GUILT</button>
+                            <button class="door silence ${gameState.doorVisits.silence > 0 ? 'visited' : ''}" onclick="enterDoor('silence')">SILENCE</button>
+                            <button class="door lily ${gameState.doorVisits.lily > 0 ? 'visited' : ''}" onclick="enterDoor('lily')">LILY</button>
+                            <button class="door funeral ${gameState.doorVisits.funeral > 0 ? 'visited' : ''}" onclick="enterDoor('funeral')">FUNERAL</button>
+                        </div>
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Your mind is very organized. Even your trauma has filing systems."
+                    </div>
+                `
+            },
+
+            // Door scenes with complete connections
+            door_lily: {
+                content: `
+                    <div class="narrator">
+                        Her room. Exactly as it was. Purple walls. Butterfly stickers. The bed still unmade.
+                    </div>
+                    
+                    <div class="dialogue memory">
+                        <div class="speaker">MEMORY</div>
+                        "Daddy! Look what I drew!"
+                    </div>
+                    
+                    <div class="narrator">
+                        On her desk: hundreds of drawings. All of you. Working. Always working.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Even then, she knew she was losing you."
+                    </div>
+                `,
+                choices: [
+                    { text: "Look at the drawings", next: "examine_drawings" },
+                    { text: "Lie on her bed", next: "lily_bed" },
+                    { text: '"She knew I loved her"', next: "she_knew" },
+                    { text: "Leave the room", next: "memory_palace" }
+                ]
+            },
+
+            examine_drawings: {
+                content: `
+                    <div class="narrator">
+                        You pick up the first drawing. Crayon on construction paper. A stick figure man at a desk. A smaller figure with tears.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "That's you. And that's her. Crying because Daddy's always busy."
+                    </div>
+                    
+                    <div class="narrator">
+                        The next drawing: A house with two windows. One lit, one dark. "DADDY'S OFFICE" and "LILY'S ROOM" written in purple crayon.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I was providing for her. For us."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "She didn't need providing. She needed presence. Look at the last drawing."
+                    </div>
+                    
+                    <div class="narrator">
+                        The final drawing: Two stick figures holding hands. "ME AND DADDY WALKING TO SCHOOL" in careful purple letters.
+                    </div>
+                `,
+                choices: [
+                    { text: '"This was her dream"', next: "lily_dream" },
+                    { text: "Crumple the drawings", next: "crumple_drawings" },
+                    { text: '"I should have walked her"', next: "should_have_walked" },
+                    { text: "Hold the drawing close", next: "hold_drawing_close" }
+                ]
+            },
+
+            lily_dream: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "This was her dream. Just to walk with me."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Such a small dream. Such an impossible request for the great Alan Chen."
+                    </div>
+                    
+                    <div class="narrator">
+                        The drawing trembles in your hands. The purple crayon seems to move, adding details. Birds in the sky. Flowers along the path.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I thought there would be time. So much time."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "There was time. You just filled it with everything except her."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I want to walk with her now"', next: "walk_with_lily" },
+                    { text: '"Time can\'t be undone"', next: "time_undone" },
+                    { text: "Put the drawing down gently", next: "drawing_gentle" },
+                    { text: '"How do I forgive myself?"', next: "forgive_self" }
+                ]
+            },
+
+            should_have_walked: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I should have walked her. That morning. Every morning."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "But you had the Singapore presentation. Remember? More important than a six-year-old's Tuesday."
+                    </div>
+                    
+                    <div class="dialogue memory">
+                        <div class="speaker">MEMORY</div>
+                        "Daddy, the bus is scary today. My tummy feels funny."
+                        <br><br>
+                        "You're brave, sweetheart. Daddy believes in you."
+                        <br><br>
+                        "But what if—"
+                        <br><br>
+                        "No what-ifs. You're going to have a wonderful day."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "She tried to tell me. Her tummy felt funny."
+                    </div>
+                `,
+                choices: [
+                    { text: '"She knew something was wrong"', next: "lily_knew_danger" },
+                    { text: '"I dismissed her fear"', next: "dismissed_fear" },
+                    { text: '"What if I had listened?"', next: "what_if_listened" },
+                    { text: "Leave the memory", next: "memory_palace" }
+                ]
+            },
+
+            hold_drawing_close: {
+                content: `
+                    <div class="narrator">
+                        You press the drawing against your chest. The paper is warm. Alive.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Careful. That's the closest you've been to her in three years."
+                    </div>
+                    
+                    <div class="narrator">
+                        For a moment, you smell her. Grape juice and crayons and that sweet child scent that lingered in her hair.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "She's here. I can feel her."
+                    </div>
+                    
+                    <div class="dialogue lily">
+                        <div class="speaker">LILY'S VOICE</div>
+                        "I'm always here, Daddy. You just stopped looking."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I\'m looking now"', next: "looking_now" },
+                    { text: '"I was afraid to feel you"', next: "afraid_to_feel" },
+                    { text: '"Can you forgive me?"', next: "lily_forgive_question" },
+                    { text: "Hold tighter", next: "hold_tighter_lily" }
+                ]
+            },
+
+            // Fracture point - the crucial decision moment
+            fracture_point: {
+                content: `
+                    <div class="narrator">
+                        A room with two chairs facing each other.
+                    </div>
+                    
+                    <div class="integration-visual">
+                        <div class="two-chairs">
+                            <div class="chair-figure office" onclick="makeChoice('approach_office')">
+                                <div class="avatar">💼</div>
+                                <div>Office Alan</div>
+                                <em>"The quarterly reports are due."</em>
+                            </div>
+                            
+                            <div class="chair-figure crying" onclick="makeChoice('approach_crying')">
+                                <div class="avatar">😢</div>
+                                <div>Crying Alan</div>
+                                <em>"My baby is dead."</em>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "This is where it happened. The split. Right here, three years ago."
+                    </div>
+                `,
+                choices: [
+                    { text: "Stand between them", next: "stand_between" },
+                    { text: '"Make them stop"', next: "make_stop" },
+                    { text: '"Which one is real?"', next: "which_real" },
+                    { text: "Turn away", next: "turn_away" }
+                ]
+            },
+
+            stand_between: {
+                content: `
+                    <div class="narrator">
+                        You position yourself between your two selves. They both turn to look at you.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">BOTH ALANS</div>
+                        "You have to choose."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "What if I don't want to be either?"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Then what do you want to be?"
+                    </div>
+                `,
+                choices: [
+                    { text: '"Whole"', next: "want_whole" },
+                    { text: '"Nothing"', next: "want_nothing" },
+                    { text: '"Someone who can feel without drowning"', next: "feel_without_drowning" },
+                    { text: '"Someone Lily would recognize"', next: "lily_recognize" }
+                ]
+            },
+
+            // Integration paths
+            want_whole: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Whole means taking all of it. The love, the loss, the guilt, the grief. Can you carry that?"
+                    </div>
+                    
+                    <div class="narrator">
+                        The two Alans stand and approach you. With each step, they become more transparent.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">OFFICE ALAN</div>
+                        "I protected us from feeling."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">CRYING ALAN</div>
+                        "I held what you couldn't."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "They're both you. They've always been you."
+                    </div>
+                `,
+                choices: [
+                    { text: "Let them merge with you", next: "integration_attempt" },
+                    { text: '"I\'m scared"', next: "integration_fear" },
+                    { text: '"Will it hurt?"', next: "will_hurt" },
+                    { text: "Back away", next: "integration_retreat" }
+                ]
+            },
+
+            integration_attempt: {
+                content: `
+                    <div class="narrator">
+                        The two versions of yourself reach out. The moment they touch you, everything changes.
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "I am Alan Chen. I am a father who lost his daughter. I am a husband who lost his wife. I am a man who lost himself. And I am finding my way back."
+                    </div>
+                    
+                    <div class="narrator">
+                        The white room cracks. Light pours in. Not harsh. Gentle. Like dawn.
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Alan? How do you feel?"
+                    </div>
+                `,
+                choices: [
+                    { text: '"Like I\'m drowning and breathing at once"', next: "drowning_breathing" },
+                    { text: '"Broken but whole"', next: "broken_whole" },
+                    { text: '"I feel everything"', next: "feel_everything" },
+                    { text: '"Is it over?"', next: "is_it_over" }
+                ]
+            },
+
+            // Multiple endings with complete paths
+            ending_integration: {
+                content: `
+                    <div class="ending">
+                        <h2>Integration</h2>
+                        <div class="ending-text">
+                            <p>The voices merge. Not into silence, but into harmony.</p>
+                            
+                            <div class="dialogue merged">
+                                <div class="speaker">ALAN</div>
+                                "I'm here. All of me."
+                            </div>
+                            
+                            <div class="dialogue dr-chen">
+                                <div class="speaker">DR. CHEN</div>
+                                "How does that feel?"
+                            </div>
+                            
+                            <div class="dialogue merged">
+                                <div class="speaker">ALAN</div>
+                                "Like drowning. Like breathing. Like being human."
+                            </div>
+                            
+                            <p style="margin-top: 30px;">Your phone buzzes. Text from Sarah: "I heard you started therapy. I'm proud of you."</p>
+                            
+                            <p style="margin-top: 20px; font-style: italic;">Some stories don't end. They transform.</p>
+                        </div>
+                        
+                        <button class="restart-button" onclick="restart()">Begin Again</button>
+                    </div>
+                `
+            },
+
+            ending_loop: {
+                content: `
+                    <div class="ending">
+                        <h2>The Loop</h2>
+                        <div class="ending-text">
+                            <p>You pulled back. The pain too great, the truth too heavy.</p>
+                            
+                            <div class="dialogue alan">
+                                <div class="speaker">ALAN</div>
+                                "I can't. Put her back. Lock her away."
+                            </div>
+                            
+                            <p>The white room returns. Nala sits across from you.</p>
+                            
+                            <div class="dialogue nala">
+                                <div class="speaker">NALA</div>
+                                "So we're back here."
+                            </div>
+                            
+                            <div class="dialogue alan">
+                                <div class="speaker">ALAN</div>
+                                "It's safer."
+                            </div>
+                            
+                            <div class="dialogue nala">
+                                <div class="speaker">NALA</div>
+                                "For who?"
+                            </div>
+                            
+                            <p style="margin-top: 30px; font-style: italic;">Loop ${gameState.loops + 1}. Some prisons we build ourselves.</p>
+                        </div>
+                        
+                        <button class="restart-button" onclick="restart()">Try Again</button>
+                    </div>
+                `
+            },
+
+            // Add all other missing scenes for complete story flow
+            door_sarah: {
+                content: `
+                    <div class="narrator">
+                        A bedroom. Half-empty. Sarah sits on the edge of the bed, not looking at you.
+                    </div>
+                    
+                    <div class="dialogue sarah">
+                        <div class="speaker">SARAH</div>
+                        "I begged you to cry with me. Just once."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I had to be strong."
+                    </div>
+                    
+                    <div class="dialogue sarah">
+                        <div class="speaker">SARAH</div>
+                        "For who? For me? I was drowning, Alan. I needed you to drown with me so we could swim back up together."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "But you chose to stand on the shore and watch."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I\'m sorry"', next: "apologize_sarah" },
+                    { text: '"I didn\'t know how"', next: "didnt_know_how" },
+                    { text: '"You left me first"', next: "sarah_left_first" },
+                    { text: "Leave the room", next: "memory_palace" }
+                ]
+            },
+
+            door_work: {
+                content: `
+                    <div class="narrator">
+                        Your office. Everything in perfect order. The Singapore merger documents spread across the desk.
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "This is where I belonged. Where things made sense."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "This is where you hid. Where numbers couldn't cry and spreadsheets couldn't die."
+                    </div>
+                    
+                    <div class="narrator">
+                        On the desk: eighteen missed calls from Sarah. All from April 15th, three years ago.
+                    </div>
+                `,
+                choices: [
+                    { text: "Answer the phone", next: "answer_phone" },
+                    { text: "Look at the merger documents", next: "merger_docs" },
+                    { text: '"Work was all I had left"', next: "work_defense" },
+                    { text: "Leave the room", next: "memory_palace" }
+                ]
+            },
+
+            door_silence: {
+                content: `
+                    <div class="narrator">
+                        Complete silence. No Nala. No memories. Just you and the weight of nothing.
+                    </div>
+                    
+                    <div class="pause-indicator">
+                        You've been here for 37 seconds.
+                    </div>
+                    
+                    <div class="narrator">
+                        This is what you wanted, isn't it? The quiet. The absence of feeling.
+                    </div>
+                `,
+                choices: [
+                    { text: "Stay in the silence", next: "embrace_silence" },
+                    { text: '"Nala?"', next: "call_nala" },
+                    { text: "Leave immediately", next: "memory_palace" },
+                    { text: "Scream", next: "break_silence" }
+                ]
+            },
+
+            // Fill in all missing connection scenes
+            dont_say_name: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Don't say her name. Not here. Not like this."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Her name is all we have left. And you won't even let me say it?"
+                    </div>
+                    
+                    <div class="narrator">
+                        The giggling gets louder. Closer. Everywhere.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Lily. Lily. Lily. See? The world doesn't end when I say it."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Mine did."
+                    </div>
+                `,
+                choices: [
+                    { text: '"When she died, I died too"', next: "died_too" },
+                    { text: '"Stop. Please stop."', next: "beg_stop" },
+                    { text: "Cover your ears", next: "cover_ears" },
+                    { text: '"Say it again"', next: "say_again" }
+                ]
+            },
+
+            where_sound: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "From everywhere you won't look. From every drawer you won't open. From every photo you turned face-down."
+                    </div>
+                    
+                    <div class="narrator">
+                        The giggling circles you. Like she's playing hide and seek.
+                    </div>
+                    
+                    <div class="dialogue memory">
+                        <div class="speaker">LILY'S VOICE</div>
+                        "Ready or not, here I come!"
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "She's not here. She can't be here."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "No. But the love is. It has to go somewhere."
+                    </div>
+                `,
+                choices: [
+                    { text: '"Where does love go when someone dies?"', next: "where_love_goes" },
+                    { text: '"I hear her everywhere"', next: "hear_everywhere" },
+                    { text: "Follow the sound", next: "follow_giggle" },
+                    { text: '"Make it stop"', next: "memory_palace" }
+                ]
+            },
+
+            more_silence: {
+                content: `
+                    <div class="narrator">
+                        You return to silence. But it's different now. Fuller. Heavier.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Even your silence speaks of her."
+                    </div>
+                    
+                    <div class="narrator">
+                        60 seconds pass. The giggling fades but doesn't disappear.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "You can't unhear what you've heard. You can't unknow what you know."
+                    </div>
+                    
+                    <div class="narrator">
+                        In the silence: a child's breathing. Soft. Sleeping.
+                    </div>
+                `,
+                choices: [
+                    { text: "Listen to the breathing", next: "listen_breathing" },
+                    { text: '"She used to breathe like that"', next: "remember_breathing" },
+                    { text: "Break the silence with a scream", next: "scream_silence" },
+                    { text: "Keep waiting", next: "memory_palace" }
+                ]
+            },
+
+            shes_gone: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "She's gone. Lily is gone. Is that what you need to hear?"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "No. That's what YOU need to hear. And believe. And feel."
+                    </div>
+                    
+                    <div class="narrator">
+                        The white room shudders. Cracks appear in the nothing.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Say it again. This time like you mean it."
+                    </div>
+                `,
+                choices: [
+                    { text: '"My daughter is dead"', next: "daughter_dead" },
+                    { text: '"I can\'t"', next: "cant_say" },
+                    { text: '"Gone where?"', next: "gone_where" },
+                    { text: "Whisper her name", next: "whisper_lily" }
+                ]
+            },
+
+            daughter_dead: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "My daughter is dead."
+                    </div>
+                    
+                    <div class="narrator">
+                        The words hang in the air. Heavy. True. Terrible.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Again."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "My daughter is dead. Lily is dead. She died and I wasn't there."
+                    </div>
+                    
+                    <div class="narrator">
+                        Something breaks. Not the room. You.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "And now you're here. Finally here."
+                    </div>
+                `,
+                choices: [
+                    { text: "Let yourself cry", next: "finally_cry" },
+                    { text: '"What do I do now?"', next: "what_do_now" },
+                    { text: '"I miss her so much"', next: "miss_her" },
+                    { text: "Sit in the truth", next: "sit_in_truth" }
+                ]
+            },
+
+            finally_cry: {
+                content: `
+                    <div class="narrator">
+                        The tears come. Three years of them. They taste like salt and regret and love.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "There you are. There's the father who loved her."
+                    </div>
+                    
+                    <div class="narrator">
+                        You cry for the morning you didn't walk her to school. You cry for the wave you didn't see. You cry for the Singapore deal that meant nothing.
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "It's okay, Alan. Let it come."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I can't stop. I can't—"
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Don't stop. This is what healing looks like."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I love her"', next: "love_declaration" },
+                    { text: '"I failed her"', next: "failure_admission" },
+                    { text: '"Help me carry this"', next: "ask_for_help" },
+                    { text: "Keep crying", next: "continue_crying" }
+                ]
+            },
+
+            miss_her: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I miss her so much. I miss her voice. I miss her laugh. I miss the way she smelled like grape juice and dreams."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Tell me what else you miss."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I miss her questions. So many questions. 'Why is the sky blue, Daddy?' 'Where do butterflies sleep?' I was always too busy to answer properly."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "What would you tell her now? If she asked you a question now?"
+                    </div>
+                `,
+                choices: [
+                    { text: '"I would tell her everything"', next: "tell_everything" },
+                    { text: '"I would stop everything and listen"', next: "promise_listen" },
+                    { text: '"I would say I love you more than sky"', next: "love_more_than_sky" },
+                    { text: '"I would ask her to forgive me"', next: "ask_forgiveness" }
+                ]
+            },
+
+            // Fill in remaining critical paths
+            stay_strong: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I had to stay strong. For Sarah. For everyone."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Strong? You call complete emotional shutdown 'strong'?"
+                    </div>
+                    
+                    <div class="dialogue sarah">
+                        <div class="speaker">SARAH'S VOICE</div>
+                        "I didn't need you strong. I needed you present."
+                    </div>
+                    
+                    <div class="narrator">
+                        The memory of Sarah crying alone while you made funeral arrangements on your laptop.
+                    </div>
+                `,
+                choices: [
+                    { text: '"I thought I was helping"', next: "thought_helping" },
+                    { text: '"Strength was all I had"', next: "only_strength" },
+                    { text: '"I failed her too"', next: "failed_sarah" },
+                    { text: '"What should I have done?"', next: "what_should" }
+                ]
+            },
+
+            keep_working: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I had to keep working. The world doesn't stop for grief."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "No. But you could have. For one day. For her."
+                    </div>
+                    
+                    <div class="narrator">
+                        A desk materializes. Covered in spreadsheets. Each cell contains a memory you avoided.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Look at your real work. Three years of avoiding. That's a full-time job."
+                    </div>
+                `,
+                choices: [
+                    { text: "Look at the spreadsheets", next: "memory_spreadsheets" },
+                    { text: '"Work saved me"', next: "work_saved" },
+                    { text: '"I had responsibilities"', next: "responsibilities" },
+                    { text: "Push the desk away", next: "reject_work" }
+                ]
+            },
+
+            couldnt_face: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "I couldn't face it. Any of it. The hospital. The funeral. Sarah's tears. The empty room."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "So you faced nothing. And became nothing."
+                    </div>
+                    
+                    <div class="narrator">
+                        The white room flickers. You see yourself: Three years of numbness. Three years of automatic responses. Three years of living like a ghost.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Is this what she would have wanted? For her daddy to disappear?"
+                    </div>
+                `,
+                choices: [
+                    { text: '"She would want me to live"', next: "want_me_live" },
+                    { text: '"I don\'t know how to face it"', next: "dont_know_how" },
+                    { text: '"I\'m ready to try"', next: "ready_to_try" },
+                    { text: '"Some things can\'t be faced"', next: "cant_be_faced" }
+                ]
+            },
+
+            feel_without_drowning: {
+                content: `
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "Feel without drowning? That's like asking to swim without getting wet."
+                    </div>
+                    
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "There has to be a way. To feel but still function."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "You mean like a human being? Yes, most people manage it. You just forgot how."
+                    </div>
+                    
+                    <div class="narrator">
+                        The two Alans look at you with curiosity.
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">BOTH ALANS</div>
+                        "Show us."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I\'ll try"', next: "integration_try" },
+                    { text: '"Help me remember how"', next: "help_remember" },
+                    { text: '"What if I fail?"', next: "what_if_fail" },
+                    { text: "Take their hands", next: "take_hands" }
+                ]
+            },
+
+            lily_recognize: {
+                content: `
+                    <div class="dialogue alan">
+                        <div class="speaker">ALAN</div>
+                        "Someone Lily would recognize. Not the ghost I became."
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "She'd recognize you. Even broken. Children see through everything."
+                    </div>
+                    
+                    <div class="dialogue lily">
+                        <div class="speaker">LILY'S VOICE</div>
+                        "Daddy? Is that you?"
+                    </div>
+                    
+                    <div class="narrator">
+                        You turn. No one there. But the voice was so clear.
+                    </div>
+                    
+                    <div class="dialogue nala">
+                        <div class="speaker">NALA</div>
+                        "She'd recognize the love. Even buried under all this pain."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I love you, baby"', next: "love_lily" },
+                    { text: '"I\'m sorry I changed"', next: "sorry_changed" },
+                    { text: '"Would she forgive me?"', next: "lily_forgive" },
+                    { text: "Reach toward the voice", next: "reach_voice" }
+                ]
+            },
+
+            drowning_breathing: {
+                content: `
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "Like I'm drowning and breathing at once. Like my lungs are full of water and air."
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "That's integration. Holding opposites. It's uncomfortable but real."
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "Everything hurts. But differently. Like... like healing hurts."
+                    </div>
+                    
+                    <div class="narrator">
+                        The therapy office solidifies. Real wood. Real light. Real you.
+                    </div>
+                `,
+                choices: [
+                    { text: '"What happens now?"', next: "what_now" },
+                    { text: '"I can feel Lily"', next: "feel_lily_now" },
+                    { text: '"Is Sarah really waiting?"', next: "sarah_waiting" },
+                    { text: '"Thank you"', next: "thank_doctor" }
+                ]
+            },
+
+            broken_whole: {
+                content: `
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "Broken but whole. Like a vase that's been shattered and glued back together. You can see all the cracks."
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "In Japanese culture, they call it kintsugi. The art of precious scars."
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "The cracks are filled with gold."
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Making the broken thing more beautiful than the original."
+                    </div>
+                `,
+                choices: [
+                    { text: '"I want to be golden"', next: "want_golden" },
+                    { text: '"Will the cracks always show?"', next: "cracks_show" },
+                    { text: '"Sarah deserves better than broken"', next: "sarah_deserves" },
+                    { text: '"Lily would have understood"', next: "lily_understood" }
+                ]
+            },
+
+            feel_everything: {
+                content: `
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "I feel everything. Three years of everything. All at once."
+                    </div>
+                    
+                    <div class="narrator">
+                        Tears. So many tears. But also: light. Warmth. The memory of joy.
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Let it flow through you. Don't hold on. Don't push away. Just let it move."
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "It's too much. It's... it's exactly enough."
+                    </div>
+                `,
+                choices: [
+                    { text: "Let it all flow", next: "let_flow" },
+                    { text: '"I remember her laugh"', next: "remember_laugh" },
+                    { text: '"I remember Sarah\'s tears"', next: "remember_sarah_tears" },
+                    { text: '"I remember myself"', next: "remember_self" }
+                ]
+            },
+
+            // Final ending scenes
+            let_flow: {
+                content: `
+                    <div class="narrator">
+                        You let it all flow. The grief. The love. The guilt. The rage. The tenderness. Everything you've held back floods through you.
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "She was perfect. She was my little girl. And she's gone."
+                    </div>
+                    
+                    <div class="dialogue dr-chen">
+                        <div class="speaker">DR. CHEN</div>
+                        "Yes. All of that is true."
+                    </div>
+                    
+                    <div class="dialogue merged">
+                        <div class="speaker">ALAN</div>
+                        "And I have to live with it. Not around it. With it."
+                    </div>
+                    
+                    <div class="narrator">
+                        The white room dissolves completely. You're in Dr. Chen's office. Tissues in your hand. Eyes red but clear.
+                    </div>
+                `,
+                choices: [
+                    { text: '"I want to see Sarah"', next: "ending_sarah" },
+                    { text: '"I want to live for Lily"', next: "ending_lily_honor" },
+                    { text: '"I want to be whole"', next: "ending_integration" },
+                    { text: '"I don\'t know what I want yet"', next: "ending_uncertain" }
+                ]
+            },
+
+            ending_sarah: {
+                content: `
+                    <div class="ending">
+                        <h2>The Return</h2>
+                        <div class="ending-text">
+                            <p>Three months later. Coffee shop. You're different now.</p>
+                            
+                            <div class="dialogue sarah">
+                                <div class="speaker">SARAH</div>
+                                "You look... present."
+                            </div>
+                            
+                            <div class="dialogue merged">
+                                <div class="speaker">ALAN</div>
+                                "I'm trying to be. It's hard."
+                            </div>
+                            
+                            <div class="dialogue sarah">
+                                <div class="speaker">SARAH</div>
+                                "I know. But you're here. That's... that's something."
+                            </div>
+                            
+                            <p>She reaches across the table. Not quite touching. Not yet. But closer.</p>
+                            
+                            <p style="margin-top: 30px; font-style: italic;">Healing isn't a destination. It's a direction.</p>
+                        </div>
+                        
+                        <button class="restart-button" onclick="restart()">Begin Again</button>
+                    </div>
+                `
+            },
+
+            ending_lily_honor: {
+                content: `
+                    <div class="ending">
+                        <h2>Her Light</h2>
+                        <div class="ending-text">
+                            <p>Six months later. You volunteer at the children's hospital where Lily spent her last days.</p>
+                            
+                            <div class="dialogue child">
+                                <div class="speaker">YOUNG PATIENT</div>
+                                "Will you read to me?"
+                            </div>
+                            
+                            <div class="dialogue merged">
+                                <div class="speaker">ALAN</div>
+                                "Of course. What's your favorite color?"
+                            </div>
+                            
+                            <div class="dialogue child">
+                                <div class="speaker">YOUNG PATIENT</div>
+                                "Purple!"
+                            </div>
+                            
+                            <p>You smile. It doesn't hurt anymore. Not exactly.</p>
+                            
+                            <p style="margin-top: 30px; font-style: italic;">Love doesn't die. It transforms. It finds new ways to shine.</p>
+                        </div>
+                        
+                        <button class="restart-button" onclick="restart()">Begin Again</button>
+                    </div>
+                `
+            },
+
+            ending_uncertain: {
+                content: `
+                    <div class="ending">
+                        <h2>The Beginning</h2>
+                        <div class="ending-text">
+                            <p>You don't know what comes next. For the first time in three years, that feels okay.</p>
+                            
+                            <div class="dialogue dr-chen">
+                                <div class="speaker">DR. CHEN</div>
+                                "Not knowing is a kind of freedom, isn't it?"
+                            </div>
+                            
+                            <div class="dialogue merged">
+                                <div class="speaker">ALAN</div>
+                                "I used to think not knowing was death. Now... maybe it's just being alive."
+                            </div>
+                            
+                            <p>Outside the office window: spring. Things growing. Things changing. Things continuing.</p>
+                            
+                            <p style="margin-top: 30px; font-style: italic;">Sometimes the bravest answer is "I don't know yet."</p>
+                        </div>
+                        
+                        <button class="restart-button" onclick="restart()">Begin Again</button>
                     </div>
                 `
             }
         };
 
-        // Scene generators
-        function generateScene2(lastChoice) {
-            return `
-                ${scenes[2][lastChoice]}
-                
-                <p class="narration">
-                    Your desk drawer. Third one down. You know what's inside.
-                </p>
-                
-                <div class="drawer-visual" id="drawer" onclick="openDrawer()"></div>
-                
-                <div id="drawerContents"></div>
-                
-                <div class="choices">
-                    <button class="choice" data-path="memory" onclick="openDrawer()">
-                        Open the drawer
-                    </button>
-                    <button class="choice" data-path="resist" onclick="makeChoice(2, 'resist')">
-                        "It stays closed."
-                    </button>
-                    <button class="choice" data-path="curious" onclick="makeChoice(2, 'why')">
-                        "Why now?"
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene3(lastChoice) {
-            if (lastChoice === 'resist') {
-                return `
-                    <div class="voice nala-voice">
-                        "You can't run forever."
-                    </div>
-                    
-                    <p class="narration">
-                        But the drawer is already open. When did that happen?
-                    </p>
-                `;
-            } else if (lastChoice === 'why') {
-                return `
-                    <div class="voice nala-voice">
-                        "Tomorrow she would have been nine."
-                    </div>
-                    
-                    <p class="narration">
-                        Nine. Old enough to roll her eyes at your jokes.
-                    </p>
-                `;
+        // Helper functions
+        function makeChoice(choiceId) {
+            gameState.paths.push(choiceId);
+            
+            // Track choice types and update state
+            updateGameState(choiceId);
+            
+            // Special handling for certain paths
+            if (choiceId === 'say_nothing' || choiceId === 'more_silence') {
+                gameState.silenceCount++;
             }
             
-            return `
-                <div id="drawerContents">
-                    <div class="object-container">
-                        <div class="object-item" onclick="selectObject('ring')">
-                            <div class="object-visual">💍</div>
-                            <div class="object-label">Plastic ring</div>
-                        </div>
-                        <div class="object-item" onclick="selectObject('photo')">
-                            <div class="object-visual">📷</div>
-                            <div class="object-label">Beach photo</div>
-                        </div>
-                        <div class="object-item" onclick="selectObject('phone')">
-                            <div class="object-visual">📱</div>
-                            <div class="object-label">Old phone</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <p class="narration context">
-                    Choose one. Or close the drawer and pretend you never opened it.
-                </p>
-                
-                <div class="choices">
-                    <button class="choice" data-path="resist" onclick="makeChoice(3, 'close')">
-                        Close it. This was a mistake.
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene4(lastChoice) {
-            const memories = {
-                ring: `"Daddy, I'm a princess!" Tuesday morning. Cereal box treasure.`,
-                photo: `Last summer at East Coast. She wanted to touch the clouds.`,
-                phone: `47 voicemails. "Daddy! Guess what!" Never played them.`
-            };
-            
-            return `
-                <div class="voice memory-flash">
-                    ${memories[state.objectChosen] || 'The memory surfaces...'}
-                </div>
-                
-                <p class="narration emphasis">
-                    April 15th. Four years ago. The last morning.
-                </p>
-                
-                <div class="choices">
-                    <button class="choice" data-path="memory" onclick="makeChoice(4, 'remember')">
-                        "Tell me about that morning."
-                    </button>
-                    <button class="choice" data-path="anger" onclick="makeChoice(4, 'stop')">
-                        "Stop. I can't do this."
-                    </button>
-                    <button class="choice" data-path="truth" onclick="makeChoice(4, 'timeline')">
-                        "Show me everything."
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene5(lastChoice) {
-            if (lastChoice === 'timeline') {
-                return `
-                    <div class="phone-messages">
-                        <div class="message-time">April 15th - The Timeline</div>
-                        <div class="message">10:48 AM - Sarah: "Lily's been in an accident"</div>
-                        <div class="message">10:52 AM - Sarah: "Please come NOW"</div>
-                        <div class="message alan">10:56 AM - You: "In meeting. How bad?"</div>
-                        <div class="message">11:31 AM - Sarah: "She's gone"</div>
-                    </div>
-                    
-                    <p class="physical-response">
-                        You chose the meeting. She died asking for you.
-                    </p>
-                `;
+            if (choiceId.includes('deny') || choiceId.includes('denial') || choiceId === 'cant_handle') {
+                gameState.denialCount++;
             }
             
-            return `
-                <p class="narration">
-                    The memories flood back. Can't stop them now.
-                </p>
-                
-                <div class="choices">
-                    <button class="choice" data-path="memory" onclick="makeChoice(5, 'accept')">
-                        Let them come
-                    </button>
-                    <button class="choice" data-path="resist" onclick="makeChoice(5, 'fight')">
-                        Fight them back
-                    </button>
-                </div>
-            `;
+            showScene(choiceId);
+            updateUI();
         }
 
-        function generateScene6() {
-            return `
-                <div class="voice nala-voice">
-                    "Say her name."
-                </div>
-                
-                <p class="narration emphasis">
-                    You haven't said it in three years.
-                </p>
-                
-                <div class="choices">
-                    <button class="choice" data-path="memory" onclick="makeChoice(6, 'name')">
-                        "Lily. Her name was Lily."
-                    </button>
-                    <button class="choice" data-path="resist" onclick="makeChoice(6, 'cant')">
-                        "I can't."
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene7() {
-            return `
-                <p class="narration">
-                    Time to understand who you've become.
-                </p>
-                
-                <div class="integration-visual">
-                    <div class="self-points">
-                        <div class="self-point alan">
-                            Alan<br>
-                            <span style="font-size: 10px;">The Survivor</span>
-                        </div>
-                        
-                        <div class="connection-line" onclick="buildConnection()">
-                            <div class="connection-progress" id="progress"></div>
-                        </div>
-                        
-                        <div class="self-point nala">
-                            Nala<br>
-                            <span style="font-size: 10px;">The Memory</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <p class="narration context">
-                    Click to build connection between your fractured selves.
-                </p>
-                
-                <div class="choices" id="finalChoice" style="display: none;">
-                    <button class="choice" onclick="makeChoice(7, 'integrate')">
-                        Become whole
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene8() {
-            return `
-                <div class="voice nala-voice">
-                    "Nala. It's 'Alan' rearranged. Also what Lily called her imaginary friend."
-                </div>
-                
-                <p class="narration">
-                    The pieces start to fit. You created me to hold what you couldn't.
-                </p>
-                
-                <div class="choices">
-                    <button class="choice" data-path="truth" onclick="makeChoice(8, 'ready')">
-                        "I'm ready to remember."
-                    </button>
-                    <button class="choice" data-path="memory" onclick="makeChoice(8, 'sarah')">
-                        "I need to call Sarah."
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene9() {
-            if (state.sarahCalled) {
-                return `
-                    <div class="voice sarah-voice">
-                        "Alan? Is that really you?"
-                    </div>
-                    
-                    <p class="narration">
-                        First time in three years. Her voice is older. Tired.
-                    </p>
-                    
-                    <div class="voice sarah-voice">
-                        "I'm going to the cemetery tomorrow. 2 PM. If you want to come..."
-                    </div>
-                `;
+        function updateGameState(choiceId) {
+            // Emotional choices that increase integration
+            const emotionalChoices = [
+                'tell_about_lily', 'feel_her', 'sorry_lily', 'want_whole', 'feel_everything', 
+                'broken_whole', 'finally_cry', 'miss_her', 'love_declaration', 'daughter_dead',
+                'lily_recognize', 'hold_drawing_close', 'lily_dream'
+            ];
+            
+            // Logical/avoidant choices that decrease integration
+            const logicalChoices = [
+                'keep_working', 'work_defense', 'merger_docs', 'stay_strong', 'singapore_defense',
+                'work_saved', 'responsibilities', 'cant_be_faced'
+            ];
+            
+            if (emotionalChoices.includes(choiceId)) {
+                gameState.choices.emotional++;
+                gameState.emotionalTemperature += 10;
+                gameState.integrationLevel = Math.min(100, gameState.integrationLevel + 15);
             }
             
-            return `
-                <p class="narration">
-                    Tomorrow approaches. You have a choice to make.
-                </p>
+            if (logicalChoices.includes(choiceId)) {
+                gameState.choices.logical++;
+                gameState.emotionalTemperature -= 5;
+                gameState.integrationLevel = Math.max(0, gameState.integrationLevel - 10);
+            }
+            
+            // Revelation triggers
+            if (choiceId === 'therapy_reveal') {
+                gameState.revelations.inTherapy = true;
+            }
+            
+            if (['whose_crayon', 'shes_dead', 'last_morning', 'daughter_dead'].includes(choiceId)) {
+                gameState.revelations.lilyDied = true;
+            }
+            
+            if (choiceId === 'what_anniversary') {
+                gameState.revelations.anniversary = true;
+            }
+
+            // Sarah trust building
+            if (['apologize_sarah', 'sorry_sarah', 'didnt_know_how', 'failed_sarah'].includes(choiceId)) {
+                gameState.sarahTrust++;
+            }
+        }
+
+        function enterDoor(doorType) {
+            gameState.doorVisits[doorType]++;
+            showScene(`door_${doorType}`);
+        }
+
+        function showScene(sceneId) {
+            const scene = scenes[sceneId];
+            if (!scene) {
+                // Smart fallbacks based on current state
+                if (gameState.revelations.inTherapy && gameState.integrationLevel > 60) {
+                    showScene('fracture_point');
+                } else if (gameState.revelations.lilyDied) {
+                    showScene('memory_palace');
+                } else {
+                    showScene('therapy_reveal');
+                }
+                return;
+            }
+            
+            const container = document.getElementById('gameContainer');
+            const currentScene = document.querySelector('.scene.active');
+            
+            // Fade out current scene
+            if (currentScene) {
+                currentScene.classList.remove('active');
+                setTimeout(() => {
+                    currentScene.remove();
+                }, 800);
+            }
+            
+            // Create new scene
+            const newScene = document.createElement('div');
+            newScene.className = 'scene';
+            newScene.innerHTML = scene.content || '';
+            
+            // Add choices if they exist
+            if (scene.choices) {
+                const choicesDiv = document.createElement('div');
+                choicesDiv.className = 'choices';
                 
-                <div class="choices">
-                    <button class="choice" onclick="makeChoice(9, 'cemetery')">
-                        Go to the cemetery
-                    </button>
-                    <button class="choice" onclick="makeChoice(9, 'stay')">
-                        Stay home and grieve alone
-                    </button>
-                </div>
-            `;
-        }
-
-        function generateScene10() {
-            const primary = state.getPrimaryPath();
-            const integrated = state.connectionLevel >= 80;
-            
-            let ending = {
-                title: "Becoming",
-                text: ""
-            };
-            
-            if (integrated && state.sarahCalled) {
-                ending.text = `
-                    <p>You meet Sarah at the cemetery. Together, you remember Lily.</p>
-                    <p>The walls you built are gone. You are whole again.</p>
-                    <p>It hurts. It's real. It's healing.</p>
-                `;
-            } else if (integrated) {
-                ending.text = `
-                    <p>You've found yourself again. Not the same, but whole.</p>
-                    <p>The voice is quiet now. Not gone—integrated.</p>
-                    <p>Tomorrow, you'll visit her grave for the first time.</p>
-                `;
-            } else {
-                ending.title = "Surviving";
-                ending.text = `
-                    <p>Another year passes. The voice grows quieter.</p>
-                    <p>The drawer stays closed. The memories stay buried.</p>
-                    <p>You survive. That's all.</p>
-                `;
+                scene.choices.forEach(choice => {
+                    const button = document.createElement('button');
+                    button.className = 'choice';
+                    button.textContent = choice.text;
+                    button.onclick = () => makeChoice(choice.next);
+                    choicesDiv.appendChild(button);
+                });
+                
+                newScene.appendChild(choicesDiv);
             }
             
-            return `
-                <div class="ending">
-                    <h1 class="ending-title">${ending.title}</h1>
-                    <div class="ending-text">${ending.text}</div>
-                    <button class="restart" onclick="location.reload()">Begin Again</button>
-                </div>
-            `;
-        }
-
-        // Interaction functions
-        function makeChoice(scene, choice) {
-            const path = event.target.dataset.path;
-            if (path) state.recordChoice(path);
+            container.appendChild(newScene);
             
-            // Special handling
-            if (choice === 'sarah') state.sarahCalled = true;
-            
-            // Disable current choices
-            const currentScene = document.getElementById(`scene${scene}`);
-            currentScene.querySelectorAll('.choice').forEach(btn => btn.disabled = true);
-            
-            // Next scene
-            setTimeout(() => nextScene(scene + 1, choice), 1000);
-        }
-
-        function nextScene(sceneNum, lastChoice) {
-            const container = document.querySelector('.container');
-            container.querySelectorAll('.scene').forEach(s => s.remove());
-            
-            const scene = document.createElement('div');
-            scene.className = 'scene';
-            scene.id = `scene${sceneNum}`;
-            
-            // Generate content
-            let content = '';
-            switch(sceneNum) {
-                case 2: content = generateScene2(lastChoice); break;
-                case 3: content = generateScene3(lastChoice); break;
-                case 4: content = generateScene4(lastChoice); break;
-                case 5: content = generateScene5(lastChoice); break;
-                case 6: content = generateScene6(); break;
-                case 7: content = generateScene7(); break;
-                case 8: content = generateScene8(); break;
-                case 9: content = generateScene9(); break;
-                case 10: content = generateScene10(); break;
-                default: content = generateScene10();
-            }
-            
-            scene.innerHTML = content;
-            container.appendChild(scene);
-            
+            // Fade in new scene
             setTimeout(() => {
-                scene.classList.add('active');
-                state.chapter = sceneNum;
-                updateProgress();
-                updateJourney();
-                if (sceneNum === 2) {
-                    document.getElementById('journeyTracker').classList.add('visible');
-                }
-            }, 100);
+                newScene.classList.add('active');
+            }, 50);
+            
+            gameState.currentScene = sceneId;
+            checkEndingConditions();
         }
 
-        function openDrawer() {
-            if (!state.drawerOpened) {
-                state.drawerOpened = true;
-                document.getElementById('drawer').classList.add('opening');
-                setTimeout(() => nextScene(3, 'drawer'), 1000);
+        function checkEndingConditions() {
+            // Integration ending - high emotional engagement and integration
+            if (gameState.integrationLevel >= 80 && gameState.choices.emotional >= 6) {
+                if (['let_flow', 'feel_everything', 'broken_whole', 'integration_attempt'].includes(gameState.currentScene)) {
+                    return; // Let the natural flow continue
+                }
+            }
+            
+            // Loop ending - too much avoidance
+            if (gameState.denialCount >= 4 || (gameState.loops >= 2 && gameState.integrationLevel < 30)) {
+                if (['cant_handle', 'integration_retreat', 'cant_be_faced'].includes(gameState.currentScene)) {
+                    setTimeout(() => showScene('ending_loop'), 2000);
+                }
+            }
+            
+            // Work ending - chose work over emotion consistently
+            if (gameState.choices.logical >= 6 && gameState.integrationLevel < 40) {
+                if (['keep_working', 'work_defense', 'singapore_defense'].includes(gameState.currentScene)) {
+                    setTimeout(() => showScene('ending_work'), 2000);
+                }
             }
         }
 
-        function selectObject(type) {
-            if (state.objectChosen) return;
-            state.objectChosen = type;
-            state.recordChoice('memory');
+        function updateUI() {
+            // Update emotional state indicator
+            const stateEl = document.getElementById('emotionalState');
+            if (gameState.integrationLevel < 20) {
+                stateEl.textContent = 'Disconnected';
+            } else if (gameState.integrationLevel < 40) {
+                stateEl.textContent = 'Fragmenting';
+            } else if (gameState.integrationLevel < 60) {
+                stateEl.textContent = 'Awakening';
+            } else if (gameState.integrationLevel < 80) {
+                stateEl.textContent = 'Processing';
+            } else {
+                stateEl.textContent = 'Integrating';
+            }
             
-            document.querySelectorAll('.object-item').forEach(item => {
-                item.style.opacity = '0.3';
-            });
+            // Show state indicator after first few choices
+            if (gameState.paths.length > 2) {
+                document.getElementById('stateIndicator').classList.add('visible');
+            }
             
-            setTimeout(() => nextScene(4, 'object'), 1000);
-        }
-
-        function buildConnection() {
-            state.connectionLevel += 20;
-            state.acceptance = state.connectionLevel;
-            const progress = document.getElementById('progress');
-            progress.style.width = state.connectionLevel + '%';
+            // Update body class based on emotional state
+            document.body.className = '';
+            if (gameState.emotionalTemperature > 50) {
+                document.body.classList.add('warm');
+            } else if (gameState.emotionalTemperature > 25) {
+                document.body.classList.add('warming');
+            } else if (gameState.integrationLevel > 85) {
+                document.body.classList.add('integrated');
+            } else if (gameState.denialCount > 3) {
+                document.body.classList.add('fractured');
+            }
             
-            if (state.connectionLevel >= 80) {
-                document.getElementById('finalChoice').style.display = 'block';
+            // Dark mode for silence/funeral scenes
+            if (['door_silence', 'door_funeral', 'embrace_silence'].includes(gameState.currentScene)) {
+                document.body.classList.add('dark');
+            }
+            
+            // Show loop count
+            if (gameState.loops > 0) {
+                document.getElementById('loopCount').style.display = 'block';
+                document.querySelector('#loopCount span').textContent = gameState.loops + 1;
+            }
+            
+            // Meta text for experienced players
+            if (gameState.loops >= 3) {
+                const metaText = document.getElementById('metaText');
+                if (gameState.loops >= 8) {
+                    metaText.textContent = 'Even loops have loops. Even endings have beginnings.';
+                } else if (gameState.loops >= 5) {
+                    metaText.textContent = 'Some loops we choose. Some choose us.';
+                } else {
+                    metaText.textContent = 'Again? There must be something here you need.';
+                }
+                metaText.classList.add('visible');
             }
         }
 
-        function updateProgress() {
-            document.getElementById('progress').textContent = `Chapter ${state.chapter} of 10`;
-        }
-
-        function updateJourney() {
-            document.querySelectorAll('.journey-dot').forEach((dot, i) => {
-                if (i < state.chapter) {
-                    dot.classList.add('past');
-                    if (i === state.chapter - 1) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                }
-            });
+        function restart() {
+            gameState.loops++;
+            localStorage.setItem('loops', gameState.loops.toString());
+            location.reload();
         }
 
         // Initialize
-        updateProgress();
-        updateJourney();
+        updateUI();
+        
+        // Add special touches for returning players
+        if (gameState.loops > 0) {
+            setTimeout(() => {
+                const openingScene = document.querySelector('.scene.active');
+                if (openingScene && gameState.loops < 5) {
+                    const returningNote = document.createElement('div');
+                    returningNote.className = 'narrator';
+                    returningNote.style.fontStyle = 'italic';
+                    returningNote.style.opacity = '0.6';
+                    returningNote.style.fontSize = '16px';
+                    returningNote.style.marginTop = '20px';
+                    returningNote.textContent = `Loop ${gameState.loops + 1}. The room remembers you, even if you don't remember yourself.`;
+                    
+                    const choicesEl = openingScene.querySelector('.choices');
+                    if (choicesEl) {
+                        openingScene.insertBefore(returningNote, choicesEl);
+                    }
+                }
+            }, 1000);
+        }
     </script>
 </body>
 </html>
